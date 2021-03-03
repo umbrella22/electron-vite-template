@@ -18,10 +18,10 @@
                 "config/*"
             ],
             "@renderer/*": [
-                "src/renderer"
+                "src/renderer/*"
             ],
             "@main/*": [
-                "src/main"
+                "src/main/*"
             ]
         },
         "typeRoots": [
