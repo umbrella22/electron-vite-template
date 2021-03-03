@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-console.log(process.env.BASE_API)
 const serves = axios.create({
   baseURL: process.env.BASE_API,
   timeout: 5000
