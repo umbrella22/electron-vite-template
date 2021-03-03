@@ -12,8 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-// import { platform, release, arch } from "os";
-const { platform, release, arch } = require("os")
+const { platform, release, arch } = require("os");
 import { useRoute } from "vue-router";
 export default defineComponent({
   components: {},
@@ -23,7 +22,13 @@ export default defineComponent({
     const tips = ref([
       { name: "当前页面路径：", value: path },
       { name: "当前页面名称：", value: name },
-      { name: "Vue版本：", value: require("vue/package.json").version },
+      {
+        name: "Vue版本：",
+        value:
+          process.env.NODE_ENV === "development"
+            ? require("vue/package.json").version
+            : "不可见",
+      },
       {
         name: "Electron版本：",
         value: process.versions.electron || "浏览器环境",

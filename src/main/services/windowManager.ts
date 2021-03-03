@@ -42,8 +42,8 @@ class MainInit {
         nodeIntegration: true,
         webSecurity: false,
         // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // devTools: true,
+        // devTools: process.env.NODE_ENV === 'development',
+        devTools: true,
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin'
       }
@@ -65,11 +65,11 @@ class MainInit {
       this.mainWindow.show()
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
-    // this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
+    this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
     // 开发模式下自动开启devtools
-    if (process.env.NODE_ENV === 'development') {
-      this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
+    // }
     // 当确定渲染进程卡死时，分类型进行告警操作
     app.on('render-process-gone', (event, webContents, details) => {
       const message = {

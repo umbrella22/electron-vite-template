@@ -162,6 +162,13 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@types/axios@^0.14.0":
+  version "0.14.0"
+  resolved "https://registry.npm.taobao.org/@types/axios/download/@types/axios-0.14.0.tgz#ec2300fbe7d7dddd7eb9d3abf87999964cafce46"
+  integrity sha1-7CMA++fX3d1+udOr+HmZlkyvzkY=
+  dependencies:
+    axios "*"
+
 "@types/debug@^4.1.5":
   version "4.1.5"
   resolved "https://registry.npm.taobao.org/@types/debug/download/@types/debug-4.1.5.tgz?cache=0&sync_timestamp=1613378250986&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fdebug%2Fdownload%2F%40types%2Fdebug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
@@ -256,17 +263,6 @@
   resolved "https://registry.npm.taobao.org/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.1.5.tgz#fa1e8e5e049c35e213672e33f73fe81706ad5dbe"
   integrity sha1-+h6OXgScNeITZy4z9z/oFwatXb4=
 
-"@vue/compiler-core@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/compiler-core/download/@vue/compiler-core-3.0.6.tgz?cache=0&sync_timestamp=1614198038850&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-core%2Fdownload%2F%40vue%2Fcompiler-core-3.0.6.tgz#265bbe0711a81ab4c1344f8294e22e2d08ca167d"
-  integrity sha1-Jlu+BxGoGrTBNE+ClOIuLQjKFn0=
-  dependencies:
-    "@babel/parser" "^7.12.0"
-    "@babel/types" "^7.12.0"
-    "@vue/shared" "3.0.6"
-    estree-walker "^2.0.1"
-    source-map "^0.6.1"
-
 "@vue/compiler-core@3.0.7":
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/@vue/compiler-core/download/@vue/compiler-core-3.0.7.tgz?cache=0&sync_timestamp=1614614485985&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-core%2Fdownload%2F%40vue%2Fcompiler-core-3.0.7.tgz#421782a4c67cc3f2b7c30457ef446d74f8524f74"
@@ -277,14 +273,6 @@
     "@vue/shared" "3.0.7"
     estree-walker "^2.0.1"
     source-map "^0.6.1"
-
-"@vue/compiler-dom@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/compiler-dom/download/@vue/compiler-dom-3.0.6.tgz#f94c3959320a1252915bd02b943f96a7ee3fc951"
-  integrity sha1-+Uw5WTIKElKRW9ArlD+Wp+4/yVE=
-  dependencies:
-    "@vue/compiler-core" "3.0.6"
-    "@vue/shared" "3.0.6"
 
 "@vue/compiler-dom@3.0.7":
   version "3.0.7"
@@ -324,34 +312,29 @@
     "@vue/compiler-dom" "3.0.7"
     "@vue/shared" "3.0.7"
 
-"@vue/reactivity@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/reactivity/download/@vue/reactivity-3.0.6.tgz#7b16f3d5d04cc55028085fff0bb8475cc0e32991"
-  integrity sha1-exbz1dBMxVAoCF//C7hHXMDjKZE=
+"@vue/reactivity@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.npm.taobao.org/@vue/reactivity/download/@vue/reactivity-3.0.7.tgz?cache=0&sync_timestamp=1614614692200&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Freactivity%2Fdownload%2F%40vue%2Freactivity-3.0.7.tgz#e6ccc7bef7fc10b0972e4d974bad71679d3b26ad"
+  integrity sha1-5szHvvf8ELCXLk2XS61xZ507Jq0=
   dependencies:
-    "@vue/shared" "3.0.6"
+    "@vue/shared" "3.0.7"
 
-"@vue/runtime-core@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/runtime-core/download/@vue/runtime-core-3.0.6.tgz#d16779b5664593f1d25be677fb1b1968024aa532"
-  integrity sha1-0Wd5tWZFk/HSW+Z3+xsZaAJKpTI=
+"@vue/runtime-core@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.npm.taobao.org/@vue/runtime-core/download/@vue/runtime-core-3.0.7.tgz?cache=0&sync_timestamp=1614614696507&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fruntime-core%2Fdownload%2F%40vue%2Fruntime-core-3.0.7.tgz#d44c0b0a57d7e392912a87362a4430ccf446ecea"
+  integrity sha1-1EwLClfX45KRKoc2KkQwzPRG7Oo=
   dependencies:
-    "@vue/reactivity" "3.0.6"
-    "@vue/shared" "3.0.6"
+    "@vue/reactivity" "3.0.7"
+    "@vue/shared" "3.0.7"
 
-"@vue/runtime-dom@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/runtime-dom/download/@vue/runtime-dom-3.0.6.tgz#e7d6c61913d871f1f020a9a81b558c8fcbeba8c6"
-  integrity sha1-59bGGRPYcfHwIKmoG1WMj8vrqMY=
+"@vue/runtime-dom@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.npm.taobao.org/@vue/runtime-dom/download/@vue/runtime-dom-3.0.7.tgz?cache=0&sync_timestamp=1614614700287&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fruntime-dom%2Fdownload%2F%40vue%2Fruntime-dom-3.0.7.tgz#b70668d729020bc4ad608c20367223f259576ba6"
+  integrity sha1-twZo1ykCC8StYIwgNnIj8llXa6Y=
   dependencies:
-    "@vue/runtime-core" "3.0.6"
-    "@vue/shared" "3.0.6"
+    "@vue/runtime-core" "3.0.7"
+    "@vue/shared" "3.0.7"
     csstype "^2.6.8"
-
-"@vue/shared@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/@vue/shared/download/@vue/shared-3.0.6.tgz#d65576430fc4ad383dc7c829118798e5169178d4"
-  integrity sha1-1lV2Qw/ErTg9x8gpEYeY5RaReNQ=
 
 "@vue/shared@3.0.7":
   version "3.0.7"
@@ -547,6 +530,13 @@ at-least-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/at-least-node/download/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha1-YCzUtG6EStTv/JKoARo8RuAjjcI=
+
+axios@*, axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz?cache=0&sync_timestamp=1608609215811&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
+  dependencies:
+    follow-redirects "^1.10.0"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -1499,6 +1489,11 @@ finalhandler@~1.1.2:
     parseurl "~1.3.3"
     statuses "~1.5.0"
     unpipe "~1.0.0"
+
+follow-redirects@^1.10.0:
+  version "1.13.3"
+  resolved "https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
+  integrity sha1-5VmK1QF0wbxOhyMB6CrCzZf5Amc=
 
 forwarded@~0.1.2:
   version "0.1.2"
@@ -3483,14 +3478,14 @@ vue-router@^4.0.4:
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-4.0.4.tgz#ad9b4b7bbdad622407b4ff189b1646f48c1e9053"
   integrity sha1-rZtLe72tYiQHtP8YmxZG9IwekFM=
 
-vue@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.6.tgz#2c16ed4bb66f16d6c6f6eaa3b7d5835a76598049"
-  integrity sha1-LBbtS7ZvFtbG9uqjt9WDWnZZgEk=
+vue@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.7.tgz?cache=0&sync_timestamp=1614614707443&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-3.0.7.tgz#8bcff51f8be570f9e4ce8cc5f52e2ab0fe3c74a1"
+  integrity sha1-i8/1H4vlcPnkzozF9S4qsP48dKE=
   dependencies:
-    "@vue/compiler-dom" "3.0.6"
-    "@vue/runtime-dom" "3.0.6"
-    "@vue/shared" "3.0.6"
+    "@vue/compiler-dom" "3.0.7"
+    "@vue/runtime-dom" "3.0.7"
+    "@vue/shared" "3.0.7"
 
 vuex@^4.0.0:
   version "4.0.0"

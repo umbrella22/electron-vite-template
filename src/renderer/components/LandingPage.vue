@@ -5,14 +5,6 @@
       <div class="left-side">
         <span class="title">欢迎进入本框架</span>
         <system-information></system-information>
-        <div v-if="textarray.length === 0">
-          <span>{{ text }}</span>
-        </div>
-        <div v-for="(itme, index) in textarray" :key="index" v-else>
-          <span>{{ itme._id }}</span>
-          <span>{{ itme.name }}</span>
-          <span>{{ itme.age }}</span>
-        </div>
       </div>
 
       <div class="right-side">
@@ -67,7 +59,7 @@
 
 <script>
 import SystemInformation from "./LandingPage/SystemInformation.vue";
-// import { message } from "@/api/login";
+import { message } from "@renderer/api/login";
 const { ipcRenderer } = require("electron")
 import logo from "@renderer/assets/logo.png"
 export default {
@@ -112,7 +104,7 @@ export default {
         this.$alert("下载由于未知原因被中断！", "提示", {
           confirmButtonText: "重试",
           callback: (action) => {
-            ipcRenderer.send("satrt-download");
+            ipcRenderer.invoke("satrt-download");
           },
         });
       }
@@ -136,7 +128,7 @@ export default {
             message: age.msg,
           };
           this.dialogVisible = false;
-          ipcRenderer.send("open-errorbox", msgdata);
+          ipcRenderer.invoke("open-errorbox", msgdata);
           break;
         case 0:
           this.$message("正在检查更新");
@@ -159,7 +151,7 @@ export default {
           this.$alert("更新下载完成！", "提示", {
             confirmButtonText: "确定",
             callback: (action) => {
-              ipcRenderer.send("confirm-update");
+              ipcRenderer.invoke("confirm-update");
             },
           });
           break;
@@ -177,17 +169,17 @@ export default {
       let data = {
         url: "/form/index",
       };
-      ipcRenderer.send("open-win", data);
+      ipcRenderer.invoke("open-win", data);
     },
     getMessage() {
-      // message().then((res) => {
-      //   this.$alert(res.data, "提示", {
-      //     confirmButtonText: "确定",
-      //   });
-      // });
+      message().then((res) => {
+        this.$alert(res.data, "提示", {
+          confirmButtonText: "确定",
+        });
+      });
     },
     StopServer() {
-      ipcRenderer.send("stop-server").then((res) => {
+      ipcRenderer.invoke("stop-server").then((res) => {
         this.$message({
           type: "success",
           message: "已关闭",
@@ -195,7 +187,7 @@ export default {
       });
     },
     StartServer() {
-      ipcRenderer.send("statr-server").then((res) => {
+      ipcRenderer.invoke("statr-server").then((res) => {
         if (res) {
           this.$message({
             type: "success",
@@ -209,11 +201,11 @@ export default {
     CheckUpdate(data) {
       switch (data) {
         case "one":
-          ipcRenderer.send("check-update");
+          ipcRenderer.invoke("check-update");
           console.log("启动检查");
           break;
         case "two":
-          ipcRenderer.send("start-download").then(() => {
+          ipcRenderer.invoke("start-download").then(() => {
             this.dialogVisible = true;
           });
 
@@ -229,14 +221,14 @@ export default {
   },
   unmounted() {
     console.log("销毁了哦");
-    ipcRenderer.remove("confirm-message");
-    ipcRenderer.remove("download-done");
-    ipcRenderer.remove("download-paused");
-    ipcRenderer.remove("confirm-stop");
-    ipcRenderer.remove("confirm-start");
-    ipcRenderer.remove("confirm-download");
-    ipcRenderer.remove("download-progress");
-    ipcRenderer.remove("download-error");
+    ipcRenderer.removeAllListeners("confirm-message");
+    ipcRenderer.removeAllListeners("download-done");
+    ipcRenderer.removeAllListeners("download-paused");
+    ipcRenderer.removeAllListeners("confirm-stop");
+    ipcRenderer.removeAllListeners("confirm-start");
+    ipcRenderer.removeAllListeners("confirm-download");
+    ipcRenderer.removeAllListeners("download-progress");
+    ipcRenderer.removeAllListeners("download-error");
   },
 };
 </script>
