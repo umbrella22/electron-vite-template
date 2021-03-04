@@ -38,7 +38,7 @@ class Main {
           if (stats) {
             await remove(this.HistoryFilePath)
           }
-          this.mainWindow.webContents.downloadURL(this.downloadUrl)
+          this.mainWindow.webContents.downloadURL(msg.downloadUrl || this.downloadUrl)
         } catch (error) { console.log(error) }
       })
       this.mainWindow.webContents.session.on('will-download', (event: any, item: any, webContents: any) => {
