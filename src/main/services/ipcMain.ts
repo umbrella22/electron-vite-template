@@ -1,9 +1,10 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
+import { updater } from './HotUpdater'
 
 export default {
-  Mainfunc (mainWindow: BrowserWindow, IsUseSysTitle: Boolean) {
+  Mainfunc(mainWindow: BrowserWindow, IsUseSysTitle: Boolean) {
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
     })
@@ -60,6 +61,9 @@ export default {
           error
         )
       }
+    })
+    ipcMain.handle('hot-update', (event, arg) => {
+      updater(mainWindow)
     })
     ipcMain.handle('open-win', (event, arg) => {
       const ChildWin = new BrowserWindow({

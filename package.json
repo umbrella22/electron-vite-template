@@ -25,6 +25,10 @@
         "url": "http://127.0.0.1"
       }
     ],
+    "hotPublish": {
+      "url": "",
+      "configName": ""
+    },
     "productName": "electron-vite-template",
     "appId": "org.sky.electron-vite-template",
     "directories": {
@@ -61,10 +65,11 @@
     }
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "0.21.1",
     "electron-log": "^4.3.2",
     "electron-updater": "^4.3.8",
     "express": "^4.17.1",
+    "extract-zip": "^2.0.1",
     "fs-extra": "^9.1.0"
   },
   "devDependencies": {
@@ -84,7 +89,7 @@
     "electron": "^12.0.0",
     "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.1.1",
-    "element-plus": "^1.0.2-beta.32",
+    "element-plus": "^1.0.2-beta.33",
     "minimist": "^1.2.5",
     "multispinner": "^0.2.1",
     "ora": "^5.3.0",
@@ -92,7 +97,7 @@
     "rollup-plugin-esbuild": "^2.6.1",
     "sass": "^1.32.8",
     "tslib": "^2.1.0",
-    "typescript": "^4.2.2",
+    "typescript": "^4.2.3",
     "vite": "^2.0.5",
     "vue": "^3.0.7",
     "vue-router": "^4.0.4",

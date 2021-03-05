@@ -19,6 +19,9 @@
           <el-button type="primary" round @click="CheckUpdate('two')"
             >检查更新（第二种方法）</el-button
           >
+          <el-button type="primary" round @click="CheckUpdate('three')"
+            >检查更新（增量更新）</el-button
+          >
           <el-button type="primary" round @click="StartServer"
             >启动内置服务端</el-button
           >
@@ -60,8 +63,8 @@
 <script>
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
-const { ipcRenderer } = require("electron")
-import logo from "@renderer/assets/logo.png"
+const { ipcRenderer } = require("electron");
+import logo from "@renderer/assets/logo.png";
 export default {
   name: "landing-page",
   components: { SystemInformation },
@@ -160,6 +163,7 @@ export default {
           break;
       }
     });
+     ipcRenderer.on('hot-update-status')
   },
   methods: {
     crash() {
@@ -208,7 +212,9 @@ export default {
           ipcRenderer.invoke("start-download").then(() => {
             this.dialogVisible = true;
           });
-
+          break;
+        case "three":
+          ipcRenderer.invoke("hot-update");
           break;
 
         default:
