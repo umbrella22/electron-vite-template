@@ -11,6 +11,7 @@ import { gt } from 'semver'
 import { createHmac } from 'crypto'
 import extract from 'extract-zip'
 import { version, build } from '../../../package.json'
+import { hotPublishConfig } from '../config/hotPublish'
 import axios from 'axios'
 import httpAdapter from 'axios/lib/adapters/http'
 
@@ -48,7 +49,7 @@ async function download(url: string, filePath: string) {
 
 const updateInfo = {
     status: 'init',
-    message:''
+    message: ''
 }
 
 /**
@@ -60,13 +61,13 @@ const updateInfo = {
 export const updater = async (windows: BrowserWindow) => {
     try {
         if (build.asar === false) {
-            const res = await request({ url: `${build.hotPublish.url}/${build.hotPublish.configName}?time=${new Date().getTime()}`, })
+            const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}?time=${new Date().getTime()}`, })
             if (gt(res.data.version, version)) {
                 await emptyDir(updatePath)
                 const filePath = join(updatePath, res.data.name)
                 updateInfo.status = 'downloading'
                 windows.webContents.send('hot-update-status', updateInfo)
-                await download(build.hotPublish.url, filePath)
+                await download(hotPublishConfig.url, filePath)
                 const buffer = await readFile(filePath)
                 const sha256 = hash(buffer)
                 if (sha256 !== res.data.hash) throw new Error('sha256 error')

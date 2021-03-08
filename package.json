@@ -17,7 +17,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
-    "asar": true,
+    "asar": false,
     "extraFiles": [],
     "publish": [
       {
@@ -25,10 +25,6 @@
         "url": "http://127.0.0.1"
       }
     ],
-    "hotPublish": {
-      "url": "",
-      "configName": ""
-    },
     "productName": "electron-vite-template",
     "appId": "org.sky.electron-vite-template",
     "directories": {

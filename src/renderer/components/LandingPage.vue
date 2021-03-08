@@ -87,6 +87,7 @@ export default {
     dialogVisible: false,
     progressStaus: null,
     filePath: "",
+    updateStatus: "",
   }),
   created() {
     // console.log(__lib);
@@ -163,7 +164,9 @@ export default {
           break;
       }
     });
-     ipcRenderer.on('hot-update-status')
+    ipcRenderer.on("hot-update-status", (event, msg) => {
+      this.updateStatus = msg.status;
+    });
   },
   methods: {
     crash() {
