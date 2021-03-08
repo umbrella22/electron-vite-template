@@ -10,7 +10,7 @@ import { app, BrowserWindow } from 'electron'
 import { gt } from 'semver'
 import { createHmac } from 'crypto'
 import extract from 'extract-zip'
-import { version, build } from 'package.json'
+import { version, build } from '../../../package.json'
 import axios from 'axios'
 import httpAdapter from 'axios/lib/adapters/http'
 
