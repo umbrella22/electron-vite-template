@@ -295,11 +295,18 @@ main > div {
   margin-bottom: 10px;
 }
 .doc {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .doc p {
   color: black;
   margin-bottom: 10px;
+}
+.doc .el-button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.doc .el-button + .el-button {
+  margin-left: 0;
 }
 .conten {
   text-align: center;
