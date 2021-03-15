@@ -59,7 +59,10 @@ module.exports = (env = 'production') => {
       'path',
       'electron',
       'electron-updater',
-      'express'
+      'express',
+      'ffi-napi',
+      'ref-napi',
+      'ref-struct-napi'
     ],
   }
 }

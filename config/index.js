@@ -2,6 +2,7 @@ module.exports = {
   build: {
     DisableF12: true,
     env: require('./prod.env'),
+    hotPublishUrl:"",
     hotPublishConfigName: ""
   },
   dev: {
