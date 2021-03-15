@@ -5,6 +5,6 @@ interface hotPublish {
 }
 
 export const hotPublishConfig: hotPublish = {
-    url: '',
+    url: build.hotPublishUrl,
     configName: build.hotPublishConfigName
 }
