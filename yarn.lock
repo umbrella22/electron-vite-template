@@ -1254,10 +1254,10 @@ electron-updater@^4.3.8:
     lodash.isequal "^4.5.0"
     semver "^7.3.4"
 
-electron@^12.0.1:
-  version "12.0.1"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-12.0.1.tgz#11afa81dae858cc7cd79107c2f789e8a7f93a31b"
-  integrity sha1-Ea+oHa6FjMfNeRB8L3iein+Toxs=
+electron@^12.0.2:
+  version "12.0.2"
+  resolved "https://registry.npm.taobao.org/electron/download/electron-12.0.2.tgz#d92be205f1937627bd6718aad44ac161382b4c2d"
+  integrity sha1-2SviBfGTdie9Zxiq1ErBYTgrTC0=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
