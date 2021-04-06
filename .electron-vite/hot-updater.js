@@ -23,23 +23,27 @@ const createZip = (filePath, dest) => {
 }
 
 const start = async () => {
-    const appPath = './build/win-unpacked/resources/app'
-    const name = 'app.zip'
-    const outputPath = path.resolve('./build/update/update/')
-    const zipPath = path.resolve(outputPath, name)
-    await fs.ensureDir(outputPath)
-    await fs.emptyDir(outputPath)
-    createZip(appPath, zipPath)
-    const buffer = await fs.readFile(zipPath)
-    const sha256 = hash(buffer)
-    const hashName = sha256.slice(7, 12)
-    await fs.copy(zipPath, path.resolve(outputPath, `${hashName}.zip`))
-    await fs.remove(zipPath)
-    await fs.outputJSON(path.join(outputPath, `${build.hotPublishConfigName}.json`), {
-        version,
-        name: `${hashName}.zip`,
-        hash: sha256
-    })
+    if (build.asar === false) {
+        const appPath = './build/win-unpacked/resources/app'
+        const name = 'app.zip'
+        const outputPath = path.resolve('./build/update/update/')
+        const zipPath = path.resolve(outputPath, name)
+        await fs.ensureDir(outputPath)
+        await fs.emptyDir(outputPath)
+        createZip(appPath, zipPath)
+        const buffer = await fs.readFile(zipPath)
+        const sha256 = hash(buffer)
+        const hashName = sha256.slice(7, 12)
+        await fs.copy(zipPath, path.resolve(outputPath, `${hashName}.zip`))
+        await fs.remove(zipPath)
+        await fs.outputJSON(path.join(outputPath, `${build.hotPublishConfigName}.json`), {
+            version,
+            name: `${hashName}.zip`,
+            hash: sha256
+        })
+    } else {
+        throw new Error('Please make sure the build.asar option in the Package.json file is set to false')
+    }
 }
 
 start()

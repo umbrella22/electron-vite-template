@@ -58,15 +58,14 @@ const updateInfo = {
  * @author umbrella22
  * @date 2021-03-05
  */
-export const updater = async (windows: BrowserWindow) => {
+export const updater = async (windows?: BrowserWindow) => {
     try {
-        if (build.asar === false) {
             const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}?time=${new Date().getTime()}`, })
             if (gt(res.data.version, version)) {
                 await emptyDir(updatePath)
                 const filePath = join(updatePath, res.data.name)
                 updateInfo.status = 'downloading'
-                windows.webContents.send('hot-update-status', updateInfo)
+                if (windows) windows.webContents.send('hot-update-status', updateInfo);
                 await download(hotPublishConfig.url, filePath)
                 const buffer = await readFile(filePath)
                 const sha256 = hash(buffer)
@@ -74,16 +73,14 @@ export const updater = async (windows: BrowserWindow) => {
                 const appPathTemp = join(updatePath, 'temp')
                 await extract(filePath, { dir: appPathTemp })
                 updateInfo.status = 'moving'
-                windows.webContents.send('hot-update-status', updateInfo)
+                if (windows) windows.webContents.send('hot-update-status', updateInfo);
                 await emptyDir(appPath)
                 await copy(appPathTemp, appPath)
                 updateInfo.status = 'finished'
-                windows.webContents.send('hot-update-status', updateInfo)
+                if (windows) windows.webContents.send('hot-update-status', updateInfo);
                 resolve('success')
             }
-        } else {
-            throw new Error('Please make sure the build.asar option in the Package.json file is set to false')
-        }
+
 
     } catch (error) {
         updateInfo.status = 'failed'
