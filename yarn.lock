@@ -218,6 +218,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/lodash@^4.14.161":
+  version "4.14.168"
+  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.168.tgz?cache=0&sync_timestamp=1613379158193&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
+  integrity sha1-/iRjLnm3rePxMoka//hsql5c4Ag=
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/@types/minimatch/download/@types/minimatch-3.0.3.tgz?cache=0&sync_timestamp=1613379360551&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fminimatch%2Fdownload%2F%40types%2Fminimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -1236,10 +1241,10 @@ electron-devtools-installer@^3.1.1:
     semver "^7.2.1"
     unzip-crx-3 "^0.2.0"
 
-electron-log@^4.3.2:
-  version "4.3.2"
-  resolved "https://registry.npm.taobao.org/electron-log/download/electron-log-4.3.2.tgz#213334c69f0498fac677a7a73eae4a61fb69949e"
-  integrity sha1-ITM0xp8EmPrGd6enPq5KYftplJ4=
+electron-log@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.npm.taobao.org/electron-log/download/electron-log-4.3.3.tgz?cache=0&sync_timestamp=1617779317857&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felectron-log%2Fdownload%2Felectron-log-4.3.3.tgz#84f37795b916e1801e7dcd66d21cb59f5a1a60a8"
+  integrity sha1-hPN3lbkW4YAefc1m0hy1n1oaYKg=
 
 electron-publish@22.10.5:
   version "22.10.5"
@@ -1277,12 +1282,13 @@ electron@^12.0.2:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.36:
-  version "1.0.2-beta.36"
-  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.36.tgz#78a7e1be10b9622c4fc342fdce0801650f30bb01"
-  integrity sha1-eKfhvhC5YixPw0L9zggBZQ8wuwE=
+element-plus@^1.0.2-beta.39:
+  version "1.0.2-beta.39"
+  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.39.tgz?cache=0&sync_timestamp=1617948775581&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felement-plus%2Fdownload%2Felement-plus-1.0.2-beta.39.tgz#0a60524060b84cc8c69243afa3db671fbab5c012"
+  integrity sha1-CmBSQGC4TMjGkkOvo9tnH7q1wBI=
   dependencies:
     "@popperjs/core" "^2.4.4"
+    "@types/lodash" "^4.14.161"
     async-validator "^3.4.0"
     dayjs "1.x"
     lodash "^4.17.20"
@@ -3374,10 +3380,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
-  integrity sha1-OQYtgBmRLUNyYpjwlJPVmASMHOM=
+typescript@^4.2.4:
+  version "4.2.4"
+  resolved "https://registry.npm.taobao.org/typescript/download/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
+  integrity sha1-hhC1l0feAo/aiYqK7w4QPxVtCWE=
 
 uniq@^1.0.1:
   version "1.0.1"
@@ -3510,10 +3516,10 @@ vite@^2.1.5:
   optionalDependencies:
     fsevents "~2.3.1"
 
-vue-router@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-4.0.5.tgz?cache=0&sync_timestamp=1615477493682&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-4.0.5.tgz#dd0a4134bc950c37aef64b973e9ee1008428d8fa"
-  integrity sha1-3QpBNLyVDDeu9kuXPp7hAIQo2Po=
+vue-router@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-4.0.6.tgz?cache=0&sync_timestamp=1617697788171&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-4.0.6.tgz#91750db507d26642f225b0ec6064568e5fe448d6"
+  integrity sha1-kXUNtQfSZkLyJbDsYGRWjl/kSNY=
 
 vue@^3.0.11:
   version "3.0.11"
