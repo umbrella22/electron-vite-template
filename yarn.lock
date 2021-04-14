@@ -196,10 +196,10 @@
   resolved "https://registry.npm.taobao.org/@types/estree/download/@types/estree-0.0.39.tgz?cache=0&sync_timestamp=1613378518188&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Festree%2Fdownload%2F%40types%2Festree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha1-4Xfmme4bjCLSMXTKqnQiZEOJUJ8=
 
-"@types/fs-extra@^9.0.10":
-  version "9.0.10"
-  resolved "https://registry.npm.taobao.org/@types/fs-extra/download/@types/fs-extra-9.0.10.tgz#8023a72e3d06cf54929ea47ec7634e47f33f4046"
-  integrity sha1-gCOnLj0Gz1SSnqR+x2NOR/M/QEY=
+"@types/fs-extra@^9.0.11":
+  version "9.0.11"
+  resolved "https://registry.npm.taobao.org/@types/fs-extra/download/@types/fs-extra-9.0.11.tgz#8cc99e103499eab9f347dbc6ca4e99fb8d2c2b87"
+  integrity sha1-jMmeEDSZ6rnzR9vGyk6Z+40sK4c=
   dependencies:
     "@types/node" "*"
 
@@ -1273,10 +1273,10 @@ electron-updater@^4.3.8:
     lodash.isequal "^4.5.0"
     semver "^7.3.4"
 
-electron@^12.0.2:
-  version "12.0.2"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-12.0.2.tgz#d92be205f1937627bd6718aad44ac161382b4c2d"
-  integrity sha1-2SviBfGTdie9Zxiq1ErBYTgrTC0=
+electron@^12.0.4:
+  version "12.0.4"
+  resolved "https://registry.npm.taobao.org/electron/download/electron-12.0.4.tgz#c2ca4710d0e4da7db6d31c4f55777b08bfcb08e5"
+  integrity sha1-wspHENDk2n220xxPVXd7CL/LCOU=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
