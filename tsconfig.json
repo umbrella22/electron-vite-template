@@ -13,6 +13,7 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "target": "es5",
+        "allowJs": true,
         "paths": {
             "@config/*": [
                 "config/*"
