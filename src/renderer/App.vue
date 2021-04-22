@@ -8,8 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-const electron = require("electron");
-const ipcRenderer = electron.ipcRenderer;
+const { ipcRenderer } = require("electron");
 
 export default defineComponent({
   name: "App",

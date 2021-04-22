@@ -46,8 +46,7 @@ class MainInit {
         devTools: process.env.NODE_ENV === 'development',
         // devTools: true,
         // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin',
-        enableRemoteModule: true
+        scrollBounce: process.platform === 'darwin'
       }
     })
     // 赋予模板

@@ -75,6 +75,7 @@ export default {
         show: false,
         webPreferences: {
           nodeIntegration: true,
+          contextIsolation: false,
           webSecurity: false,
           // 如果是开发模式可以使用devTools
           devTools: process.env.NODE_ENV === 'development',
