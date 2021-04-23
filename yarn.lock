@@ -768,6 +768,14 @@ chalk@^4.1.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.nlark.com/chalk/download/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
+  integrity sha1-yAs/qyi/Y3HmhjMl7uZ+YYt35q0=
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 "chokidar@>=3.0.0 <4.0.0":
   version "3.5.1"
   resolved "https://registry.nlark.com/chokidar/download/chokidar-3.5.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fchokidar%2Fdownload%2Fchokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
@@ -1269,10 +1277,10 @@ electron-updater@^4.3.8:
     lodash.isequal "^4.5.0"
     semver "^7.3.4"
 
-electron@^12.0.4:
-  version "12.0.4"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-12.0.4.tgz#c2ca4710d0e4da7db6d31c4f55777b08bfcb08e5"
-  integrity sha1-wspHENDk2n220xxPVXd7CL/LCOU=
+electron@^12.0.5:
+  version "12.0.5"
+  resolved "https://registry.nlark.com/electron/download/electron-12.0.5.tgz#005cf4375d2ee4563f5e75dc4da4ef871846a8be"
+  integrity sha1-AFz0N10u5FY/XnXcTaTvhxhGqL4=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
@@ -2965,10 +2973,10 @@ roarr@^2.15.3:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollup-plugin-esbuild@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npm.taobao.org/rollup-plugin-esbuild/download/rollup-plugin-esbuild-4.0.1.tgz#b36f97ce5d9d9c85106f896ba1d5f28a1ee78ca4"
-  integrity sha1-s2+Xzl2dnIUQb4lrodXyih7njKQ=
+rollup-plugin-esbuild@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.nlark.com/rollup-plugin-esbuild/download/rollup-plugin-esbuild-4.1.0.tgz#f3a85ee4a24df2b72f29682d2c4f8b253e1805a3"
+  integrity sha1-86he5KJN8rcvKWgtLE+LJT4YBaM=
   dependencies:
     "@rollup/pluginutils" "^4.1.0"
     joycon "^3.0.1"
