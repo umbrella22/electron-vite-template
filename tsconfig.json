@@ -13,13 +13,6 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "target": "es5",
-        "include": [
-            "src/**/*",
-            "customTypes/*"
-        ],
-        "exclude": [
-            "node_modules"
-        ],
         "paths": {
             "@config/*": [
                 "config/*"
@@ -38,5 +31,12 @@
             "es2018",
             "dom"
         ]
-    }
+    },
+    "include": [
+        "src/**/*",
+        "customTypes/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
 }
