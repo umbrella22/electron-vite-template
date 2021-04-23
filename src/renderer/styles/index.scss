@@ -1,5 +1,7 @@
 @import './transition.scss';
 
+html, body, #app { width: 100%; height: 100%; }
+
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
