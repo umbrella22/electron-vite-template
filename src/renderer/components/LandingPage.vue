@@ -1,4 +1,5 @@
 <template>
+  <title-bar></title-bar>
   <div id="wrapper">
     <img id="logo" :src="logo" alt="electron-vue" />
     <main>
@@ -60,12 +61,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
 const { ipcRenderer } = require("electron");
 import logo from "@renderer/assets/logo.png";
-export default {
+
+export default defineComponent({
   name: "landing-page",
   components: { SystemInformation },
   data: () => ({
@@ -239,7 +242,7 @@ export default {
     ipcRenderer.removeAllListeners("download-progress");
     ipcRenderer.removeAllListeners("download-error");
   },
-};
+});
 </script>
 
 <style>
