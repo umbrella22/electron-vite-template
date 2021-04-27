@@ -277,10 +277,10 @@
   dependencies:
     "@types/node" "*"
 
-"@vitejs/plugin-vue@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.npm.taobao.org/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.1.tgz#6de49436fc346f829a56676066428e3f011522ac"
-  integrity sha1-beSUNvw0b4KaVmdgZkKOPwEVIqw=
+"@vitejs/plugin-vue@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.2.tgz#b0038fc11b9099f4cd01fcbf0ee419adda417b52"
+  integrity sha1-sAOPwRuQmfTNAfy/DuQZrdpBe1I=
 
 "@vue/compiler-core@3.0.11":
   version "3.0.11"
@@ -1286,10 +1286,10 @@ electron@^12.0.5:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.40:
-  version "1.0.2-beta.40"
-  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.40.tgz#30fc9b161496ae587fab86235c80b728ea43d909"
-  integrity sha1-MPybFhSWrlh/q4YjXIC3KOpD2Qk=
+element-plus@^1.0.2-beta.41:
+  version "1.0.2-beta.41"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.41.tgz#9c234b536b3401d042505c003e579bd65081f0f0"
+  integrity sha1-nCNLU2s0AdBCUFwAPleb1lCB8PA=
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
@@ -3508,10 +3508,10 @@ version-range@^1.0.0:
   dependencies:
     version-compare "^1.0.0"
 
-vite@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.nlark.com/vite/download/vite-2.2.1.tgz#90c481f69371f32867d86a6a623bb064b876ad3d"
-  integrity sha1-kMSB9pNx8yhn2GpqYjuwZLh2rT0=
+vite@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.nlark.com/vite/download/vite-2.2.3.tgz#1acbdfa56ac00e00e7ccb6988f63f130c2f99dbb"
+  integrity sha1-GsvfpWrADgDnzLaYj2PxMML5nbs=
   dependencies:
     esbuild "^0.9.3"
     postcss "^8.2.1"

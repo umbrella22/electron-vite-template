@@ -6,18 +6,7 @@
  */
 
 import Timer from './timer'
-declare global {
-  interface Window {
-    performance: {
-      memory: memoryInfo
-    }
-  }
-}
-interface memoryInfo {
-  jsHeapSizeLimit: number;
-  totalJSHeapSize: number;
-  usedJSHeapSize: number;
-}
+
 class Performance {
   /**
      * 计算情况
