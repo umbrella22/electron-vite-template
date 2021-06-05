@@ -211,10 +211,10 @@
   resolved "https://registry.nlark.com/@types/node/download/@types/node-14.14.44.tgz?cache=0&sync_timestamp=1620169720944&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.44.tgz#df7503e6002847b834371c004b372529f3f85215"
   integrity sha1-33UD5gAoR7g0NxwASzclKfP4UhU=
 
-"@types/node@^15.0.3":
-  version "15.0.3"
-  resolved "https://registry.nlark.com/@types/node/download/@types/node-15.0.3.tgz#ee09fcaac513576474c327da5818d421b98db88a"
-  integrity sha1-7gn8qsUTV2R0wyfaWBjUIbmNuIo=
+"@types/node@^15.12.1":
+  version "15.12.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
+  integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
 
 "@types/plist@^3.0.1":
   version "3.0.2"
@@ -260,10 +260,10 @@
   dependencies:
     "@types/node" "*"
 
-"@vitejs/plugin-vue@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.2.tgz#b0038fc11b9099f4cd01fcbf0ee419adda417b52"
-  integrity sha1-sAOPwRuQmfTNAfy/DuQZrdpBe1I=
+"@vitejs/plugin-vue@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-1.2.3.tgz#2e8e008b1cc3a6ad1dfbec75743c7ffd9b4872a6"
+  integrity sha512-LlnLpObkGKZ+b7dcpL4T24l13nPSHLjo+6Oc7MbZiKz5PMAUzADfNJ3EKfYIQ0l0969nxf2jp/9vsfnuJ7h6fw==
 
 "@vue/compiler-core@3.0.11":
   version "3.0.11"
@@ -318,6 +318,11 @@
   version "6.0.0-beta.10"
   resolved "https://registry.nlark.com/@vue/devtools-api/download/@vue/devtools-api-6.0.0-beta.10.tgz#f39da7618cee292e39c7274227c34163e30eb3ca"
   integrity sha1-852nYYzuKS45xydCJ8NBY+MOs8o=
+
+"@vue/devtools-api@^6.0.0-beta.11":
+  version "6.0.0-beta.12"
+  resolved "https://registry.nlark.com/@vue/devtools-api/download/@vue/devtools-api-6.0.0-beta.12.tgz?cache=0&sync_timestamp=1622269032509&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40vue%2Fdevtools-api%2Fdownload%2F%40vue%2Fdevtools-api-6.0.0-beta.12.tgz#693ffc77bfb66b080e5c9576abb5786c85470a32"
+  integrity sha1-aT/8d7+2awgOXJV2q7V4bIVHCjI=
 
 "@vue/reactivity@3.0.11":
   version "3.0.11"
@@ -728,10 +733,10 @@ camelcase@^6.2.0:
   resolved "https://registry.nlark.com/camelcase/download/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha1-kkr4gcnVJaydh/QNlk5c6pgqGAk=
 
-cfonts@^2.9.2:
-  version "2.9.2"
-  resolved "https://registry.nlark.com/cfonts/download/cfonts-2.9.2.tgz#bfffa07ec1d24d4f62d8d0f39e7ac2cdb1f23094"
-  integrity sha1-v/+gfsHSTU9i2NDznnrCzbHyMJQ=
+cfonts@^2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/cfonts/-/cfonts-2.9.3.tgz#b7dc439212fcf70cb5df1f3acfba14a2eac22902"
+  integrity sha512-HVDE+Qsoi8s4iwDLCRK/l8yQVAkLyPvz1jc1ZUvDSXkAZVN2Dtdw4Rsx0uhXNouHHVmCPa5bvmZ7oUYWzP6oow==
   dependencies:
     chalk "^4.1.1"
     window-size "^1.1.1"
@@ -1266,19 +1271,19 @@ electron-updater@^4.3.9:
     lodash.isequal "^4.5.0"
     semver "^7.3.5"
 
-electron@^12.0.7:
-  version "12.0.7"
-  resolved "https://registry.nlark.com/electron/download/electron-12.0.7.tgz?cache=0&sync_timestamp=1620442447118&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron%2Fdownload%2Felectron-12.0.7.tgz#e0fca2c8be34cb7da48c4d15cfb1d2ad666d2718"
-  integrity sha1-4PyiyL40y32kjE0Vz7HSrWZtJxg=
+electron@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.1.1.tgz#de1ea908bcac2197d7a5a373fb68c0c66043e10e"
+  integrity sha512-kySSb5CbIkWU2Kd9mf2rpGZC9p1nWhVVNl+CJjuOUGeVPXHbojHvTkDU1iC8AvV28eik3gqHisSJss40Caprog==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.44:
-  version "1.0.2-beta.44"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.44.tgz#7aff122e6181088223027adb65a4a8321e1ef4e9"
-  integrity sha1-ev8SLmGBCIIjAnrbZaSoMh4e9Ok=
+element-plus@^1.0.2-beta.46:
+  version "1.0.2-beta.46"
+  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.46.tgz#2423dcc56ce4285d7f2365ebd5622b8b3c7d053b"
+  integrity sha512-GevU3xNiIp+p9ZGnGRtFaJPnofsMXKwqV+cTXC266vUWw08Hbt1ronTsss/eJJ1OIHLoaFq4febv1MMTBSSjlQ==
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
@@ -1331,10 +1336,10 @@ es6-error@^4.1.1:
   resolved "https://registry.npm.taobao.org/es6-error/download/es6-error-4.1.1.tgz#9e3af407459deed47e9a91f9b885a84eb05c561d"
   integrity sha1-njr0B0Wd7tR+mpH5uIWoTrBcVh0=
 
-esbuild@^0.11.20:
-  version "0.11.21"
-  resolved "https://registry.nlark.com/esbuild/download/esbuild-0.11.21.tgz#9220b0185ae40947811dcaff6bfcfb572bebac08"
-  integrity sha1-kiCwGFrkCUeBHcr/a/z7VyvrrAg=
+esbuild@^0.12.5:
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.6.tgz#85bc755c7cf3005d4f34b4f10f98049ce0ee67ce"
+  integrity sha512-RDvVLvAjsq/kIZJoneMiUOH7EE7t2QaW7T3Q7EdQij14+bZbDq5sndb0tTanmHIFSqZVMBMMyqzVHkS3dJobeA==
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -2990,10 +2995,10 @@ roarr@^2.15.3:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rollup-plugin-esbuild@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.nlark.com/rollup-plugin-esbuild/download/rollup-plugin-esbuild-4.2.3.tgz#3d719e58e7a5f84515fe52a58d35bc97a9e7e12c"
-  integrity sha1-PXGeWOel+EUV/lKljTW8l6nn4Sw=
+rollup-plugin-esbuild@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-esbuild/-/rollup-plugin-esbuild-4.5.0.tgz#0fbcb6d2d651d87dc540c4fc3b2db669f48da1f0"
+  integrity sha512-ieUd3AoYWsN6Tfp0LBNnC+QpdhKjDEaH4NK3ghuEXOH56/7TAtD+hMbD9vSWZgsGSbaqCkrn4j6PaUj1vOSt1g==
   dependencies:
     "@rollup/pluginutils" "^4.1.0"
     joycon "^3.0.1"
@@ -3035,10 +3040,10 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sass@^1.32.13:
-  version "1.32.13"
-  resolved "https://registry.nlark.com/sass/download/sass-1.32.13.tgz#8d29c849e625a415bce71609c7cf95e15f74ed00"
-  integrity sha1-jSnISeYlpBW85xYJx8+V4V907QA=
+sass@^1.34.1:
+  version "1.34.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.34.1.tgz#30f45c606c483d47b634f1e7371e13ff773c96ef"
+  integrity sha512-scLA7EIZM+MmYlej6sdVr0HRbZX5caX5ofDT9asWnUJj21oqgsC+1LuNfm0eg+vM0fCTZHhwImTiCU0sx9h9CQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
@@ -3401,10 +3406,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.nlark.com/typescript/download/typescript-4.2.4.tgz?cache=0&sync_timestamp=1620458592000&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftypescript%2Fdownload%2Ftypescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
-  integrity sha1-hhC1l0feAo/aiYqK7w4QPxVtCWE=
+typescript@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.2.tgz#399ab18aac45802d6f2498de5054fcbbe716a805"
+  integrity sha512-zZ4hShnmnoVnAHpVHWpTcxdv7dWP60S2FsydQLV8V5PbS3FifjWFFRiHSWpDJahly88PRyV5teTSLoq4eG7mKw==
 
 unique-string@^2.0.0:
   version "2.0.0"
@@ -3520,12 +3525,12 @@ version-range@^1.0.0:
   dependencies:
     version-compare "^1.0.0"
 
-vite@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.nlark.com/vite/download/vite-2.3.2.tgz#cfac76b04d4dee1c7303b55f563b5b62d32f41fe"
-  integrity sha1-z6x2sE1N7hxzA7VfVjtbYtMvQf4=
+vite@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.3.6.tgz#1f7cfde88a51a802d69000c7bac85d481c2e871c"
+  integrity sha512-fsEpNKDHgh3Sn66JH06ZnUBnIgUVUtw6ucDhlOj1CEqxIkymU25yv1/kWDPlIjyYHnalr0cN6V+zzUJ+fmWHYw==
   dependencies:
-    esbuild "^0.11.20"
+    esbuild "^0.12.5"
     postcss "^8.2.10"
     resolve "^1.19.0"
     rollup "^2.38.5"
@@ -3548,10 +3553,12 @@ vue@^3.0.11:
     "@vue/runtime-dom" "3.0.11"
     "@vue/shared" "3.0.11"
 
-vuex@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.nlark.com/vuex/download/vuex-4.0.0.tgz#ac877aa76a9c45368c979471e461b520d38e6cf5"
-  integrity sha1-rId6p2qcRTaMl5Rx5GG1INOObPU=
+vuex@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.nlark.com/vuex/download/vuex-4.0.1.tgz#e83c541d6f31173969efabb2c5d1c465b682887e"
+  integrity sha1-6DxUHW8xFzlp76uyxdHEZbaCiH4=
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.11"
 
 wcwidth@^1.0.1:
   version "1.0.1"
