@@ -11,7 +11,7 @@ function onAppReady() {
   if (process.env.NODE_ENV === 'development') {
     electronDevtoolsInstaller(VUEJS3_DEVTOOLS)
       .then((name) => console.log(`已安装: ${name}`))
-      .catch(err => console.log('无法安装 `vue-devtools`: \n 可能发生得错误：网络连接问题 \n', err))
+      .catch(err => console.log('无法安装 `vue-devtools`: \n', err))
   }
 }
 

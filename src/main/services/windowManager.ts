@@ -3,9 +3,8 @@ import config from '@config/index'
 import menuconfig from '../config/menu'
 import DownloadUpdate from './downloadFile'
 import Update from './checkupdate';
-import { app, BrowserWindow, Menu, dialog, screen, ipcMain } from 'electron'
+import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
-import { type } from "os"
 
 class MainInit {
 
@@ -177,37 +176,6 @@ class MainInit {
     this.mainWindow.on('closed', () => {
       this.mainWindow = null
     })
-
-    // 修复 macos 下无边框的拖拽问题
-    if (type() === "Darwin") {
-      let _windowDragOffsetX = 0;
-      let _windowDragOffsetY = 0;
-      let _dragInterval: any = -1;
-
-      /** 开始拖拽 */
-      ipcMain.on('startDrag', (event, arg) => {
-        // 首先获取偏移量
-        _windowDragOffsetX = this.mainWindow.getPosition()[0] - screen.getCursorScreenPoint().x
-        _windowDragOffsetY = this.mainWindow.getPosition()[1] - screen.getCursorScreenPoint().y
-        if (_dragInterval === -1) {
-          _dragInterval = setInterval(()=>{
-            // 实时刷新位置
-            this.mainWindow.setPosition(screen.getCursorScreenPoint().x + _windowDragOffsetX, screen.getCursorScreenPoint().y + _windowDragOffsetY)
-          }, 1)
-        }
-        event.returnValue = true;
-      })
-
-      /** 停止拖拽 */
-      ipcMain.on('stopDrag', (event, arg) => {
-        if (_dragInterval !== -1) {
-          // 清除实时刷新
-          clearTimeout(_dragInterval)
-          _dragInterval = -1;
-        }
-        event.returnValue = false;
-      })
-    }
   }
   // 加载窗口函数
   loadingWindow(loadingURL: string) {

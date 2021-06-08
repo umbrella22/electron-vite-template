@@ -16,7 +16,9 @@ module.exports = (env = 'production') => {
     },
     plugins: [
       nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
-      commonjs(),
+      commonjs({
+        sourceMap: false,
+      }),
       json(),
       esbuild({
         // All options are optional
@@ -59,6 +61,7 @@ module.exports = (env = 'production') => {
       'path',
       'electron',
       'electron-updater',
+      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
