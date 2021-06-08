@@ -61,6 +61,7 @@ module.exports = (env = 'production') => {
       'path',
       'electron',
       'electron-updater',
+      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
