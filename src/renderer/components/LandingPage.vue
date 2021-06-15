@@ -61,177 +61,167 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
 const { ipcRenderer } = require("electron");
 import logo from "@renderer/assets/logo.png";
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { onUnmounted } from "vue";
 
-export default defineComponent({
-  name: "landing-page",
-  components: { SystemInformation },
-  data: () => ({
-    text: "等待数据读取",
-    newdata: {
-      name: "yyy",
-      age: "12",
-    },
-    logo: logo,
-    textarray: [],
-    percentage: 0,
-    colors: [
-      { color: "#f56c6c", percentage: 20 },
-      { color: "#e6a23c", percentage: 40 },
-      { color: "#6f7ad3", percentage: 60 },
-      { color: "#1989fa", percentage: 80 },
-      { color: "#5cb87a", percentage: 100 },
-    ],
-    dialogVisible: false,
-    progressStaus: null,
-    filePath: "",
-    updateStatus: "",
-  }),
-  created() {
-    // console.log(__lib);
-    // // 下载文件的监听
-    ipcRenderer.on("download-progress", (event, arg) => {
-      this.percentage = Number(arg);
-    });
-    ipcRenderer.on("download-error", (event, arg) => {
-      if (arg) {
-        this.progressStaus = "exception";
-        this.percentage = 40;
-        this.colors = "#d81e06";
-      }
-    });
-    ipcRenderer.on("download-paused", (event, arg) => {
-      if (arg) {
-        this.progressStaus = "warning";
-        this.$alert("下载由于未知原因被中断！", "提示", {
-          confirmButtonText: "重试",
-          callback: (action) => {
-            ipcRenderer.invoke("satrt-download");
-          },
-        });
-      }
-    });
-    ipcRenderer.on("download-done", (event, age) => {
-      this.filePath = age.filePath;
-      this.progressStaus = "success";
-      this.$alert("更新下载完成！", "提示", {
-        confirmButtonText: "确定",
-        callback: (action) => {
-          // this.$electron.shell.openPath(this.filePath);
-        },
-      });
-    });
-    // electron-updater的更新监听
-    ipcRenderer.on("UpdateMsg", (event, age) => {
-      switch (age.state) {
-        case -1:
-          const msgdata = {
-            title: "发生错误",
-            message: age.msg,
-          };
-          this.dialogVisible = false;
-          ipcRenderer.invoke("open-errorbox", msgdata);
-          break;
-        case 0:
-          this.$message("正在检查更新");
-          break;
-        case 1:
-          this.$message({
-            type: "success",
-            message: "已检查到新版本，开始下载",
-          });
-          this.dialogVisible = true;
-          break;
-        case 2:
-          this.$message({ type: "success", message: "无新版本" });
-          break;
-        case 3:
-          this.percentage = age.msg.percent.toFixed(1);
-          break;
-        case 4:
-          this.progressStaus = "success";
-          this.$alert("更新下载完成！", "提示", {
-            confirmButtonText: "确定",
-            callback: (action) => {
-              ipcRenderer.invoke("confirm-update");
-            },
-          });
-          break;
+ref: text = "等待数据读取";
+ref: newdata = {
+	name: "yyy",
+	age: "12"
+};
+ref: textarray = [];
+ref: percentage = 0;
+ref: colors = [
+	{ color: "#f56c6c", percentage: 20 },
+	{ color: "#e6a23c", percentage: 40 },
+	{ color: "#6f7ad3", percentage: 60 },
+	{ color: "#1989fa", percentage: 80 },
+	{ color: "#5cb87a", percentage: 100 },
+] as string | ColorInfo[];
+ref: dialogVisible = false;
+ref: progressStaus = null;
+ref: filePath = "";
+ref: updateStatus = "";
 
-        default:
-          break;
-      }
-    });
-    ipcRenderer.on("hot-update-status", (event, msg) => {
-      this.updateStatus = msg.status;
-    });
-  },
-  methods: {
-    crash() {
-      process.crash();
-    },
-    openNewWin() {
-      let data = {
-        url: "/form/index",
-      };
-      ipcRenderer.invoke("open-win", data);
-    },
-    getMessage() {
-      message().then((res) => {
-        this.$alert(res.data, "提示", {
-          confirmButtonText: "确定",
-        });
-      });
-    },
-    StopServer() {
-      ipcRenderer.invoke("stop-server").then((res) => {
-        this.$message({
-          type: "success",
-          message: "已关闭",
-        });
-      });
-    },
-    StartServer() {
-      ipcRenderer.invoke("statr-server").then((res) => {
-        if (res) {
-          this.$message({
-            type: "success",
-            message: res,
-          });
-        }
-      });
-    },
-    // 获取electron方法
-    open() {},
-    CheckUpdate(data) {
-      switch (data) {
-        case "one":
-          ipcRenderer.invoke("check-update");
-          console.log("启动检查");
-          break;
-        case "two":
-          ipcRenderer.invoke("start-download").then(() => {
-            this.dialogVisible = true;
-          });
-          break;
-        case "three":
-          ipcRenderer.invoke("hot-update");
-          break;
+function crash() {
+    process.crash();
+}
+function openNewWin() {
+	let data = {
+		url: "/form/index",
+	};
+	ipcRenderer.invoke("open-win", data);
+}
+function getMessage() {
+	message().then((res) => {
+		ElMessageBox.alert(res.data, "提示", {
+			confirmButtonText: "确定",
+		});
+	});
+}
+function StopServer() {
+	ipcRenderer.invoke("stop-server").then((res) => {
+		ElMessage({
+			type: "success",
+			message: "已关闭",
+		});
+	});
+}
+function StartServer() {
+	ipcRenderer.invoke("statr-server").then((res) => {
+		if (res) {
+			ElMessage({
+			type: "success",
+			message: res,
+			});
+		}
+	});
+}
+// 获取electron方法
+function open() {}
+function CheckUpdate(data) {
+	switch (data) {
+	case "one":
+		ipcRenderer.invoke("check-update");
+		console.log("启动检查");
+		break;
+	case "two":
+		ipcRenderer.invoke("start-download").then(() => {
+		this.dialogVisible = true;
+		});
+		break;
+	case "three":
+		ipcRenderer.invoke("hot-update");
+		break;
 
-        default:
-          break;
-      }
-    },
-    handleClose() {
-      this.dialogVisible = false;
-    },
-  },
-  unmounted() {
+	default:
+		break;
+	}
+}
+function handleClose() {
+	dialogVisible = false;
+}
+
+ipcRenderer.on("download-progress", (event, arg) => {
+    percentage = Number(arg);
+});
+ipcRenderer.on("download-error", (event, arg) => {
+	if (arg) {
+		progressStaus = "exception";
+		percentage = 40;
+		colors = "#d81e06";
+	}
+});
+ipcRenderer.on("download-paused", (event, arg) => {
+	if (arg) {
+		progressStaus = "warning";
+		ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
+			confirmButtonText: "重试",
+			callback: (action) => {
+			ipcRenderer.invoke("satrt-download");
+			},
+		});
+	}
+});
+ipcRenderer.on("download-done", (event, age) => {
+	filePath = age.filePath;
+	progressStaus = "success";
+	ElMessageBox.alert("更新下载完成！", "提示", {
+	confirmButtonText: "确定",
+	callback: (action) => {
+		// this.$electron.shell.openPath(this.filePath);
+		},
+	});
+});
+// electron-updater的更新监听
+ipcRenderer.on("UpdateMsg", (event, age) => {
+	switch (age.state) {
+	case -1:
+		const msgdata = {
+			title: "发生错误",
+			message: age.msg,
+		};
+		dialogVisible = false;
+		ipcRenderer.invoke("open-errorbox", msgdata);
+		break;
+	case 0:
+		ElMessage("正在检查更新");
+		break;
+	case 1:
+		ElMessage({
+			type: "success",
+			message: "已检查到新版本，开始下载",
+		});
+		dialogVisible = true;
+		break;
+	case 2:
+		ElMessage({ type: "success", message: "无新版本" });
+		break;
+	case 3:
+		percentage = age.msg.percent.toFixed(1);
+		break;
+	case 4:
+		progressStaus = "success";
+		ElMessageBox.alert("更新下载完成！", "提示", {
+			confirmButtonText: "确定",
+			callback: (action) => {
+				ipcRenderer.invoke("confirm-update");
+			},
+		});
+		break;
+	default:
+		break;
+	}
+});
+ipcRenderer.on("hot-update-status", (event, msg) => {
+	updateStatus = msg.status;
+});
+onUnmounted(() => {
     console.log("销毁了哦");
     ipcRenderer.removeAllListeners("confirm-message");
     ipcRenderer.removeAllListeners("download-done");
@@ -241,8 +231,7 @@ export default defineComponent({
     ipcRenderer.removeAllListeners("confirm-download");
     ipcRenderer.removeAllListeners("download-progress");
     ipcRenderer.removeAllListeners("download-error");
-  },
-});
+})
 </script>
 
 <style>
