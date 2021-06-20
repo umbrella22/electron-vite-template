@@ -60,8 +60,6 @@ module.exports = (env = 'production') => {
       'https',
       'path',
       'electron',
-      'electron-updater',
-      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
