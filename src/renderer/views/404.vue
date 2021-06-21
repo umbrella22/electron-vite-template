@@ -9,9 +9,7 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
-        <div class="bullshit__info">
-          您似乎进到了一个次元世界，请点击以下按钮返回主页或者发送错误报告
-        </div>
+        <div class="bullshit__info">您似乎进到了一个次元世界，请点击以下按钮返回主页或者发送错误报告</div>
         <a href="/" class="bullshit__return-home">返回首页</a>
       </div>
     </div>
@@ -21,6 +19,9 @@
 <script setup lang="ts">
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
+import { watch } from "vue";
+import { useStore } from "vuex"
+console.log(useStore().state.template.testData)
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
