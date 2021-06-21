@@ -45,11 +45,12 @@
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
-const { ipcRenderer } = require("electron");
+// const { ipcRenderer } = require("electron");
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onUnmounted } from "vue";
 import { useStore } from "vuex"
+const ipcRenderer = window.ipcRenderer;
 
 ref: text = "等待数据读取";
 ref: newdata = {

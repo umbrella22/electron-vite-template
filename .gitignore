@@ -9,6 +9,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+build
+!build/icons
+
 # Editor directories and files
 .idea
 .vscode

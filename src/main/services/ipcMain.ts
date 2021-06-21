@@ -74,9 +74,9 @@ export default {
         minWidth: 842,
         show: false,
         webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
-          webSecurity: false,
+          // nodeIntegration: true,
+          // contextIsolation: false,
+          // webSecurity: false,
           // 如果是开发模式可以使用devTools
           devTools: process.env.NODE_ENV === 'development',
           // devTools: true,

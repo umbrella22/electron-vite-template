@@ -4,6 +4,7 @@ const commonjs = require('@rollup/plugin-commonjs')
 const esbuild = require('rollup-plugin-esbuild')
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
+const copy = require('rollup-plugin-copy')
 
 module.exports = (env = 'production') => {
   return {
@@ -15,6 +16,17 @@ module.exports = (env = 'production') => {
       sourcemap: false,
     },
     plugins: [
+      copy({
+        targets: [
+          {
+            src: '.electron-vite/preload.js',
+            dest: 'dist/electron/main',
+            rename: 'preload.js'
+          }
+        ],
+        copyOnce: true,
+        flatten: false
+      }),
       nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
       commonjs({
         sourceMap: false,

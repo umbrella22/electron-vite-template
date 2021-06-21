@@ -11,8 +11,10 @@
 </template>
 
 <script setup lang="ts">
-const { platform, release, arch } = require("os");
+// const { platform, release, arch } = require("os");
+const { platform, release, arch } = window;
 import { useRoute } from "vue-router";
+import { version } from "vue/package.json";
 
 const { path, name } = useRoute();
 ref: tips = [
@@ -22,14 +24,14 @@ ref: tips = [
 		name: "Vue版本：",
 		value:
 		process.env.NODE_ENV === "development"
-			? require("vue/package.json").version
+			? version
 			: "不可见",
 	},
 	{
 		name: "Electron版本：",
-		value: process.versions.electron || "浏览器环境",
+		value: process?.versions?.electron || "浏览器环境",
 	},
-	{ name: "Node版本：", value: process.versions.node || "浏览器环境" },
+	{ name: "Node版本：", value: process?.versions?.node || "浏览器环境" },
 	{ name: "系统平台：", value: platform() },
 	{ name: "系统版本：", value: release() },
 	{ name: "系统位数：", value: arch() + "位" },
