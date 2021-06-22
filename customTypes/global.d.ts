@@ -1,4 +1,5 @@
 import { ipcRenderer } from "electron"
+import { platform, release, arch } from "os"
 
 interface ImportMeta {
     env: Record<string, unknown>;
@@ -20,9 +21,8 @@ interface Window {
 declare global {
     interface Window {
         ipcRenderer: typeof ipcRenderer,
-        platform: () => string,
-        release: () => string,
-        arch: () => string
-        test: string
+        platform: typeof platform,
+        release: typeof release,
+        arch: typeof arch
     }
 }
