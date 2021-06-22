@@ -89,6 +89,7 @@
     "multispinner": "^0.2.1",
     "ora": "^5.4.1",
     "portfinder": "^1.0.28",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-esbuild": "^4.5.0",
     "sass": "^1.34.1",
     "tslib": "^2.2.0",
