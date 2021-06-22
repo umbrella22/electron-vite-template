@@ -32,9 +32,9 @@ ref: tips = [
 		value: process?.versions?.electron || "浏览器环境",
 	},
 	{ name: "Node版本：", value: process?.versions?.node || "浏览器环境" },
-	{ name: "系统平台：", value: platform() },
-	{ name: "系统版本：", value: release() },
-	{ name: "系统位数：", value: arch() + "位" },
+	{ name: "系统平台：", value: platform ? platform() : "" },
+	{ name: "系统版本：", value: release ? release() : "" },
+	{ name: "系统位数：", value: (arch ? arch() : "") + "位" },
 ]
 </script>
 

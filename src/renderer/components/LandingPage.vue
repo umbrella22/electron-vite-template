@@ -50,7 +50,14 @@ import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onUnmounted } from "vue";
 import { useStore } from "vuex"
-const ipcRenderer = window.ipcRenderer;
+let ipcRenderer = window.ipcRenderer;
+
+if (!ipcRenderer) {
+	ipcRenderer = {} as any;
+	ipcRenderer.on = ipcRenderer.invoke = ipcRenderer.removeAllListeners = (...args: any): any => {
+		console.log("not electron");
+	};
+}
 
 ref: text = "等待数据读取";
 ref: newdata = {
