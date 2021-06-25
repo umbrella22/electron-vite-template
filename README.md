@@ -32,7 +32,8 @@ $ yarn build
 [x] Auto update
 [x] Incremental update
 [x] Loading animation before startup
-[x] 
+[] i18n
+[] Incremental update (wait for test)
 # Built-in
 - [vue-router](https://next.router.vuejs.org/index.html)
 - [vuex](https://next.vuex.vuejs.org/index.html)
