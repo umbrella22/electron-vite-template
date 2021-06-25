@@ -33,5 +33,4 @@ npm config edit
 
 ---
 
-# 更新日志
-2021年02月26日：项目创建。
+# [更新日志](/CHANGELOG.md)
