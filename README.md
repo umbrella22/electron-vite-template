@@ -1,28 +1,46 @@
-# Electron-Vite-template
+# electron-vite-template
+# Installation
+You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
 
-> An electron-Vite project
+To run a project, you need to have **node version 12** or higher and **use yarn as your dependency management tool**
 
-[国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
 
-#### Build Setup
+[For Chinese Developers](/README_ZH.md)
+# Build Setup
 
 ``` bash
-# For Chinese Developers
-# install nrm
-npm i -g nrm
-# Switch to Taobao Source with NRM
-nrm ls
-nrm use taobao
+# Clone this repository
+$ git clone https://github.com/umbrella22/electron-vite-template.git
+# Go into the repository
+$ cd electron-vite-template
 # install dependencies
-yarn install
+$ yarn install
 
 # serve with hot reload at localhost:9080
-yarn dev
+$ yarn dev
 
 # build electron application for production
-yarn build
+$ yarn build
 
 
 ```
 
 ---
+
+# Function list
+
+[x] Auto update
+[x] Incremental update
+[x] Loading animation before startup
+[x] 
+# Built-in
+- [vue-router](https://next.router.vuejs.org/index.html)
+- [vuex](https://next.vuex.vuejs.org/index.html)
+- [electron](http://www.electronjs.org/docs)
+- electron-updater
+- typescript
+- [element-plus](https://element-plus.gitee.io/#/en-US/component/installation)
+
+# Note
+- [gitee](https://gitee.com/Zh-Sky/electron-vite-template) is only for domestic users to pull code，from github to synchronize，please visit github for PR
+- **Welcome to Issues and PR**
