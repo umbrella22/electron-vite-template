@@ -1277,10 +1277,10 @@ electron-updater@^4.3.9:
     lodash.isequal "^4.5.0"
     semver "^7.3.5"
 
-electron@^13.1.5:
-  version "13.1.5"
-  resolved "https://registry.nlark.com/electron/download/electron-13.1.5.tgz#faa6127ac3428ec12c14779a6fe0a89b150ce614"
-  integrity sha1-+qYSesNCjsEsFHeab+ComxUM5hQ=
+electron@^13.1.6:
+  version "13.1.6"
+  resolved "https://registry.nlark.com/electron/download/electron-13.1.6.tgz#6ecaf969255d62ce82cc0b5c948bf26e7dfb489b"
+  integrity sha1-bsr5aSVdYs6CzAtclIvybn37SJs=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
@@ -2763,7 +2763,7 @@ postcss@^8.1.10:
     nanoid "^3.1.22"
     source-map "^0.6.1"
 
-postcss@^8.3.4:
+postcss@^8.3.5:
   version "8.3.5"
   resolved "https://registry.nlark.com/postcss/download/postcss-8.3.5.tgz#982216b113412bc20a86289e91eb994952a5b709"
   integrity sha1-mCIWsRNBK8IKhiiekeuZSVKltwk=
@@ -3472,13 +3472,13 @@ verror@^1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.3.8:
-  version "2.3.8"
-  resolved "https://registry.nlark.com/vite/download/vite-2.3.8.tgz#42e3e03953859fd410e4e6ab3d1cca0aab2adc3c"
-  integrity sha1-QuPgOVOFn9QQ5OarPRzKCqsq3Dw=
+vite@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.nlark.com/vite/download/vite-2.4.0.tgz#a591e4f2c996ae9a044093f629b418069629ca16"
+  integrity sha1-pZHk8smWrpoEQJP2KbQYBpYpyhY=
   dependencies:
     esbuild "^0.12.8"
-    postcss "^8.3.4"
+    postcss "^8.3.5"
     resolve "^1.20.0"
     rollup "^2.38.5"
   optionalDependencies:
