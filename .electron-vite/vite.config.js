@@ -13,7 +13,7 @@ const root = resolve('src/renderer')
 const config = defineConfig({
     mode: process.env.NODE_ENV,
     root,
-    define:{
+    define: {
         'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env,
         'process.env.IS_WEB': IsWeb
     },
@@ -31,7 +31,11 @@ const config = defineConfig({
         port: Number(process.env.PORT),
     },
     plugins: [
-        vuePlugin()
+        vuePlugin({
+            script: {
+                refSugar: true
+            }
+        })
     ],
     optimizeDeps: {
     },
