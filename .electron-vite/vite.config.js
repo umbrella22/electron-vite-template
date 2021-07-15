@@ -16,7 +16,7 @@ const config = defineConfig({
     define: {
         'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env,
         'process.env.IS_WEB': IsWeb,
-        '__static': process.env.NODE_ENV === 'production' ? `'${resolve('static').replace(/\\/g, '\\\\')}'` : `'http://localhost:${userConfig.dev.port}/static'`,
+        'process.env.PORT': userConfig.dev.port
     },
     resolve: {
         alias: {
