@@ -39,7 +39,7 @@ export default {
         arg.message
       )
     })
-    ipcMain.handle('statr-server', async () => {
+    ipcMain.handle('start-server', async () => {
       try {
         const serveStatus = await Server.StatrServer()
         console.log(serveStatus)

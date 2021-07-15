@@ -101,7 +101,7 @@ function StopServer() {
 	});
 }
 function StartServer() {
-	ipcRenderer.invoke("statr-server").then((res) => {
+	ipcRenderer.invoke("start-server").then((res) => {
 		if (res) {
 			ElMessage({
 				type: "success",
@@ -151,7 +151,7 @@ ipcRenderer.on("download-paused", (event, arg) => {
 		ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
 			confirmButtonText: "重试",
 			callback: (action) => {
-				ipcRenderer.invoke("satrt-download");
+				ipcRenderer.invoke("start-download");
 			},
 		});
 	}
@@ -162,7 +162,7 @@ ipcRenderer.on("download-done", (event, age) => {
 	ElMessageBox.alert("更新下载完成！", "提示", {
 		confirmButtonText: "确定",
 		callback: (action) => {
-			// this.$electron.shell.openPath(this.filePath);
+			// electron.shell.openPath(this.filePath);
 		},
 	});
 });

@@ -6,9 +6,9 @@ var __static: string
 var __lib: string
 var __updateFolder: string
 if (process.env.NODE_ENV !== 'development') {
-  __static = join(__dirname, '..', 'renderer').replace(/\\/g, '\\\\')
-  __lib = join(__dirname, '..', '..', '..', '..', `${DllFolder}`).replace(/\\/g, '\\\\')
-  __updateFolder = join(__dirname, '..', '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
+  process.env.__static = join(__dirname, '..', 'renderer').replace(/\\/g, '\\\\')
+  process.env.__lib = join(__dirname, '..', '..', '..', '..', `${DllFolder}`).replace(/\\/g, '\\\\')
+  process.env.__updateFolder = join(__dirname, '..', '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
 } else {
   __updateFolder = join(__dirname, '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
 }

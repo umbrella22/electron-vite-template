@@ -31,7 +31,7 @@ class Main {
   }
 
   start() {
-    ipcMain.on('satrt-download', (event, msg) => {
+    ipcMain.on('start-download', (event, msg) => {
       // 更新时检查有无同名文件，若有就删除，若无就开始下载
       stat(this.HistoryFilePath, async (err, stats) => {
         try {
