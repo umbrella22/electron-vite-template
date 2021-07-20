@@ -4,8 +4,7 @@ const commonjs = require('@rollup/plugin-commonjs')
 const esbuild = require('rollup-plugin-esbuild')
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
-// 打包以后启动页丢失，暂时注释
-// const obfuscator = require('rollup-plugin-obfuscator');
+const obfuscator = require('rollup-plugin-obfuscator');
 
 module.exports = (env = 'production') => {
   return {
@@ -43,7 +42,7 @@ module.exports = (env = 'production') => {
           '.js': 'jsx'
         },
       }),
-      // obfuscator({}),
+      obfuscator({}),
       alias({
         entries: [
           { find: '@main', replacement: path.join(__dirname, '../src/main'), },
