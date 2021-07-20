@@ -11,30 +11,17 @@
 </template>
 
 <script setup lang="ts">
-// const { platform, release, arch } = require("os");
-const { platform, release, arch } = window;
 import { useRoute } from "vue-router";
-import { version } from "vue/package.json";
 
 const { path, name } = useRoute();
+const { systemInfo } = window;
+
 ref: tips = [
-	{ name: "当前页面路径：", value: path },
-	{ name: "当前页面名称：", value: name },
-	{
-		name: "Vue版本：",
-		value:
-		process.env.NODE_ENV === "development"
-			? version
-			: "不可见",
-	},
-	{
-		name: "Electron版本：",
-		value: process?.versions?.electron || "浏览器环境",
-	},
-	{ name: "Node版本：", value: process?.versions?.node || "浏览器环境" },
-	{ name: "系统平台：", value: platform ? platform() : "" },
-	{ name: "系统版本：", value: release ? release() : "" },
-	{ name: "系统位数：", value: (arch ? arch() : "") + "位" },
+  { name: "当前页面路径：", value: path },
+  { name: "当前页面名称：", value: name },
+  { name: "系统平台：", value: systemInfo.platform },
+  { name: "系统版本：", value: systemInfo.release },
+  { name: "系统位数：", value: systemInfo.arch + "位" },
 ]
 </script>
 

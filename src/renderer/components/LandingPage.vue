@@ -20,7 +20,6 @@
 					<el-button type="primary" round @click="StartServer">启动内置服务端</el-button>
 					<el-button type="primary" round @click="StopServer">关闭内置服务端</el-button>
 					<el-button type="primary" round @click="getMessage">查看消息</el-button>
-					<el-button type="primary" round @click="crash">模拟崩溃</el-button>
 				</div>
 				<div class="doc">
 					<el-button type="primary" round @click="openNewWin">打开新窗口</el-button>
@@ -45,12 +44,11 @@
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
-// const { ipcRenderer } = require("electron");
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onUnmounted } from "vue";
 import { useStore } from "vuex"
-let ipcRenderer = window.ipcRenderer;
+let { ipcRenderer } = window;
 
 if (!ipcRenderer) {
 	ipcRenderer = {} as any;
@@ -80,11 +78,6 @@ ref: updateStatus = "";
 
 const store = useStore()
 store.dispatch("TEST_ACTION", "123456")
-
-
-function crash() {
-	process.crash();
-}
 
 
 function openNewWin() {
