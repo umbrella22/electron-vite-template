@@ -87,7 +87,10 @@ export default {
       ChildWin.loadURL(winURL + `#${arg.url}`)
       ChildWin.webContents.once('dom-ready', () => {
         ChildWin.show()
-        ChildWin.webContents.send('send-data', arg.sendData)
+        // 由于渲染进程可能会加载缓慢，所以在这里，加一个延迟，等一等渲染进程
+        setTimeout(() => {
+          ChildWin.webContents.send('send-data-test', arg.sendData)
+        }, 1000)
         if (arg.IsPay) {
           // 检查支付时候自动关闭小窗口
           const testUrl = setInterval(() => {
