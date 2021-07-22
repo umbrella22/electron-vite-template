@@ -13,4 +13,6 @@ interface Window {
     performance: {
         memory: memoryInfo
     }
+    __lib: string;
+    __static: string;
 }

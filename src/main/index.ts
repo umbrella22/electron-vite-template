@@ -30,7 +30,7 @@ app.on('browser-window-created', () => {
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
     app.removeAsDefaultProtocolClient('electron-vue-template')
-    console.log('有于框架特殊性开发环境下无法使用')
+    console.log('由于框架特殊性开发环境下无法使用')
   }
 } else {
   app.setAsDefaultProtocolClient('electron-vue-template')

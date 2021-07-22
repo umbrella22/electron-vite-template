@@ -11,6 +11,14 @@
 <body>
   <div id="app"></div>
   <script type="module" src="/main.ts"></script>
+  <script>
+    if (process && process.env.NODE_ENV === 'development') {
+      window.__static = `http://localhost:${process.env.PORT}`
+    } else {
+      window.__static = __dirname
+    }
+
+  </script>
 </body>
 
 </html>
