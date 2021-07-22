@@ -2,6 +2,8 @@
 
 [国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
 
+### 请确保您的node版本大于等于14.
+
 #### 如何安装
 
 ``` bash
