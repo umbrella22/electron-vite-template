@@ -60,10 +60,10 @@
     dir-compare "^2.4.0"
     fs-extra "^9.0.1"
 
-"@javascript-obfuscator/escodegen@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.nlark.com/@javascript-obfuscator/escodegen/download/@javascript-obfuscator/escodegen-2.2.0.tgz#c09fc83a9e3ff7b5555e37b9ac23947221dc8257"
-  integrity sha1-wJ/IOp4/97VVXje5rCOUciHcglc=
+"@javascript-obfuscator/escodegen@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.nlark.com/@javascript-obfuscator/escodegen/download/@javascript-obfuscator/escodegen-2.2.1.tgz#a87932d93e9a50d2b47942c15d6c0f1300db6179"
+  integrity sha1-qHky2T6aUNK0eULBXWwPEwDbYXk=
   dependencies:
     "@javascript-obfuscator/estraverse" "^5.3.0"
     esprima "^4.0.1"
@@ -156,10 +156,10 @@
   dependencies:
     "@rollup/pluginutils" "^3.0.8"
 
-"@rollup/plugin-node-resolve@^13.0.2":
-  version "13.0.2"
-  resolved "https://registry.nlark.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-13.0.2.tgz#bfe58e9bfc7284ee0fabc6da7fabcb268f04e0a4"
-  integrity sha1-v+WOm/xyhO4Pq8baf6vLJo8E4KQ=
+"@rollup/plugin-node-resolve@^13.0.4":
+  version "13.0.4"
+  resolved "https://registry.nlark.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-13.0.4.tgz?cache=0&sync_timestamp=1627164924735&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40rollup%2Fplugin-node-resolve%2Fdownload%2F%40rollup%2Fplugin-node-resolve-13.0.4.tgz#b10222f4145a019740acb7738402130d848660c0"
+  integrity sha1-sQIi9BRaAZdArLdzhAITDYSGYMA=
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     "@types/resolve" "1.17.1"
@@ -245,11 +245,6 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
-
-"@types/lodash@^4.14.161":
-  version "4.14.168"
-  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.168.tgz?cache=0&sync_timestamp=1613379158193&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
-  integrity sha1-/iRjLnm3rePxMoka//hsql5c4Ag=
 
 "@types/minimatch@*":
   version "3.0.4"
@@ -1377,10 +1372,10 @@ electron-devtools-installer@^3.2.0:
     tslib "^2.1.0"
     unzip-crx-3 "^0.2.0"
 
-electron-log@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.3.5.tgz#2aad5f93842b9b5214a1b4a10e47b5ac5c9ec104"
-  integrity sha1-Kq1fk4Qrm1IUobShDke1rFyewQQ=
+electron-log@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.4.0.tgz#0f350004565bb246e58e7b4af0b320c9f7aef3e8"
+  integrity sha1-DzUABFZbskbljntK8LMgyfeu8+g=
 
 electron-publish@22.11.7:
   version "22.11.7"
@@ -1418,13 +1413,12 @@ electron@^13.1.7:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.55:
-  version "1.0.2-beta.55"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.55.tgz#d95886649560c4edf21568e6d4a822e4c74fcdd0"
-  integrity sha1-2ViGZJVgxO3yFWjm1Kgi5MdPzdA=
+element-plus@^1.0.2-beta.59:
+  version "1.0.2-beta.59"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.59.tgz#e1075a84d51c23314316d440c7ef3eafcaff888e"
+  integrity sha1-4QdahNUcIzFDFtRAx+8+r8r/iI4=
   dependencies:
     "@popperjs/core" "^2.4.4"
-    "@types/lodash" "^4.14.161"
     async-validator "^3.4.0"
     dayjs "1.x"
     lodash "^4.17.20"
@@ -1535,13 +1529,13 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.nlark.com/escape-string-regexp/download/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha1-FLqDpdNz49MR5a/KKc9b+tllvzQ=
 
-eslint-scope@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.nlark.com/eslint-scope/download/eslint-scope-5.1.1.tgz#e786e59a66cb92b3f6c1fb0d508aab174848f48c"
-  integrity sha1-54blmmbLkrP2wfsNUIqrF0hI9Iw=
+eslint-scope@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.nlark.com/eslint-scope/download/eslint-scope-6.0.0.tgz#9cf45b13c5ac8f3d4c50f46a5121f61b3e318978"
+  integrity sha1-nPRbE8Wsjz1MUPRqUSH2Gz4xiXg=
   dependencies:
     esrecurse "^4.3.0"
-    estraverse "^4.1.1"
+    estraverse "^5.2.0"
 
 esprima@^4.0.1:
   version "4.0.1"
@@ -1554,11 +1548,6 @@ esrecurse@^4.3.0:
   integrity sha1-eteWTWeauyi+5yzsY3WLHF0smSE=
   dependencies:
     estraverse "^5.2.0"
-
-estraverse@^4.1.1:
-  version "4.3.0"
-  resolved "https://registry.npm.taobao.org/estraverse/download/estraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"
-  integrity sha1-OYrT88WiSUi+dyXoPRGn3ijNvR0=
 
 estraverse@^5.2.0:
   version "5.2.0"
@@ -2381,12 +2370,12 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-javascript-obfuscator@^2.17.0:
-  version "2.17.0"
-  resolved "https://registry.nlark.com/javascript-obfuscator/download/javascript-obfuscator-2.17.0.tgz#512d4b3aa3878aa81fb30c01817d6bb287ed4bad"
-  integrity sha1-US1LOqOHiqgfswwBgX1rsoftS60=
+javascript-obfuscator@^2.18.1:
+  version "2.18.1"
+  resolved "https://registry.nlark.com/javascript-obfuscator/download/javascript-obfuscator-2.18.1.tgz#190eea853b5c75fd2a4b0c28f41ddabc8b61c617"
+  integrity sha1-GQ7qhTtcdf0qSwwo9B3avIthxhc=
   dependencies:
-    "@javascript-obfuscator/escodegen" "2.2.0"
+    "@javascript-obfuscator/escodegen" "2.2.1"
     "@javascript-obfuscator/estraverse" "5.3.0"
     "@nuxtjs/opencollective" "0.3.2"
     acorn "8.4.1"
@@ -2395,7 +2384,7 @@ javascript-obfuscator@^2.17.0:
     chance "1.1.7"
     class-validator "0.13.1"
     commander "8.0.0"
-    eslint-scope "5.1.1"
+    eslint-scope "6.0.0"
     fast-deep-equal "3.1.3"
     inversify "5.1.1"
     js-string-escape "1.0.1"
@@ -3514,10 +3503,10 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sass@^1.35.2:
-  version "1.35.2"
-  resolved "https://registry.nlark.com/sass/download/sass-1.35.2.tgz#b732314fcdaf7ef8d0f1698698adc378043cb821"
-  integrity sha1-tzIxT82vfvjQ8WmGmK3DeAQ8uCE=
+sass@^1.36.0:
+  version "1.36.0"
+  resolved "https://registry.nlark.com/sass/download/sass-1.36.0.tgz#5912ef9d5d16714171ba11cb17edb274c4bbc07e"
+  integrity sha1-WRLvnV0WcUFxuhHLF+2ydMS7wH4=
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
@@ -4029,10 +4018,10 @@ verror@^1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.nlark.com/vite/download/vite-2.4.2.tgz#07d00615775c808530bc9f65641062b349b67929"
-  integrity sha1-B9AGFXdcgIUwvJ9lZBBis0m2eSk=
+vite@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.nlark.com/vite/download/vite-2.4.3.tgz#fe4aa78e9dd7d36bcb12eccbd52313b26cfadf77"
+  integrity sha1-/kqnjp3X02vLEuzL1SMTsmz633c=
   dependencies:
     esbuild "^0.12.8"
     postcss "^8.3.5"
@@ -4050,7 +4039,7 @@ vue-router@^4.0.10:
 
 vue@^3.1.5:
   version "3.1.5"
-  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz?cache=0&sync_timestamp=1626737889501&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue%2Fdownload%2Fvue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
+  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue%2Fdownload%2Fvue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
   integrity sha1-EoebEdBoXuRHjIhpVReZYwpS+f4=
   dependencies:
     "@vue/compiler-dom" "3.1.5"
