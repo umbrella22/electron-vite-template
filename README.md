@@ -6,6 +6,8 @@ To run a project, you need to have **node version 12** or higher and **use yarn 
 
 
 [For Chinese Developers](/README_ZH.md)
+
+[![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/build-test.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/build-test.yml)
 # Build Setup
 
 ``` bash
