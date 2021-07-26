@@ -5,9 +5,9 @@ name: Build TEST
 
 on:
   push:
-    branches: [ master,strict ]
+    branches: [ master ]
   pull_request:
-    branches: [ master,strict ]
+    branches: [ master ]
 
 jobs:
   build:
