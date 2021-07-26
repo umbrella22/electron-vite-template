@@ -1370,10 +1370,10 @@ electron-devtools-installer@^3.2.0:
     tslib "^2.1.0"
     unzip-crx-3 "^0.2.0"
 
-electron-log@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.3.5.tgz#2aad5f93842b9b5214a1b4a10e47b5ac5c9ec104"
-  integrity sha1-Kq1fk4Qrm1IUobShDke1rFyewQQ=
+electron-log@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.4.0.tgz#0f350004565bb246e58e7b4af0b320c9f7aef3e8"
+  integrity sha1-DzUABFZbskbljntK8LMgyfeu8+g=
 
 electron-publish@22.11.7:
   version "22.11.7"
@@ -4013,7 +4013,7 @@ vue-router@^4.0.10:
 
 vue@^3.1.5:
   version "3.1.5"
-  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz?cache=0&sync_timestamp=1626737889501&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue%2Fdownload%2Fvue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
+  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue%2Fdownload%2Fvue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
   integrity sha1-EoebEdBoXuRHjIhpVReZYwpS+f4=
   dependencies:
     "@vue/compiler-dom" "3.1.5"
