@@ -60,10 +60,10 @@
     dir-compare "^2.4.0"
     fs-extra "^9.0.1"
 
-"@javascript-obfuscator/escodegen@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.nlark.com/@javascript-obfuscator/escodegen/download/@javascript-obfuscator/escodegen-2.2.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40javascript-obfuscator%2Fescodegen%2Fdownload%2F%40javascript-obfuscator%2Fescodegen-2.2.0.tgz#c09fc83a9e3ff7b5555e37b9ac23947221dc8257"
-  integrity sha1-wJ/IOp4/97VVXje5rCOUciHcglc=
+"@javascript-obfuscator/escodegen@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.nlark.com/@javascript-obfuscator/escodegen/download/@javascript-obfuscator/escodegen-2.2.1.tgz#a87932d93e9a50d2b47942c15d6c0f1300db6179"
+  integrity sha1-qHky2T6aUNK0eULBXWwPEwDbYXk=
   dependencies:
     "@javascript-obfuscator/estraverse" "^5.3.0"
     esprima "^4.0.1"
@@ -129,17 +129,17 @@
   resolved "https://registry.npm.taobao.org/@popperjs/core/download/@popperjs/core-2.9.2.tgz?cache=0&sync_timestamp=1617290098226&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40popperjs%2Fcore%2Fdownload%2F%40popperjs%2Fcore-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
   integrity sha1-rep7aVPLs0ZRdmsFSEaOdDxqI1M=
 
-"@rollup/plugin-alias@^3.1.4":
-  version "3.1.4"
-  resolved "https://registry.nlark.com/@rollup/plugin-alias/download/@rollup/plugin-alias-3.1.4.tgz#47774f4ff0eab5937f7acb392cf2b89921f03b7d"
-  integrity sha1-R3dPT/DqtZN/ess5LPK4mSHwO30=
+"@rollup/plugin-alias@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.nlark.com/@rollup/plugin-alias/download/@rollup/plugin-alias-3.1.5.tgz#73356a3a1eab2e1e2fd952f9f53cd89fc740d952"
+  integrity sha1-czVqOh6rLh4v2VL59TzYn8dA2VI=
   dependencies:
     slash "^3.0.0"
 
-"@rollup/plugin-commonjs@^19.0.1":
-  version "19.0.1"
-  resolved "https://registry.nlark.com/@rollup/plugin-commonjs/download/@rollup/plugin-commonjs-19.0.1.tgz#94a2c103d675523d3ab1c60bfbec567b3eb70410"
-  integrity sha1-lKLBA9Z1Uj06scYL++xWez63BBA=
+"@rollup/plugin-commonjs@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.nlark.com/@rollup/plugin-commonjs/download/@rollup/plugin-commonjs-20.0.0.tgz#3246872dcbcb18a54aaa6277a8c7d7f1b155b745"
+  integrity sha1-MkaHLcvLGKVKqmJ3qMfX8bFVt0U=
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     commondir "^1.0.1"
@@ -156,10 +156,10 @@
   dependencies:
     "@rollup/pluginutils" "^3.0.8"
 
-"@rollup/plugin-node-resolve@^13.0.2":
-  version "13.0.2"
-  resolved "https://registry.nlark.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-13.0.2.tgz#bfe58e9bfc7284ee0fabc6da7fabcb268f04e0a4"
-  integrity sha1-v+WOm/xyhO4Pq8baf6vLJo8E4KQ=
+"@rollup/plugin-node-resolve@^13.0.4":
+  version "13.0.4"
+  resolved "https://registry.nlark.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-13.0.4.tgz#b10222f4145a019740acb7738402130d848660c0"
+  integrity sha1-sQIi9BRaAZdArLdzhAITDYSGYMA=
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     "@types/resolve" "1.17.1"
@@ -239,11 +239,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/lodash@^4.14.161":
-  version "4.14.168"
-  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.168.tgz?cache=0&sync_timestamp=1613379158193&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
-  integrity sha1-/iRjLnm3rePxMoka//hsql5c4Ag=
-
 "@types/minimatch@*":
   version "3.0.4"
   resolved "https://registry.npm.taobao.org/@types/minimatch/download/@types/minimatch-3.0.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fminimatch%2Fdownload%2F%40types%2Fminimatch-3.0.4.tgz#f0ec25dbf2f0e4b18647313ac031134ca5b24b21"
@@ -318,10 +313,10 @@
   dependencies:
     "@types/node" "*"
 
-"@vitejs/plugin-vue@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.5.tgz#ef7dc4a92e53fe866b54bcc1266788513262ac09"
-  integrity sha1-733EqS5T/oZrVLzBJmeIUTJirAk=
+"@vitejs/plugin-vue@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.3.0.tgz#fc89a6c9b5a5157916afece4edc8fb55bf1bbc42"
+  integrity sha1-/ImmybWlFXkWr+zk7cj7Vb8bvEI=
 
 "@vue/compiler-core@3.1.5":
   version "3.1.5"
@@ -861,6 +856,14 @@ chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
+
+chalk@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.nlark.com/chalk/download/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
+  integrity sha1-qsTit3NKdAhnrrFr8CqtVWoeegE=
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
 
 chance@1.1.7:
   version "1.1.7"
@@ -1411,13 +1414,12 @@ electron@^13.1.7:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.55:
-  version "1.0.2-beta.55"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.55.tgz#d95886649560c4edf21568e6d4a822e4c74fcdd0"
-  integrity sha1-2ViGZJVgxO3yFWjm1Kgi5MdPzdA=
+element-plus@^1.0.2-beta.65:
+  version "1.0.2-beta.65"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.65.tgz#e1ff997fe395dd2e31a16517970058bc4d45fb3c"
+  integrity sha1-4f+Zf+OV3S4xoWUXlwBYvE1F+zw=
   dependencies:
     "@popperjs/core" "^2.4.4"
-    "@types/lodash" "^4.14.161"
     async-validator "^3.4.0"
     dayjs "1.x"
     lodash "^4.17.20"
@@ -1528,13 +1530,13 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.nlark.com/escape-string-regexp/download/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha1-FLqDpdNz49MR5a/KKc9b+tllvzQ=
 
-eslint-scope@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.npm.taobao.org/eslint-scope/download/eslint-scope-5.1.1.tgz#e786e59a66cb92b3f6c1fb0d508aab174848f48c"
-  integrity sha1-54blmmbLkrP2wfsNUIqrF0hI9Iw=
+eslint-scope@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.nlark.com/eslint-scope/download/eslint-scope-6.0.0.tgz#9cf45b13c5ac8f3d4c50f46a5121f61b3e318978"
+  integrity sha1-nPRbE8Wsjz1MUPRqUSH2Gz4xiXg=
   dependencies:
     esrecurse "^4.3.0"
-    estraverse "^4.1.1"
+    estraverse "^5.2.0"
 
 esprima@^4.0.1:
   version "4.0.1"
@@ -1547,11 +1549,6 @@ esrecurse@^4.3.0:
   integrity sha1-eteWTWeauyi+5yzsY3WLHF0smSE=
   dependencies:
     estraverse "^5.2.0"
-
-estraverse@^4.1.1:
-  version "4.3.0"
-  resolved "https://registry.npm.taobao.org/estraverse/download/estraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"
-  integrity sha1-OYrT88WiSUi+dyXoPRGn3ijNvR0=
 
 estraverse@^5.2.0:
   version "5.2.0"
@@ -2355,12 +2352,12 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-javascript-obfuscator@^2.17.0:
-  version "2.17.0"
-  resolved "https://registry.nlark.com/javascript-obfuscator/download/javascript-obfuscator-2.17.0.tgz#512d4b3aa3878aa81fb30c01817d6bb287ed4bad"
-  integrity sha1-US1LOqOHiqgfswwBgX1rsoftS60=
+javascript-obfuscator@^2.18.1:
+  version "2.18.1"
+  resolved "https://registry.nlark.com/javascript-obfuscator/download/javascript-obfuscator-2.18.1.tgz#190eea853b5c75fd2a4b0c28f41ddabc8b61c617"
+  integrity sha1-GQ7qhTtcdf0qSwwo9B3avIthxhc=
   dependencies:
-    "@javascript-obfuscator/escodegen" "2.2.0"
+    "@javascript-obfuscator/escodegen" "2.2.1"
     "@javascript-obfuscator/estraverse" "5.3.0"
     "@nuxtjs/opencollective" "0.3.2"
     acorn "8.4.1"
@@ -2369,7 +2366,7 @@ javascript-obfuscator@^2.17.0:
     chance "1.1.7"
     class-validator "0.13.1"
     commander "8.0.0"
-    eslint-scope "5.1.1"
+    eslint-scope "6.0.0"
     fast-deep-equal "3.1.3"
     inversify "5.1.1"
     js-string-escape "1.0.1"
@@ -3192,10 +3189,10 @@ postcss@^8.1.10:
     nanoid "^3.1.22"
     source-map "^0.6.1"
 
-postcss@^8.3.5:
-  version "8.3.5"
-  resolved "https://registry.nlark.com/postcss/download/postcss-8.3.5.tgz#982216b113412bc20a86289e91eb994952a5b709"
-  integrity sha1-mCIWsRNBK8IKhiiekeuZSVKltwk=
+postcss@^8.3.6:
+  version "8.3.6"
+  resolved "https://registry.nlark.com/postcss/download/postcss-8.3.6.tgz?cache=0&sync_timestamp=1626882933935&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpostcss%2Fdownload%2Fpostcss-8.3.6.tgz#2730dd76a97969f37f53b9a6096197be311cc4ea"
+  integrity sha1-JzDddql5afN/U7mmCWGXvjEcxOo=
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.23"
@@ -3477,10 +3474,10 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sass@^1.35.2:
-  version "1.35.2"
-  resolved "https://registry.nlark.com/sass/download/sass-1.35.2.tgz#b732314fcdaf7ef8d0f1698698adc378043cb821"
-  integrity sha1-tzIxT82vfvjQ8WmGmK3DeAQ8uCE=
+sass@^1.37.0:
+  version "1.37.0"
+  resolved "https://registry.nlark.com/sass/download/sass-1.37.0.tgz#f1b03a9d072ee9053a29d125c8130c78e92827c2"
+  integrity sha1-8bA6nQcu6QU6KdElyBMMeOkoJ8I=
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
@@ -3992,13 +3989,13 @@ verror@^1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.nlark.com/vite/download/vite-2.4.2.tgz#07d00615775c808530bc9f65641062b349b67929"
-  integrity sha1-B9AGFXdcgIUwvJ9lZBBis0m2eSk=
+vite@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.nlark.com/vite/download/vite-2.4.4.tgz#8c402a07ad45f168f6eb5428bead38f3e4363e47"
+  integrity sha1-jEAqB61F8Wj261Qovq048+Q2Pkc=
   dependencies:
     esbuild "^0.12.8"
-    postcss "^8.3.5"
+    postcss "^8.3.6"
     resolve "^1.20.0"
     rollup "^2.38.5"
   optionalDependencies:
@@ -4013,7 +4010,7 @@ vue-router@^4.0.10:
 
 vue@^3.1.5:
   version "3.1.5"
-  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue%2Fdownload%2Fvue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
+  resolved "https://registry.nlark.com/vue/download/vue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
   integrity sha1-EoebEdBoXuRHjIhpVReZYwpS+f4=
   dependencies:
     "@vue/compiler-dom" "3.1.5"
@@ -4022,7 +4019,7 @@ vue@^3.1.5:
 
 vuex@^4.0.2:
   version "4.0.2"
-  resolved "https://registry.nlark.com/vuex/download/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
+  resolved "https://registry.nlark.com/vuex/download/vuex-4.0.2.tgz?cache=0&sync_timestamp=1623945218026&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvuex%2Fdownload%2Fvuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
   integrity sha1-+Jbb1b8qDpY/AMZ+m2EN50nMrMk=
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.11"
