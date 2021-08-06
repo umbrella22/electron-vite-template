@@ -65,7 +65,9 @@ module.exports = (env = 'production') => {
       'express',
       'ffi-napi',
       'ref-napi',
-      'ref-struct-napi'
+      'ref-struct-napi',
+      'semver',
+      'glob'
     ],
   }
 }

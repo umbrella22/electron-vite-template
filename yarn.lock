@@ -60,6 +60,11 @@
     dir-compare "^2.4.0"
     fs-extra "^9.0.1"
 
+"@element-plus/icons@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.nlark.com/@element-plus/icons/download/@element-plus/icons-0.0.11.tgz#9b187c002774548b911850d17fa5fc2f9a515f57"
+  integrity sha1-mxh8ACd0VIuRGFDRf6X8L5pRX1c=
+
 "@javascript-obfuscator/escodegen@2.2.1":
   version "2.2.1"
   resolved "https://registry.nlark.com/@javascript-obfuscator/escodegen/download/@javascript-obfuscator/escodegen-2.2.1.tgz#a87932d93e9a50d2b47942c15d6c0f1300db6179"
@@ -1373,10 +1378,10 @@ electron-devtools-installer@^3.2.0:
     tslib "^2.1.0"
     unzip-crx-3 "^0.2.0"
 
-electron-log@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.4.0.tgz#0f350004565bb246e58e7b4af0b320c9f7aef3e8"
-  integrity sha1-DzUABFZbskbljntK8LMgyfeu8+g=
+electron-log@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.nlark.com/electron-log/download/electron-log-4.4.1.tgz?cache=0&sync_timestamp=1627734216263&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron-log%2Fdownload%2Felectron-log-4.4.1.tgz#28ebeb474eccba2ebf194a96c40d6328e5353e4d"
+  integrity sha1-KOvrR07Mui6/GUqWxA1jKOU1Pk0=
 
 electron-publish@22.11.7:
   version "22.11.7"
@@ -1405,20 +1410,21 @@ electron-updater@^4.3.9:
     lodash.isequal "^4.5.0"
     semver "^7.3.5"
 
-electron@^13.1.7:
-  version "13.1.7"
-  resolved "https://registry.nlark.com/electron/download/electron-13.1.7.tgz#7e17f5c93a8d182a2a486884fed3dc34ab101be9"
-  integrity sha1-fhf1yTqNGCoqSGiE/tPcNKsQG+k=
+electron@^13.1.8:
+  version "13.1.8"
+  resolved "https://registry.nlark.com/electron/download/electron-13.1.8.tgz?cache=0&sync_timestamp=1628190099586&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron%2Fdownload%2Felectron-13.1.8.tgz#a6def6eca7cafc7b068a8f71a069e521ba803182"
+  integrity sha1-pt727KfK/HsGio9xoGnlIbqAMYI=
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.0.2-beta.65:
-  version "1.0.2-beta.65"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.65.tgz#e1ff997fe395dd2e31a16517970058bc4d45fb3c"
-  integrity sha1-4f+Zf+OV3S4xoWUXlwBYvE1F+zw=
+element-plus@^1.0.2-beta.70:
+  version "1.0.2-beta.70"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.70.tgz?cache=0&sync_timestamp=1628175099230&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felement-plus%2Fdownload%2Felement-plus-1.0.2-beta.70.tgz#13058f4e78c5e73b19a915404d71076a13a2616e"
+  integrity sha1-EwWPTnjF5zsZqRVATXEHahOiYW4=
   dependencies:
+    "@element-plus/icons" "^0.0.11"
     "@popperjs/core" "^2.4.4"
     async-validator "^3.4.0"
     dayjs "1.x"
@@ -1828,7 +1834,7 @@ glob-parent@^5.1.0, glob-parent@~5.1.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^7.1.3, glob@^7.1.6:
+glob@^7.1.3, glob@^7.1.6, glob@^7.1.7:
   version "7.1.7"
   resolved "https://registry.nlark.com/glob/download/glob-7.1.7.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fglob%2Fdownload%2Fglob-7.1.7.tgz#3b193e9233f01d42d0b3f78294bbeeb418f94a90"
   integrity sha1-Oxk+kjPwHULQs/eClLvutBj5SpA=
@@ -3474,10 +3480,10 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sass@^1.37.0:
-  version "1.37.0"
-  resolved "https://registry.nlark.com/sass/download/sass-1.37.0.tgz#f1b03a9d072ee9053a29d125c8130c78e92827c2"
-  integrity sha1-8bA6nQcu6QU6KdElyBMMeOkoJ8I=
+sass@^1.37.5:
+  version "1.37.5"
+  resolved "https://registry.nlark.com/sass/download/sass-1.37.5.tgz?cache=0&sync_timestamp=1628041580070&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsass%2Fdownload%2Fsass-1.37.5.tgz#f6838351f7cc814c4fcfe1d9a20e0cabbd1e7b3c"
+  integrity sha1-9oODUffMgUxPz+HZog4Mq70eezw=
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
