@@ -9,11 +9,10 @@ const rollup = require("rollup")
 const { build } = require('vite')
 const Multispinner = require('multispinner')
 
-const mainOptions = require('./rollup.Main.config');
-const preloadOptions = require("./rollup.preload.config")
 const rendererOptions = require('./vite.config')
-const mainOpt = mainOptions(process.env.NODE_ENV);
-const preloadOpt = preloadOptions(process.env.NODE_ENV)
+const rollupOptions = require("./rollup.config")
+const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
+const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
 
 const doneLog = chalk.bgGreen.white(' DONE ') + ' '
 const errorLog = chalk.bgRed.white(' ERROR ') + ' '

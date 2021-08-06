@@ -12,10 +12,9 @@ const { spawn } = require('child_process')
 const { createServer } = require('vite')
 
 const rendererOptions = require("./vite.config")
-const mainOptions = require("./rollup.main.config")
-const preloadOptions = require("./rollup.preload.config")
-const mainOpt = mainOptions(process.env.NODE_ENV);
-const preloadOpt = preloadOptions(process.env.NODE_ENV)
+const rollupOptions = require("./rollup.config")
+const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
+const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
 
 let electronProcess = null
 let manualRestart = false
