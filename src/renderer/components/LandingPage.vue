@@ -20,7 +20,6 @@
 					<el-button type="primary" round @click="StartServer">启动内置服务端</el-button>
 					<el-button type="primary" round @click="StopServer">关闭内置服务端</el-button>
 					<el-button type="primary" round @click="getMessage">查看消息</el-button>
-					<el-button type="primary" round @click="crash">模拟崩溃</el-button>
 				</div>
 				<div class="doc">
 					<el-button type="primary" round @click="openNewWin">打开新窗口</el-button>
@@ -45,47 +44,37 @@
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
-// const { ipcRenderer } = require("electron");
 import logo from "@renderer/assets/logo.png";
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted } from "vue";
-import { useStore } from "vuex"
-let ipcRenderer = window.ipcRenderer;
+import { useStore } from "vuex";
+let { ipcRenderer } = window;
 
 if (!ipcRenderer) {
 	ipcRenderer = {} as any;
-	ipcRenderer.on = ipcRenderer.invoke = ipcRenderer.removeAllListeners = (...args: any): any => {
-		console.log("not electron");
-	};
+	ipcRenderer.on =
+		ipcRenderer.invoke =
+		ipcRenderer.removeAllListeners =
+		(...args: any): any => {
+			console.log("not electron");
+		};
 }
 
-ref: text = "等待数据读取";
-ref: newdata = {
-	name: "yyy",
-	age: "12"
-};
-ref: textarray = [];
-ref: percentage = 0;
-ref: colors = [
+let percentage = $ref(0);
+let colors = $ref([
 	{ color: "#f56c6c", percentage: 20 },
 	{ color: "#e6a23c", percentage: 40 },
 	{ color: "#6f7ad3", percentage: 60 },
 	{ color: "#1989fa", percentage: 80 },
 	{ color: "#5cb87a", percentage: 100 },
-] as string | ColorInfo[];
-ref: dialogVisible = false;
-ref: progressStaus = null;
-ref: filePath = "";
-ref: updateStatus = "";
+] as string | ColorInfo[]);
+let dialogVisible = $ref(false);
+let progressStaus = $ref(null);
+let filePath = $ref("");
+let updateStatus = $ref("");
 
-const store = useStore()
-store.dispatch("TEST_ACTION", "123456")
-
-
-function crash() {
-	process.crash();
-}
-
+const store = useStore();
+store.dispatch("TEST_ACTION", "123456");
 
 function openNewWin() {
 	let data = {
@@ -227,7 +216,7 @@ onUnmounted(() => {
 	ipcRenderer.removeAllListeners("confirm-download");
 	ipcRenderer.removeAllListeners("download-progress");
 	ipcRenderer.removeAllListeners("download-error");
-})
+});
 </script>
 
 <style>

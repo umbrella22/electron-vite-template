@@ -1,5 +1,4 @@
 import { ipcRenderer } from "electron"
-import { platform, release, arch } from "os"
 
 interface ImportMeta {
     env: Record<string, unknown>;
@@ -12,17 +11,18 @@ interface memoryInfo {
     usedJSHeapSize: number;
 }
 
-interface Window {
-    performance: {
-        memory: memoryInfo
-    }
-}
-
 declare global {
     interface Window {
+        performance: {
+            memory: memoryInfo
+        }
         ipcRenderer: typeof ipcRenderer,
-        platform: typeof platform,
-        release: typeof release,
-        arch: typeof arch
+        systemInfo: {
+            platform: string
+            release: string
+            arch: string
+            nodeVersion: string
+            electronVersion: string
+        }
     }
 }

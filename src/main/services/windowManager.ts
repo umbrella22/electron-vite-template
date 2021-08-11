@@ -39,15 +39,13 @@ class MainInit {
       frame: config.IsUseSysTitle,
       titleBarStyle: 'hidden',
       webPreferences: {
-        // contextIsolation: false,
-        // nodeIntegration: true,
-        // webSecurity: false,
+        webSecurity: false,
         // 如果是开发模式可以使用devTools
-        // devTools: process.env.NODE_ENV === 'development',
-        devTools: true,
+        devTools: process.env.NODE_ENV === 'development',
+        // devTools: true,
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin',
-        preload:  process.env.NODE_ENV === 'development'
+        preload: process.env.NODE_ENV === 'development'
           ? path.join(app.getAppPath(), 'preload.js')
           : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
       }
@@ -192,7 +190,7 @@ class MainInit {
       resizable: false,
       webPreferences: {
         experimentalFeatures: true,
-        preload:  process.env.NODE_ENV === 'development'
+        preload: process.env.NODE_ENV === 'development'
           ? path.join(app.getAppPath(), 'preload.js')
           : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
       }

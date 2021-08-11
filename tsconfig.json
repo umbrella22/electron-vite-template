@@ -12,6 +12,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
+        "isolatedModules": true,
         "target": "es2017",
         "paths": {
             "@config/*": [
