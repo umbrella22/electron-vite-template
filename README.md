@@ -1,4 +1,11 @@
 # electron-vite-template
+
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template/tree/strict)
+![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
+[![vue](https://img.shields.io/badge/vue-3.2.1-brightgreen.svg)](https://github.com/vuejs/vue-next)
+[![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
+[![electron](https://img.shields.io/badge/electron-13.1.9-brightgreen.svg)](https://github.com/electron/electron)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 # Installation
 You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
 
