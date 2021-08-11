@@ -1,5 +1,4 @@
 import { ipcRenderer } from "electron"
-import { platform, release, arch } from "os"
 
 interface ImportMeta {
     env: Record<string, unknown>;
