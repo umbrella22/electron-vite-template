@@ -11,29 +11,30 @@
 </template>
 
 <script setup lang="ts">
-const { platform, release, arch } = require("os");
 import { useRoute } from "vue-router";
 
+const { platform, release, arch } = require("os");
 const { path, name } = useRoute();
-ref: tips = [
-	{ name: "当前页面路径：", value: path },
-	{ name: "当前页面名称：", value: name },
-	{
-		name: "Vue版本：",
-		value:
-		process.env.NODE_ENV === "development"
-			? require("vue/package.json").version
-			: "不可见",
-	},
-	{
-		name: "Electron版本：",
-		value: process.versions.electron || "浏览器环境",
-	},
-	{ name: "Node版本：", value: process.versions.node || "浏览器环境" },
-	{ name: "系统平台：", value: platform() },
-	{ name: "系统版本：", value: release() },
-	{ name: "系统位数：", value: arch() + "位" },
-]
+
+let tips = $ref([
+  { name: "当前页面路径：", value: path },
+  { name: "当前页面名称：", value: name },
+  {
+    name: "Vue版本：",
+    value:
+      process.env.NODE_ENV === "development"
+        ? require("vue/package.json").version
+        : "不可见",
+  },
+  {
+    name: "Electron版本：",
+    value: process.versions.electron || "浏览器环境",
+  },
+  { name: "Node版本：", value: process.versions.node || "浏览器环境" },
+  { name: "系统平台：", value: platform() },
+  { name: "系统版本：", value: release() },
+  { name: "系统位数：", value: arch() + "位" },
+]);
 </script>
 
 <style scoped lang="scss">
