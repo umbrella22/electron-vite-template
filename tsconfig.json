@@ -13,6 +13,9 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "target": "es2017",
+        "types": [
+            "vite/client"
+        ],
         "paths": {
             "@config/*": [
                 "config/*"
