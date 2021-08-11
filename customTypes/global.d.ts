@@ -1,6 +1,5 @@
-interface ImportMeta {
-    env: Record<string, unknown>;
-    globEager<T = unknown>(globPath: string): Record<string, T>;
+interface AnyObject {
+    [key: string]: any
 }
 
 interface memoryInfo {

@@ -4,26 +4,62 @@
 		<img id="logo" :src="logo" alt="electron-vue" />
 		<main>
 			<div class="left-side">
-				<span class="title">欢迎进入本框架</span>
+				<span class="title">
+					{{ $t("welcome") }}
+				</span>
 				<system-information></system-information>
 			</div>
 
 			<div class="right-side">
 				<div class="doc">
-					<div class="title alt">您可以点击的按钮测试功能</div>
-					<el-button type="primary" round @click="open()">控制台打印</el-button>
-					<el-button type="primary" round @click="CheckUpdate('one')">检查更新</el-button>
+					<div class="title alt">
+						{{ $t("buttonTips") }}
+					</div>
+					<el-button type="primary" round @click="open()">
+						{{ $t("buttons.console") }}
+					</el-button>
+					<el-button type="primary" round @click="CheckUpdate('one')">
+						{{ $t("buttons.checkUpdate") }}
+					</el-button>
 				</div>
 				<div class="doc">
-					<el-button type="primary" round @click="CheckUpdate('two')">检查更新（第二种方法）</el-button>
-					<el-button type="primary" round @click="CheckUpdate('three')">检查更新（增量更新）</el-button>
-					<el-button type="primary" round @click="StartServer">启动内置服务端</el-button>
-					<el-button type="primary" round @click="StopServer">关闭内置服务端</el-button>
-					<el-button type="primary" round @click="getMessage">查看消息</el-button>
-					<el-button type="primary" round @click="crash">模拟崩溃</el-button>
+					<el-button type="primary" round @click="CheckUpdate('two')">
+						{{ $t("buttons.checkUpdate2") }}
+					</el-button>
+					<el-button type="primary" round @click="CheckUpdate('three')">
+						{{ $t("buttons.checkUpdateInc") }}
+					</el-button>
+					<el-button type="primary" round @click="StartServer">
+						{{ $t("buttons.startServer") }}
+					</el-button>
+					<el-button type="primary" round @click="StopServer">
+						{{ $t("buttons.stopServer") }}
+					</el-button>
+					<el-button type="primary" round @click="getMessage">
+						{{ $t("buttons.viewMessage") }}
+					</el-button>
+					<el-button type="primary" round @click="crash">
+						{{ $t("buttons.simulatedCrash") }}
+					</el-button>
 				</div>
 				<div class="doc">
-					<el-button type="primary" round @click="openNewWin">打开新窗口</el-button>
+					<el-button type="primary" round @click="openNewWin">
+						{{ $t("buttons.openNewWindow") }}
+					</el-button>
+					<el-button type="primary" round @click="changeLanguage"
+						>{{ $t('buttons.changeLanguage') }}</el-button
+					>
+				</div>
+				<div class="doc">
+					<el-pagination
+						:current-page="elCPage"
+						:page-sizes="[100, 200, 300, 400]"
+						:page-size="elPageSize"
+						layout="total, sizes, prev, pager, next, jumper"
+						:total="400"
+						@size-change="handleSizeChange"
+						@current-change="handleCurrentChange" >
+					</el-pagination>
 				</div>
 			</div>
 		</main>
@@ -49,6 +85,7 @@ import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted } from "vue";
 import { useStore } from "vuex";
+import { i18n, setLanguage } from "@renderer/i18n";
 
 const { ipcRenderer } = require("electron");
 
@@ -68,6 +105,21 @@ let updateStatus = $ref("");
 
 const store = useStore();
 store.dispatch("TEST_ACTION", "123456");
+
+let elPageSize = $ref(100);
+let elCPage = $ref(1);
+
+function changeLanguage() {
+    setLanguage(i18n.global.locale === "zh-cn" ? 'en' : 'zh-cn')
+}
+
+function handleSizeChange(val: number) {
+    elPageSize = val
+}
+
+function handleCurrentChange(val: number) {
+    elCPage = val
+}
 
 function crash() {
 	process.crash();
