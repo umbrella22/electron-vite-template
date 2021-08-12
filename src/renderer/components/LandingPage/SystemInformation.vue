@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { i18nt } from "@renderer/i18n";
-import { computed } from "@vue/reactivity";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 const { platform, release, arch } = require("os");
