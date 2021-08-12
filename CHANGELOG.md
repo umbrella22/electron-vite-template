@@ -1,9 +1,16 @@
-# 2021年7月20日
+# 2021 年 08 月 11 日
+
+- 新增 `i18n` 支持
+- 新增 `i18n` 对 `element-plus` 的支持 
+
+# 2021 年 07 月 20 日
+
 - 升级依赖
-- preload现在默认为ts版本，在修改了preload.ts之后，则会重新加载整个electron，效果如同修改主进程代码。
-- 加入preload和主进程混淆。
+- `preload` 现在默认为ts版本，在修改了 `preload.ts之` 后，则会重新加载整个electron，效果如同修改主进程代码。
+- 加入 `preload` 和主进程混淆。
 - 调整依赖位置，降低打包后node_module的大小
-# 2021年6月22日
+
+# 2021 年 06 月 22 日
 
 - 渲染进程移除 `node` 相关内容，采用 `preload` 引入
 
@@ -13,11 +20,11 @@
 
 更多细节请参考：[Electron文档-preload.js参考示例](https://www.electronjs.org/docs/api/context-bridge#exposing-node-global-symbols)
 
-# 2021年6月10日
+# 2021 年 06 月 10 日
 
 - 更新依赖
 
-# 2021年06月08日
+# 2021 年 06 月 08 日
 
 - 渲染进程组件实现全 `setup` 化
 
@@ -30,6 +37,6 @@
 
 > 更多 `setup` 语法糖问题请访问 [New script setup](https://github.com/vuejs/rfcs/pull/227)
 
-# 2021年02月26日
+# 2021 年 02 月 26 日
 
 - 项目创建。
