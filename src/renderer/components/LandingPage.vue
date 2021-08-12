@@ -166,7 +166,7 @@ function CheckUpdate(data) {
 			break;
 		case "two":
 			ipcRenderer.invoke("start-download").then(() => {
-				this.dialogVisible = true;
+				dialogVisible = true;
 			});
 			break;
 		case "three":
