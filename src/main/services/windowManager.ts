@@ -172,9 +172,6 @@ class MainInit {
         }
       })
     })
-    app.on('gpu-process-crashed', () => {
-
-    })
     this.mainWindow.on('closed', () => {
       this.mainWindow = null
     })
