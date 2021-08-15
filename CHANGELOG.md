@@ -1,14 +1,18 @@
+# 2021 年 08 月 15 日
+
+- 添加主进程在开发环境时对 static 文件夹的访问，`process.env.__static`
+
 # 2021 年 08 月 11 日
 
 - 新增 `i18n` 支持
-- 新增 `i18n` 对 `element-plus` 的支持 
+- 新增 `i18n` 对 `element-plus` 的支持
 
 # 2021 年 07 月 20 日
 
 - 升级依赖
-- `preload` 现在默认为ts版本，在修改了 `preload.ts之` 后，则会重新加载整个electron，效果如同修改主进程代码。
+- `preload` 现在默认为 ts 版本，在修改了 `preload.ts之` 后，则会重新加载整个 electron，效果如同修改主进程代码。
 - 加入 `preload` 和主进程混淆。
-- 调整依赖位置，降低打包后node_module的大小
+- 调整依赖位置，降低打包后 node_module 的大小
 
 # 2021 年 06 月 22 日
 
@@ -18,7 +22,7 @@
 
 **如需修改 `preload.js` ，请修改 `.electron-vite/preload.js`**
 
-更多细节请参考：[Electron文档-preload.js参考示例](https://www.electronjs.org/docs/api/context-bridge#exposing-node-global-symbols)
+更多细节请参考：[Electron 文档-preload.js 参考示例](https://www.electronjs.org/docs/api/context-bridge#exposing-node-global-symbols)
 
 # 2021 年 06 月 10 日
 
