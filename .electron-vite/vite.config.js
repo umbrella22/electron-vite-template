@@ -13,9 +13,10 @@ const root = resolve('src/renderer')
 const config = defineConfig({
     mode: process.env.NODE_ENV,
     root,
-    define:{
+    define: {
         'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env,
-        'process.env.IS_WEB': IsWeb
+        'process.env.IS_WEB': IsWeb,
+        'process.env.PORT': userConfig.dev.port
     },
     resolve: {
         alias: {
@@ -27,11 +28,12 @@ const config = defineConfig({
         outDir: IsWeb ? resolve('dist/web') : resolve('dist/electron/renderer'),
         emptyOutDir: true
     },
-    server: {
-        port: Number(process.env.PORT),
-    },
     plugins: [
-        vuePlugin()
+        vuePlugin({
+            script: {
+                refSugar: true
+            }
+        })
     ],
     optimizeDeps: {
     },

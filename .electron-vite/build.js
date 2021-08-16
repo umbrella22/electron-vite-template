@@ -9,9 +9,10 @@ const rollup = require("rollup")
 const { build } = require('vite')
 const Multispinner = require('multispinner')
 
-const mainOptions = require('./rollup.Main.config');
 const rendererOptions = require('./vite.config')
-const opt = mainOptions(process.env.NODE_ENV);
+const rollupOptions = require("./rollup.config")
+const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
+const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
 
 const doneLog = chalk.bgGreen.white(' DONE ') + ' '
 const errorLog = chalk.bgRed.white(' ERROR ') + ' '
@@ -32,7 +33,7 @@ function unionBuild() {
     greeting()
     sync(['dist/electron/main/*', 'dist/electron/renderer/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
 
-    const tasks = ['main', 'renderer']
+    const tasks = ['main', 'preload', 'renderer']
     const m = new Multispinner(tasks, {
         preText: 'building',
         postText: 'process'
@@ -46,16 +47,30 @@ function unionBuild() {
         process.exit()
     })
 
-    rollup.rollup(opt)
+    rollup.rollup(mainOpt)
         .then(build => {
             results += `${doneLog}MainProcess build success` + '\n\n'
-            build.write(opt.output).then(() => {
+            build.write(mainOpt.output).then(() => {
                 m.success('main')
             })
         })
         .catch(error => {
             m.error('main')
             console.log(`\n  ${errorLog}failed to build main process`)
+            console.error(`\n${error}\n`)
+            process.exit(1)
+        });
+
+    rollup.rollup(preloadOpt)
+        .then(build => {
+            results += `${doneLog}preLoad build success` + '\n\n'
+            build.write(preloadOpt.output).then(() => {
+                m.success('preload')
+            })
+        })
+        .catch(error => {
+            m.error('preload')
+            console.log(`\n  ${errorLog}failed to build preLoad`)
             console.error(`\n${error}\n`)
             process.exit(1)
         });

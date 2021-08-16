@@ -1,6 +1,7 @@
-interface ImportMeta {
-    env: Record<string, unknown>;
-    glob<T = unknown>(globPath: string): Record<string, T>;
+import { ipcRenderer } from "electron"
+
+interface AnyObject {
+    [key: string]: any
 }
 
 interface memoryInfo {
@@ -9,8 +10,18 @@ interface memoryInfo {
     usedJSHeapSize: number;
 }
 
-interface Window {
-    performance: {
-        memory: memoryInfo
+declare global {
+    interface Window {
+        performance: {
+            memory: memoryInfo
+        }
+        ipcRenderer: typeof ipcRenderer,
+        systemInfo: {
+            platform: string
+            release: string
+            arch: string
+            nodeVersion: string
+            electronVersion: string
+        }
     }
 }

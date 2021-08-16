@@ -4,11 +4,12 @@ interface StateType {
 }
 const template = {
     state: {
-        testData: ""
+        testData: localStorage.getItem("testData") || ""
     },
     mutations: {
         TEST_COMMIT: (state: StateType, data: string) => {
             state.testData = data
+            localStorage.setItem("testData", data)
         }
     },
     actions: {

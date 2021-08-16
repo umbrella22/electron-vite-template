@@ -5,6 +5,7 @@ import DownloadUpdate from './downloadFile'
 import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
+import path from "path"
 
 class MainInit {
 
@@ -38,14 +39,15 @@ class MainInit {
       frame: config.IsUseSysTitle,
       titleBarStyle: 'hidden',
       webPreferences: {
-        contextIsolation: false,
-        nodeIntegration: true,
         webSecurity: false,
         // 如果是开发模式可以使用devTools
         devTools: process.env.NODE_ENV === 'development',
         // devTools: true,
         // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin'
+        scrollBounce: process.platform === 'darwin',
+        preload: process.env.NODE_ENV === 'development'
+          ? path.join(app.getAppPath(), 'preload.js')
+          : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
       }
     })
     // 赋予模板
@@ -170,9 +172,6 @@ class MainInit {
         }
       })
     })
-    app.on('gpu-process-crashed', () => {
-
-    })
     this.mainWindow.on('closed', () => {
       this.mainWindow = null
     })
@@ -186,7 +185,12 @@ class MainInit {
       skipTaskbar: true,
       transparent: true,
       resizable: false,
-      webPreferences: { experimentalFeatures: true }
+      webPreferences: {
+        experimentalFeatures: true,
+        preload: process.env.NODE_ENV === 'development'
+          ? path.join(app.getAppPath(), 'preload.js')
+          : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
+      }
     })
 
     this.loadWindow.loadURL(loadingURL)
