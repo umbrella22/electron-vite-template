@@ -1,14 +1,18 @@
+# 2021 年 08 月 15 日
+
+- 设置渲染进程编译目标为chrome91，**请注意，此次设置是为了解决顶层await无法正常编译的问题，但是也带来了直接放弃chrome91版本以下的，web端请谨慎**
+- 添加主进程在开发环境时对static文件夹的访问，`process.env.__static`
 # 2021 年 08 月 11 日
 
 - 新增 `i18n` 支持
-- 新增 `i18n` 对 `element-plus` 的支持 
+- 新增 `i18n` 对 `element-plus` 的支持
 
 # 2021 年 08 月 06 日
 
 - master
-    - 更新依赖，并添加 glob 依赖，解决部分人出现`glob is undefined`的错误，暂时将`semver`添加为外部依赖，清除部分循环引入的问题。
+  - 更新依赖，并添加 glob 依赖，解决部分人出现`glob is undefined`的错误，暂时将`semver`添加为外部依赖，清除部分循环引入的问题。
 - strict
-    - 合并preload和main的rollup配置文件，并且在开发环境时，不会开启代码混淆。
+  - 合并 preload 和 main 的 rollup 配置文件，并且在开发环境时，不会开启代码混淆。
 
 # 2021 年 07 月 20 日
 
