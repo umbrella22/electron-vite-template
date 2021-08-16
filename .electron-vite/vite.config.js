@@ -26,7 +26,9 @@ const config = defineConfig({
     base: './',
     build: {
         outDir: IsWeb ? resolve('dist/web') : resolve('dist/electron/renderer'),
-        emptyOutDir: true
+        emptyOutDir: true,
+        target: 'esnext',
+        minify: 'esbuild'
     },
     plugins: [
         vuePlugin({

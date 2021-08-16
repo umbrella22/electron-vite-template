@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'development') {
   process.env.__lib = join(__dirname, '..', '..', '..', '..', `${DllFolder}`).replace(/\\/g, '\\\\')
   process.env.__updateFolder = join(__dirname, '..', '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
 } else {
+  process.env.__static = join(__dirname, '..', '..', '..', 'static').replace(/\\/g, '\\\\')
   process.env.__updateFolder = join(__dirname, '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
 }
 export const winURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}` : `file://${join(__dirname, '..', 'renderer', 'index.html')}`
