@@ -399,7 +399,7 @@
 
 "@vue/compiler-dom@3.2.2":
   version "3.2.2"
-  resolved "https://registry.nlark.com/@vue/compiler-dom/download/@vue/compiler-dom-3.2.2.tgz?cache=0&sync_timestamp=1628696486067&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40vue%2Fcompiler-dom%2Fdownload%2F%40vue%2Fcompiler-dom-3.2.2.tgz#26e198498746c53047c3744d26fc95e670692ab7"
+  resolved "https://registry.nlark.com/@vue/compiler-dom/download/@vue/compiler-dom-3.2.2.tgz#26e198498746c53047c3744d26fc95e670692ab7"
   integrity sha1-JuGYSYdGxTBHw3RNJvyV5nBpKrc=
   dependencies:
     "@vue/compiler-core" "3.2.2"
@@ -463,7 +463,7 @@
 
 "@vue/runtime-dom@3.2.2":
   version "3.2.2"
-  resolved "https://registry.nlark.com/@vue/runtime-dom/download/@vue/runtime-dom-3.2.2.tgz?cache=0&sync_timestamp=1628696468457&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40vue%2Fruntime-dom%2Fdownload%2F%40vue%2Fruntime-dom-3.2.2.tgz#6d0da23ed1cfc702477f4b8c5dc4f9335c94e119"
+  resolved "https://registry.nlark.com/@vue/runtime-dom/download/@vue/runtime-dom-3.2.2.tgz#6d0da23ed1cfc702477f4b8c5dc4f9335c94e119"
   integrity sha1-bQ2iPtHPxwJHf0uMXcT5M1yU4Rk=
   dependencies:
     "@vue/runtime-core" "3.2.2"
