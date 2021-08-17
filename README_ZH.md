@@ -1,4 +1,5 @@
 # Electron-Vite-template
+
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template/tree/strict)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
 [![vue](https://img.shields.io/badge/vue-3.2.3-brightgreen.svg)](https://github.com/vuejs/vue-next)
@@ -7,12 +8,13 @@
 [![electron](https://img.shields.io/badge/electron-13.1.9-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
-
 [国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
+
+### 请确保您的 node 版本大于等于 14.
 
 #### 如何安装
 
-``` bash
+```bash
 # 安装依赖，这里有个问题，可能ELECTRON或者postcss会由于玄学原因安装失败，此时我推荐使用cnpm安装依赖然后！删除那个node_modules包，重新npm i，这样做的原因是
 # ELECTRON只要下载了一次您自己没有清除缓存的话，就可以直接使用上次的安装包，这样通过cnpm安装完成之后，一定！要删除一次依赖包！一定哦！
 # 再使用npm安装就会使用缓存了，免去那个魔法的过程～～
