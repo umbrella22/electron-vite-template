@@ -2,9 +2,10 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
-[![vue](https://img.shields.io/badge/vue-3.2.3-brightgreen.svg)](https://github.com/vuejs/vue)
+[![vue](https://img.shields.io/badge/vue-3.2.3-brightgreen.svg)](https://github.com/vuejs/vue-next)
 [![vite](https://img.shields.io/badge/vite-2.5.0-brightgreen.svg)](https://github.com/vitejs/vite)
-[![electron](https://img.shields.io/badge/electron-13.1.9-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
+[![electron](https://img.shields.io/badge/electron-13.1.9-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
 # Installation
