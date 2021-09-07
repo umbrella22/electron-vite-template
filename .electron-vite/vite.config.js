@@ -31,7 +31,6 @@ const config = defineConfig({
         minify: 'esbuild'
     },
     server: {
-        port: Number(process.env.PORT),
     },
     plugins: [
         vuePlugin({
