@@ -29,5 +29,5 @@ export const lang = {
         simulatedCrash: "Simulated crash",
         changeLanguage: "Change language"
     },
-    el: enLocale.el
+    el: enLocale
 }

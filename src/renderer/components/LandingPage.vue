@@ -1,77 +1,65 @@
 <template>
-	<title-bar></title-bar>
-	<div id="wrapper">
-		<img id="logo" :src="logo" alt="electron-vue" />
-		<main>
-			<div class="left-side">
-				<span class="title">
-					{{ $t("welcome") }}
-				</span>
-				<system-information></system-information>
-			</div>
+	<div>
+		<title-bar></title-bar>
+		<div id="wrapper">
+			<img id="logo" :src="logo" alt="electron-vue" />
+			<main>
+				<div class="left-side">
+					<span class="title">{{ $t("welcome") }}</span>
+					<system-information></system-information>
+				</div>
 
-			<div class="right-side">
-				<div class="doc">
-					<div class="title alt">
-						{{ $t("buttonTips") }}
+				<div class="right-side">
+					<div class="doc">
+						<div class="title alt">{{ $t("buttonTips") }}</div>
+						<el-button type="primary" round @click="open()">{{ $t("buttons.console") }}</el-button>
+						<el-button type="primary" round @click="CheckUpdate('one')">{{ $t("buttons.checkUpdate") }}</el-button>
 					</div>
-					<el-button type="primary" round @click="open()">
-						{{ $t("buttons.console") }}
-					</el-button>
-					<el-button type="primary" round @click="CheckUpdate('one')">
-						{{ $t("buttons.checkUpdate") }}
-					</el-button>
+					<div class="doc">
+						<el-button type="primary" round @click="CheckUpdate('two')">{{ $t("buttons.checkUpdate2") }}</el-button>
+						<el-button
+							type="primary"
+							round
+							@click="CheckUpdate('three')"
+						>{{ $t("buttons.checkUpdateInc") }}</el-button>
+						<el-button type="primary" round @click="StartServer">{{ $t("buttons.startServer") }}</el-button>
+						<el-button type="primary" round @click="StopServer">{{ $t("buttons.stopServer") }}</el-button>
+						<el-button type="primary" round @click="getMessage">{{ $t("buttons.viewMessage") }}</el-button>
+					</div>
+					<div class="doc">
+						<el-button type="primary" round @click="openNewWin">{{ $t("buttons.openNewWindow") }}</el-button>
+						<el-button type="primary" round @click="changeLanguage">
+							{{
+								$t("buttons.changeLanguage")
+							}}
+						</el-button>
+					</div>
+					<div class="doc">
+						<el-pagination
+							:current-page="elCPage"
+							:page-sizes="[100, 200, 300, 400]"
+							:page-size="elPageSize"
+							layout="total, sizes, prev, pager, next, jumper"
+							:total="400"
+							@size-change="handleSizeChange"
+							@current-change="handleCurrentChange"
+						></el-pagination>
+					</div>
 				</div>
-				<div class="doc">
-					<el-button type="primary" round @click="CheckUpdate('two')">
-						{{ $t("buttons.checkUpdate2") }}
-					</el-button>
-					<el-button type="primary" round @click="CheckUpdate('three')">
-						{{ $t("buttons.checkUpdateInc") }}
-					</el-button>
-					<el-button type="primary" round @click="StartServer">
-						{{ $t("buttons.startServer") }}
-					</el-button>
-					<el-button type="primary" round @click="StopServer">
-						{{ $t("buttons.stopServer") }}
-					</el-button>
-					<el-button type="primary" round @click="getMessage">
-						{{ $t("buttons.viewMessage") }}
-					</el-button>
+			</main>
+			<el-dialog
+				title="进度"
+				:v-model="dialogVisible"
+				:before-close="handleClose"
+				center
+				width="14%"
+				top="45vh"
+			>
+				<div class="conten">
+					<el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
 				</div>
-				<div class="doc">
-					<el-button type="primary" round @click="openNewWin">
-						{{ $t("buttons.openNewWindow") }}
-					</el-button>
-					<el-button type="primary" round @click="changeLanguage"
-						>{{ $t('buttons.changeLanguage') }}</el-button
-					>
-				</div>
-				<div class="doc">
-					<el-pagination
-						:current-page="elCPage"
-						:page-sizes="[100, 200, 300, 400]"
-						:page-size="elPageSize"
-						layout="total, sizes, prev, pager, next, jumper"
-						:total="400"
-						@size-change="handleSizeChange"
-						@current-change="handleCurrentChange" >
-					</el-pagination>
-				</div>
-			</div>
-		</main>
-		<el-dialog
-			title="进度"
-			:v-model="dialogVisible"
-			:before-close="handleClose"
-			center
-			width="14%"
-			top="45vh"
-		>
-			<div class="conten">
-				<el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
-			</div>
-		</el-dialog>
+			</el-dialog>
+		</div>
 	</div>
 </template>
 
@@ -80,7 +68,7 @@ import SystemInformation from "./LandingPage/SystemInformation.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onUnmounted } from "vue";
+import { onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { i18n, setLanguage } from "@renderer/i18n";
 let { ipcRenderer } = window;
@@ -95,35 +83,35 @@ if (!ipcRenderer) {
 		};
 }
 
-let percentage = $ref(0);
-let colors = $ref([
+let percentage = ref(0);
+let colors = ref([
 	{ color: "#f56c6c", percentage: 20 },
 	{ color: "#e6a23c", percentage: 40 },
 	{ color: "#6f7ad3", percentage: 60 },
 	{ color: "#1989fa", percentage: 80 },
 	{ color: "#5cb87a", percentage: 100 },
 ] as string | ColorInfo[]);
-let dialogVisible = $ref(false);
-let progressStaus = $ref(null);
-let filePath = $ref("");
-let updateStatus = $ref("");
+let dialogVisible = ref(false);
+let progressStaus = ref(null);
+let filePath = ref("");
+let updateStatus = ref("");
 
 const store = useStore();
 store.dispatch("TEST_ACTION", "123456");
 
-let elPageSize = $ref(100);
-let elCPage = $ref(1);
+let elPageSize = ref(100);
+let elCPage = ref(1);
 
 function changeLanguage() {
-    setLanguage(i18n.global.locale === "zh-cn" ? 'en' : 'zh-cn')
+	setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
 }
 
 function handleSizeChange(val: number) {
-    elPageSize = val
+	elPageSize.value = val;
 }
 
 function handleCurrentChange(val: number) {
-    elCPage = val
+	elCPage.value = val;
 }
 
 function openNewWin() {
@@ -167,7 +155,7 @@ function CheckUpdate(data) {
 			break;
 		case "two":
 			ipcRenderer.invoke("start-download").then(() => {
-				dialogVisible = true;
+				dialogVisible.value = true;
 			});
 			break;
 		case "three":
@@ -179,17 +167,17 @@ function CheckUpdate(data) {
 	}
 }
 function handleClose() {
-	dialogVisible = false;
+	dialogVisible.value = false;
 }
 
 ipcRenderer.on("download-progress", (event, arg) => {
-	percentage = Number(arg);
+	percentage.value = Number(arg);
 });
 ipcRenderer.on("download-error", (event, arg) => {
 	if (arg) {
 		progressStaus = "exception";
-		percentage = 40;
-		colors = "#d81e06";
+		percentage.value = 40;
+		colors.value = "#d81e06";
 	}
 });
 ipcRenderer.on("download-paused", (event, arg) => {
@@ -221,7 +209,7 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
 				title: "发生错误",
 				message: age.msg,
 			};
-			dialogVisible = false;
+			dialogVisible.value = false;
 			ipcRenderer.invoke("open-errorbox", msgdata);
 			break;
 		case 0:
@@ -232,7 +220,7 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
 				type: "success",
 				message: "已检查到新版本，开始下载",
 			});
-			dialogVisible = true;
+			dialogVisible.value = true;
 			break;
 		case 2:
 			ElMessage({ type: "success", message: "无新版本" });

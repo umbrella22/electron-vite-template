@@ -12,20 +12,22 @@
 
 <script setup lang="ts">
 import { i18nt } from "@renderer/i18n";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const { path, name } = useRoute();
 const { systemInfo } = window;
 
-let tips = $ref(computed(() => [
-  { name: i18nt("about.language"), value: i18nt("about.languageValue") },
-  { name: i18nt("about.currentPagePath"), value: path },
-  { name: i18nt("about.currentPageName"), value: name },
-  { name: i18nt("about.systemPlatform"), value: systemInfo.platform },
-  { name: i18nt("about.systemVersion"), value: systemInfo.release },
-  { name: i18nt("about.systemArch"), value: systemInfo.arch + "位" },
-]));
+let tips = ref(
+  computed(() => [
+    { name: i18nt("about.language"), value: i18nt("about.languageValue") },
+    { name: i18nt("about.currentPagePath"), value: path },
+    { name: i18nt("about.currentPageName"), value: name },
+    { name: i18nt("about.systemPlatform"), value: systemInfo.platform },
+    { name: i18nt("about.systemVersion"), value: systemInfo.release },
+    { name: i18nt("about.systemArch"), value: systemInfo.arch + "位" },
+  ])
+);
 </script>
 
 <style scoped lang="scss">
