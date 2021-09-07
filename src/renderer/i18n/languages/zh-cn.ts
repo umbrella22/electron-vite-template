@@ -29,5 +29,5 @@ export const lang = {
         simulatedCrash: "模拟崩溃",
         changeLanguage: "切换语言"
     },
-    el: zhLocale.el
+    el: zhLocale
 }
