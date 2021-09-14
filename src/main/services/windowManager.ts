@@ -4,6 +4,7 @@ import menuconfig from '../config/menu'
 import DownloadUpdate from './downloadFile'
 import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
+import { platform } from 'os'
 import { winURL, loadingURL } from '../config/StaticPath'
 import path from "path"
 
@@ -37,7 +38,7 @@ class MainInit {
       minWidth: 1366,
       show: false,
       frame: config.IsUseSysTitle,
-      titleBarStyle: 'hidden',
+      titleBarStyle: platform().includes('win32') ? 'default' : 'hidden',
       webPreferences: {
         webSecurity: false,
         // 如果是开发模式可以使用devTools
