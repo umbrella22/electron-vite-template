@@ -6,7 +6,8 @@ const fs = require('fs-extra')
 const path = require('path')
 const crypto = require('crypto')
 const AdmZip = require('adm-zip')
-const { version, build } = require('../package.json')
+const { version } = require('../package.json')
+const buildConfig = require('../build.json')
 const { build } = require("../config/index")
 
 const hash = (data, type = 'sha256') => {
@@ -23,7 +24,7 @@ const createZip = (filePath, dest) => {
 }
 
 const start = async () => {
-    if (build.asar === false) {
+    if (buildConfig.asar === false) {
         const appPath = './build/win-unpacked/resources/app'
         const name = 'app.zip'
         const outputPath = path.resolve('./build/update/update/')

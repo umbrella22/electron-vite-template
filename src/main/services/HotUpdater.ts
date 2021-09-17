@@ -59,7 +59,7 @@ const updateInfo = {
  */
 export const updater = async (windows?: BrowserWindow) => {
     try {
-        const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}?time=${new Date().getTime()}`, })
+        const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
         if (gt(res.data.version, version)) {
             await emptyDir(updatePath)
             const filePath = join(updatePath, res.data.name)
