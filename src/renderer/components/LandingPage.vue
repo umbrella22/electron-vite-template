@@ -65,7 +65,7 @@
 		</main>
 		<el-dialog
 			title="进度"
-			:v-model="dialogVisible"
+			v-model="dialogVisible"
 			:before-close="handleClose"
 			center
 			width="14%"
