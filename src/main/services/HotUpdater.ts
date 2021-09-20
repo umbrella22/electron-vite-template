@@ -13,12 +13,11 @@ import extract from 'extract-zip'
 import { version } from '../../../package.json'
 import { hotPublishConfig } from '../config/hotPublish'
 import axios from 'axios'
-import httpAdapter from 'axios/lib/adapters/http'
 
 const streamPipeline = promisify(pipeline)
 const appPath = app.getAppPath()
 const updatePath = resolve(appPath, '..', '..', 'update')
-const request = axios.create({ adapter: httpAdapter })
+const request = axios.create({ adapter: require("axios/lib/adapters/http") })
 
 /**
  * @param data 文件流
@@ -60,7 +59,7 @@ const updateInfo = {
  */
 export const updater = async (windows?: BrowserWindow) => {
     try {
-        const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}?time=${new Date().getTime()}`, })
+        const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
         if (gt(res.data.version, version)) {
             await emptyDir(updatePath)
             const filePath = join(updatePath, res.data.name)

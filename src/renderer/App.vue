@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :i18n="i18nt">
+  <el-config-provider :locale="i18nt">
     <router-view v-slot="{ Component }">
       <component :is="Component" />
     </router-view>
@@ -7,10 +7,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { ElConfigProvider } from "element-plus";
 import { i18n } from "./i18n";
 
-const i18nt = i18n.global.t;
+const i18nt = computed(() => i18n.global.messages[i18n.global.locale].el);
 </script>
 
 <style></style>

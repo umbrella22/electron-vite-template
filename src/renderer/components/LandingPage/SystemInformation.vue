@@ -12,32 +12,37 @@
 
 <script setup lang="ts">
 import { i18nt } from "@renderer/i18n";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const { platform, release, arch } = require("os");
 const { path, name } = useRoute();
 
-let tips = $ref(computed(() => [
-  { name: i18nt("about.language"), value: i18nt("about.languageValue") },
-  { name: i18nt("about.currentPagePath"), value: path },
-  { name: i18nt("about.currentPageName"), value: name },
-  {
-    name: i18nt("about.vueVersion"),
-    value:
-      process.env.NODE_ENV === "development"
-        ? require("vue/package.json").version
-        : "不可见",
-  },
-  {
-    name: i18nt("about.electronVersion"),
-    value: process.versions.electron || "浏览器环境",
-  },
-  { name: i18nt("about.nodeVersion"), value: process.versions.node || "浏览器环境" },
-  { name: i18nt("about.systemPlatform"), value: platform() },
-  { name: i18nt("about.systemVersion"), value: release() },
-  { name: i18nt("about.systemArch"), value: arch() + "位" },
-]));
+let tips = ref(
+  computed(() => [
+    { name: i18nt("about.language"), value: i18nt("about.languageValue") },
+    { name: i18nt("about.currentPagePath"), value: path },
+    { name: i18nt("about.currentPageName"), value: name },
+    {
+      name: i18nt("about.vueVersion"),
+      value:
+        process.env.NODE_ENV === "development"
+          ? require("vue/package.json").version
+          : "不可见",
+    },
+    {
+      name: i18nt("about.electronVersion"),
+      value: process.versions.electron || "浏览器环境",
+    },
+    {
+      name: i18nt("about.nodeVersion"),
+      value: process.versions.node || "浏览器环境",
+    },
+    { name: i18nt("about.systemPlatform"), value: platform() },
+    { name: i18nt("about.systemVersion"), value: release() },
+    { name: i18nt("about.systemArch"), value: arch() + "位" },
+  ])
+);
 </script>
 
 <style scoped lang="scss">

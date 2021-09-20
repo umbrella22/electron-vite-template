@@ -16,7 +16,7 @@ module.exports = (env = 'production') => {
       sourcemap: false,
     },
     plugins: [
-      nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
+      nodeResolve({ preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
       commonjs({
         sourceMap: false,
       }),
@@ -67,7 +67,7 @@ module.exports = (env = 'production') => {
       'ref-napi',
       'ref-struct-napi',
       // 修正部分人会导致丢失依赖的问题，如果updater工作不正常请取消下面的注释，并自行安装semver
-      // 'semver',
+      'semver',
       'glob'
     ],
   }
