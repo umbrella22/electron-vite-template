@@ -258,6 +258,24 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
   }
 });
 ipcRenderer.on("hot-update-status", (event, msg) => {
+  switch (msg.status) {
+    case "downloading":
+      ElMessage("正在下载");
+      break;
+    case "moving":
+      ElMessage("正在移动文件");
+      break;
+    case "finished":
+      ElMessage.success("成功,请重启");
+      break;
+    case "failed":
+      ElMessage.error(msg.message.message);
+      break;
+
+    default:
+      break;
+  }
+  console.log(msg);
   updateStatus = msg.status;
 });
 onUnmounted(() => {
