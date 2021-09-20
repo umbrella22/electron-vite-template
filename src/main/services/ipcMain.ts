@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow } from 'electron'
+import { ipcMain, dialog, BrowserWindow, app } from 'electron'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
@@ -8,20 +8,23 @@ export default {
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
     })
-    ipcMain.handle('windows-mini', () => {
-      mainWindow.minimize()
+    ipcMain.handle('windows-mini', (event, args) => {
+      BrowserWindow.fromWebContents(event.sender)?.minimize()
     })
-    ipcMain.handle('window-max', async () => {
-      if (mainWindow.isMaximized()) {
-        mainWindow.restore()
+    ipcMain.handle('window-max', async (event, args) => {
+      if (BrowserWindow.fromWebContents(event.sender)?.isMaximized()) {
+        BrowserWindow.fromWebContents(event.sender)?.restore()
         return { status: false }
       } else {
-        mainWindow.maximize()
+        BrowserWindow.fromWebContents(event.sender)?.maximize()
         return { status: true }
       }
     })
-    ipcMain.handle('window-close', () => {
-      mainWindow.close()
+    ipcMain.handle('window-close', (event, args) => {
+      BrowserWindow.fromWebContents(event.sender)?.close()
+    })
+    ipcMain.handle('app-close', (event, args) => {
+      app.quit()
     })
     ipcMain.handle('open-messagebox', async (event, arg) => {
       const res = await dialog.showMessageBox(mainWindow, {
