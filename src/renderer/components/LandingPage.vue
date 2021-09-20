@@ -1,82 +1,87 @@
 <template>
-  <div>
-    <title-bar></title-bar>
-    <div id="wrapper">
-      <img id="logo" :src="logo" alt="electron-vue" />
-      <main>
-        <div class="left-side">
-          <span class="title">
-            {{ $t("welcome") }}
-          </span>
-          <system-information></system-information>
-        </div>
+  <title-bar></title-bar>
+  <div id="wrapper">
+    <img id="logo" :src="logo" alt="electron-vue" />
+    <main>
+      <div class="left-side">
+        <span class="title">
+          {{ $t("welcome") }}
+        </span>
+        <system-information></system-information>
+      </div>
 
-			<div class="right-side">
-				<div class="doc">
-					<div class="title alt">
-						{{ $t("buttonTips") }}
-					</div>
-					<el-button type="primary" round @click="open()">
-						{{ $t("buttons.console") }}
-					</el-button>
-					<el-button type="primary" round @click="CheckUpdate('one')">
-						{{ $t("buttons.checkUpdate") }}
-					</el-button>
-				</div>
-				<div class="doc">
-					<el-button type="primary" round @click="CheckUpdate('two')">
-						{{ $t("buttons.checkUpdate2") }}
-					</el-button>
-					<el-button type="primary" round @click="CheckUpdate('three')">
-						{{ $t("buttons.checkUpdateInc") }}
-					</el-button>
-					<el-button type="primary" round @click="StartServer">
-						{{ $t("buttons.startServer") }}
-					</el-button>
-					<el-button type="primary" round @click="StopServer">
-						{{ $t("buttons.stopServer") }}
-					</el-button>
-					<el-button type="primary" round @click="getMessage">
-						{{ $t("buttons.viewMessage") }}
-					</el-button>
-					<el-button type="primary" round @click="crash">
-						{{ $t("buttons.simulatedCrash") }}
-					</el-button>
-				</div>
-				<div class="doc">
-					<el-button type="primary" round @click="openNewWin">
-						{{ $t("buttons.openNewWindow") }}
-					</el-button>
-					<el-button type="primary" round @click="changeLanguage"
-						>{{ $t('buttons.changeLanguage') }}</el-button
-					>
-				</div>
-				<div class="doc">
-					<el-pagination
-						:current-page="elCPage"
-						:page-sizes="[100, 200, 300, 400]"
-						:page-size="elPageSize"
-						layout="total, sizes, prev, pager, next, jumper"
-						:total="400"
-						@size-change="handleSizeChange"
-						@current-change="handleCurrentChange" >
-					</el-pagination>
-				</div>
-			</div>
-		</main>
-		<el-dialog
-			title="进度"
-			v-model="dialogVisible"
-			:before-close="handleClose"
-			center
-			width="14%"
-			top="45vh"
-		>
-			<div class="conten">
-				<el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
-			</div>
-		</el-dialog>
-	</div>
+      <div class="right-side">
+        <div class="doc">
+          <div class="title alt">
+            {{ $t("buttonTips") }}
+          </div>
+          <el-button type="primary" round @click="open()">
+            {{ $t("buttons.console") }}
+          </el-button>
+          <el-button type="primary" round @click="CheckUpdate('one')">
+            {{ $t("buttons.checkUpdate") }}
+          </el-button>
+        </div>
+        <div class="doc">
+          <el-button type="primary" round @click="CheckUpdate('two')">
+            {{ $t("buttons.checkUpdate2") }}
+          </el-button>
+          <el-button type="primary" round @click="CheckUpdate('three')">
+            {{ $t("buttons.checkUpdateInc") }}
+          </el-button>
+          <el-button type="primary" round @click="StartServer">
+            {{ $t("buttons.startServer") }}
+          </el-button>
+          <el-button type="primary" round @click="StopServer">
+            {{ $t("buttons.stopServer") }}
+          </el-button>
+          <el-button type="primary" round @click="getMessage">
+            {{ $t("buttons.viewMessage") }}
+          </el-button>
+          <el-button type="primary" round @click="crash">
+            {{ $t("buttons.simulatedCrash") }}
+          </el-button>
+        </div>
+        <div class="doc">
+          <el-button type="primary" round @click="openNewWin">
+            {{ $t("buttons.openNewWindow") }}
+          </el-button>
+          <el-button type="primary" round @click="changeLanguage">{{
+            $t("buttons.changeLanguage")
+          }}</el-button>
+        </div>
+        <div class="doc">
+          <el-pagination
+            :current-page="elCPage"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="elPageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+        </div>
+      </div>
+    </main>
+    <el-dialog
+      title="进度"
+      v-model="dialogVisible"
+      :before-close="handleClose"
+      center
+      width="14%"
+      top="45vh"
+    >
+      <div class="conten">
+        <el-progress
+          type="dashboard"
+          :percentage="percentage"
+          :color="colors"
+          :status="progressStaus"
+        ></el-progress>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">
