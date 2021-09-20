@@ -27,7 +27,8 @@ export const lang = {
         viewMessage: "view message",
         openNewWindow: "Open new window",
         simulatedCrash: "Simulated crash",
-        changeLanguage: "Change language"
+        changeLanguage: "Change language",
+        ForcedUpdate:"Forced Update Mode"
     },
     el: enLocale
 }

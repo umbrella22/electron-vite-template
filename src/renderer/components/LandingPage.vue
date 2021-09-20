@@ -1,5 +1,4 @@
 <template>
-  <title-bar></title-bar>
   <div id="wrapper">
     <img id="logo" :src="logo" alt="electron-vue" />
     <main>
@@ -28,6 +27,9 @@
           </el-button>
           <el-button type="primary" round @click="CheckUpdate('three')">
             {{ $t("buttons.checkUpdateInc") }}
+          </el-button>
+          <el-button type="primary" round @click="CheckUpdate('four')">
+            {{ $t("buttons.ForcedUpdate") }}
           </el-button>
           <el-button type="primary" round @click="StartServer">
             {{ $t("buttons.startServer") }}
@@ -81,11 +83,13 @@
         ></el-progress>
       </div>
     </el-dialog>
+    <update-progress v-model="showForcedUpdate" />
   </div>
 </template>
 
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
+import UpdateProgress from "./updataProgress/index.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -93,7 +97,7 @@ import { onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { i18n, setLanguage } from "@renderer/i18n";
 
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, shell } = require("electron");
 
 let percentage = ref(0);
 let colors = ref([
@@ -105,6 +109,7 @@ let colors = ref([
 ] as string | ColorInfo[]);
 let dialogVisible = ref(false);
 let progressStaus = ref(null);
+let showForcedUpdate = ref(false);
 let filePath = ref("");
 let updateStatus = ref("");
 
@@ -177,6 +182,9 @@ function CheckUpdate(data) {
     case "three":
       ipcRenderer.invoke("hot-update");
       break;
+    case "four":
+      showForcedUpdate.value = true;
+      break;
 
     default:
       break;
@@ -185,7 +193,6 @@ function CheckUpdate(data) {
 function handleClose() {
   dialogVisible.value = false;
 }
-
 ipcRenderer.on("download-progress", (event, arg) => {
   percentage.value = Number(arg);
 });
@@ -208,12 +215,12 @@ ipcRenderer.on("download-paused", (event, arg) => {
   }
 });
 ipcRenderer.on("download-done", (event, age) => {
-  filePath = age.filePath;
+  filePath.value = age.filePath;
   progressStaus = "success";
   ElMessageBox.alert("更新下载完成！", "提示", {
     confirmButtonText: "确定",
     callback: (action) => {
-      // electron.shell.openPath(this.filePath);
+      shell.openPath(filePath.value);
     },
   });
 });
