@@ -93,20 +93,21 @@ import UpdateProgress from "./updataProgress/index.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onUnmounted, ref } from "vue";
+import { onUnmounted, Ref, ref } from "vue";
 import { useStore } from "vuex";
 import { i18n, setLanguage } from "@renderer/i18n";
 
 const { ipcRenderer, shell } = require("electron");
 
 let percentage = ref(0);
-let colors = ref([
+let colors: Ref<ColorInfo[]> | Ref<string> = ref([
   { color: "#f56c6c", percentage: 20 },
   { color: "#e6a23c", percentage: 40 },
   { color: "#6f7ad3", percentage: 60 },
   { color: "#1989fa", percentage: 80 },
   { color: "#5cb87a", percentage: 100 },
-] as string | ColorInfo[]);
+]);
+
 let dialogVisible = ref(false);
 let progressStaus = ref(null);
 let showForcedUpdate = ref(false);

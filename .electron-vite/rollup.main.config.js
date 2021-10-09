@@ -4,7 +4,7 @@ const commonjs = require('@rollup/plugin-commonjs')
 const esbuild = require('rollup-plugin-esbuild')
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
-const obfuscator = require('rollup-plugin-obfuscator');
+const obfuscator  = require('rollup-plugin-obfuscator').default
 
 module.exports = (env = 'production') => {
   return {
