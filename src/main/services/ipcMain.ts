@@ -2,9 +2,10 @@ import { ipcMain, dialog, BrowserWindow, app } from 'electron'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
+import DownloadFile from './downloadFile'
 
 export default {
-  Mainfunc(mainWindow: BrowserWindow, IsUseSysTitle: Boolean) {
+  Mainfunc(IsUseSysTitle: Boolean) {
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
     })
@@ -27,7 +28,7 @@ export default {
       app.quit()
     })
     ipcMain.handle('open-messagebox', async (event, arg) => {
-      const res = await dialog.showMessageBox(mainWindow, {
+      const res = await dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {
         type: arg.type || 'info',
         title: arg.title || '',
         buttons: arg.buttons || [],
@@ -66,7 +67,10 @@ export default {
       }
     })
     ipcMain.handle('hot-update', (event, arg) => {
-      updater(mainWindow)
+      updater(BrowserWindow.fromWebContents(event.sender))
+    })
+    ipcMain.handle('start-download', (event, msg) => {
+      new DownloadFile(BrowserWindow.fromWebContents(event.sender), msg.downloadUrl).start()
     })
     ipcMain.handle('open-win', (event, arg) => {
       const ChildWin = new BrowserWindow({

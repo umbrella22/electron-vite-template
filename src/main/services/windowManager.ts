@@ -1,7 +1,6 @@
 import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
-import DownloadUpdate from './downloadFile'
 import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
@@ -27,6 +26,8 @@ class MainInit {
         }]
       })
     }
+    // 启用协议
+    setIpc.Mainfunc(config.IsUseSysTitle)
   }
   // 主窗口函数
   createMainWindow() {
@@ -44,7 +45,6 @@ class MainInit {
         webSecurity: false,
         // 如果是开发模式可以使用devTools
         devTools: process.env.NODE_ENV === 'development',
-        // devTools: true,
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin'
       }
@@ -55,18 +55,13 @@ class MainInit {
     Menu.setApplicationMenu(menu)
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
-    // 下载文件
-    new DownloadUpdate(this.mainWindow).start()
     // electron-update注册
     new Update(this.mainWindow)
-    // 启用协议，这里暂时只用于自定义头部的时候使用
-    setIpc.Mainfunc(this.mainWindow, config.IsUseSysTitle)
     // dom-ready之后显示界面
     this.mainWindow.webContents.once('dom-ready', () => {
       this.mainWindow.show()
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
-    // this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
     // 开发模式下自动开启devtools
     if (process.env.NODE_ENV === 'development') {
       this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
