@@ -31,16 +31,14 @@ class Main {
   }
 
   start() {
-    ipcMain.on('start-download', (event, msg) => {
-      // 更新时检查有无同名文件，若有就删除，若无就开始下载
-      stat(this.HistoryFilePath, async (err, stats) => {
-        try {
-          if (stats) {
-            await remove(this.HistoryFilePath)
-          }
-          this.mainWindow.webContents.downloadURL(msg.downloadUrl || this.downloadUrl)
-        } catch (error) { console.log(error) }
-      })
+    // 更新时检查有无同名文件，若有就删除，若无就开始下载
+    stat(this.HistoryFilePath, async (err, stats) => {
+      try {
+        if (stats) {
+          await remove(this.HistoryFilePath)
+        }
+        this.mainWindow.webContents.downloadURL(this.downloadUrl)
+      } catch (error) { console.log(error) }
     })
     this.mainWindow.webContents.session.on('will-download', (event: any, item: any, webContents: any) => {
       const filePath = join(app.getPath('downloads'), item.getFilename())
@@ -52,7 +50,7 @@ class Main {
             break
           default:
             this.mainWindow.webContents.send('download-error', true)
-            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致客户端下载出错，请前往官网进行重新安装')
+            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致下载出错')
             break
         }
       })
@@ -66,7 +64,7 @@ class Main {
             break
           case 'interrupted':
             this.mainWindow.webContents.send('download-error', true)
-            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致客户端下载出错，请前往官网进行重新安装')
+            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致下载出错.')
             break
           default:
             break
