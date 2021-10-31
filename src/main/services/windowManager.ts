@@ -1,7 +1,6 @@
 import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
-import DownloadUpdate from './downloadFile'
 import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { platform } from 'os'
@@ -28,6 +27,8 @@ class MainInit {
         }]
       })
     }
+    // 启用协议，这里暂时只用于自定义头部的时候使用
+    setIpc.Mainfunc(config.IsUseSysTitle)
   }
   // 主窗口函数
   createMainWindow() {
@@ -57,12 +58,8 @@ class MainInit {
     Menu.setApplicationMenu(menu)
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
-    // 下载文件
-    new DownloadUpdate(this.mainWindow).start()
     // electron-update注册
     new Update(this.mainWindow)
-    // 启用协议，这里暂时只用于自定义头部的时候使用
-    setIpc.Mainfunc(this.mainWindow, config.IsUseSysTitle)
     // dom-ready之后显示界面
     this.mainWindow.webContents.once('dom-ready', () => {
       this.mainWindow.show()
