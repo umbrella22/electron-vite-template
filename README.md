@@ -50,7 +50,7 @@ $ yarn build
 # Built-in
 
 - [vue-router](https://next.router.vuejs.org/index.html)
-- [vuex](https://next.vuex.vuejs.org/index.html)
+- [pinia](https://pinia.esm.dev/)
 - [electron](http://www.electronjs.org/docs)
 - electron-updater
 - typescript
