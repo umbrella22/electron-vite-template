@@ -1,22 +1,29 @@
-import type { Commit } from 'vuex'
+import { defineStore } from 'pinia'
+import store from '../index'
+
 interface StateType {
-    testData: string
-}
-const template = {
-    state: {
-        testData: localStorage.getItem("testData") || ""
-    },
-    mutations: {
-        TEST_COMMIT: (state: StateType, data: string) => {
-            state.testData = data
-            localStorage.setItem("testData", data)
-        }
-    },
-    actions: {
-        TEST_ACTION({ commit }: { commit: Commit }, data: string) {
-            commit("TEST_COMMIT", data)
-        }
-    }
+  testData: string
 }
 
-export default template
+const useStore = defineStore({
+  id: 'template',
+  state: (): StateType => ({
+    testData: localStorage.getItem('testData') || ''
+  }),
+  getters: {
+    getTest: (state): string => state.testData,
+    getTest1(): string {
+      return this.testData
+    }
+  },
+  actions: {
+    TEST_ACTION(data: string) {
+      this.testData = data
+      localStorage.setItem('testData', data)
+    }
+  }
+})
+
+export default function useStoreTemplate() {
+  return useStore(store)
+}

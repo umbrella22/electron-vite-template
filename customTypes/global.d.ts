@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron"
+import { ipcRenderer, shell } from "electron"
 
 interface AnyObject {
     [key: string]: any
@@ -22,6 +22,9 @@ declare global {
             arch: string
             nodeVersion: string
             electronVersion: string
+        },
+        shell: {
+            shell: typeof shell
         }
     }
 }

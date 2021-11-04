@@ -21,6 +21,7 @@ const config = defineConfig({
     resolve: {
         alias: {
             '@renderer': root,
+            '@store': join(root, '/store/modules'),
         }
     },
     base: './',
@@ -29,6 +30,8 @@ const config = defineConfig({
         emptyOutDir: true,
         target: 'esnext',
         minify: 'esbuild'
+    },
+    server: {
     },
     plugins: [
         vuePlugin({
