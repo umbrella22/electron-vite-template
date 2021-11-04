@@ -19,8 +19,9 @@
 <script setup lang="ts">
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
-import { useStore } from "vuex"
-console.log(useStore().state.template.testData)
+import useStoreTemplate from '@renderer/store/modules/template'
+const storeTemplate = useStoreTemplate()
+console.log(storeTemplate.$state.testData)
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

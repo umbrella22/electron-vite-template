@@ -94,8 +94,21 @@ import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
-import { useStore } from "vuex";
 import { i18n, setLanguage } from "@renderer/i18n";
+
+import useStoreTemplate from '@renderer/store/modules/template'
+
+const storeTemplate = useStoreTemplate()
+
+console.log(`storeTemplate`, storeTemplate.getTest)
+console.log(`storeTemplate`, storeTemplate.getTest1)
+console.log(`storeTemplate`, storeTemplate.$state.testData)
+
+setTimeout(() => {
+  storeTemplate.TEST_ACTION('654321')
+  console.log(`storeTemplate`, storeTemplate.getTest1)
+}, 1000)
+
 
 const { ipcRenderer, shell } = require("electron");
 
@@ -113,9 +126,6 @@ let progressStaus = ref(null);
 let showForcedUpdate = ref(false);
 let filePath = ref("");
 let updateStatus = ref("");
-
-const store = useStore();
-store.dispatch("TEST_ACTION", "123456");
 
 let elPageSize = ref(100);
 let elCPage = ref(1);

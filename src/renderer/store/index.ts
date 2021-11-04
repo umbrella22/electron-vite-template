@@ -1,8 +1,10 @@
-import { createStore } from 'vuex'
-import getters from './getters'
-import modules from './modules';
+import type { App } from 'vue'
+import { createPinia } from 'pinia'
 
-export default createStore({
-    modules,
-    getters
-})
+const store = createPinia()
+
+export default function setupStore(app: App<Element>) {
+  app.use(store)
+}
+
+export { store }
