@@ -44,7 +44,6 @@ class MainInit {
         webSecurity: false,
         // 如果是开发模式可以使用devTools
         devTools: process.env.NODE_ENV === 'development',
-        // devTools: true,
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin',
         preload: process.env.NODE_ENV === 'development'
@@ -65,7 +64,6 @@ class MainInit {
       this.mainWindow.show()
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
-    // this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
     // 开发模式下自动开启devtools
     if (process.env.NODE_ENV === 'development') {
       this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })

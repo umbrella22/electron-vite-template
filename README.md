@@ -15,7 +15,8 @@ To run a project, you need to have **node version 12** or higher and **use yarn 
 
 [For Chinese Developers](/README_ZH.md)
 
-[![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/build-test.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/build-test.yml)
+[![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml)
+
 # Build Setup
 
 ``` bash
@@ -47,7 +48,7 @@ $ yarn build
 # Built-in
 
 - [vue-router](https://next.router.vuejs.org/index.html)
-- [vuex](https://next.vuex.vuejs.org/index.html)
+- [pinia](https://pinia.esm.dev/)
 - [electron](http://www.electronjs.org/docs)
 - electron-updater
 - typescript

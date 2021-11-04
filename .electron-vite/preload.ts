@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron"
+import { contextBridge, ipcRenderer, IpcRendererEvent, shell } from "electron"
 import { platform, release, arch } from 'os'
 
 contextBridge.exposeInMainWorld("ipcRenderer", {
@@ -16,4 +16,8 @@ contextBridge.exposeInMainWorld("systemInfo", {
     platform: platform(),
     release: release(),
     arch: arch()
+})
+
+contextBridge.exposeInMainWorld("shell", {
+    shell: shell
 })
