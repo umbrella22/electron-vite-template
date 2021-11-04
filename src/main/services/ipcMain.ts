@@ -91,13 +91,13 @@ export default {
           scrollBounce: process.platform === 'darwin'
         }
       })
+      // 开发模式下自动开启devtools
+      if (process.env.NODE_ENV === 'development') {
+        ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
+      }
       ChildWin.loadURL(winURL + `#${arg.url}`)
       ChildWin.webContents.once('dom-ready', () => {
         ChildWin.show()
-        // 由于渲染进程可能会加载缓慢，所以在这里，加一个延迟，等一等渲染进程
-        setTimeout(() => {
-          ChildWin.webContents.send('send-data-test', arg.sendData)
-        }, 1000)
         if (arg.IsPay) {
           // 检查支付时候自动关闭小窗口
           const testUrl = setInterval(() => {
@@ -110,6 +110,10 @@ export default {
             clearInterval(testUrl)
           })
         }
+      })
+      // 渲染进程显示时触发
+      ChildWin.once("show", () => {
+        ChildWin.webContents.send('send-data-test', arg.sendData)
       })
     })
   }
