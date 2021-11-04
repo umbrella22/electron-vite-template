@@ -7,7 +7,7 @@ import './permission'
 import App from './App.vue'
 import router from './router'
 import { errorHandler } from './error'
-import setupStore from './store'
+import store from './store'
 
 import { i18n } from "./i18n"
 
@@ -16,7 +16,7 @@ import TitleBar from "./components/common/TitleBar.vue"
 const app = createApp(App)
 app.use(ElementPlus, { i18n: i18n.global.t })
 app.use(router)
-setupStore(app)
+app.use(store)
 app.use(i18n)
 errorHandler(app)
 

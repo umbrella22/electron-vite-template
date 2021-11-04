@@ -96,7 +96,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
 
-import useStoreTemplate from '@renderer/store/modules/template'
+import useStoreTemplate from '@store/template'
 
 const storeTemplate = useStoreTemplate()
 

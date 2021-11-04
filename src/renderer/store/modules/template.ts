@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { store } from '../index'
+import store from '../index'
 
 interface StateType {
   testData: string
 }
+
 const useStore = defineStore({
   id: 'template',
   state: (): StateType => ({
