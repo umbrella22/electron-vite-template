@@ -97,6 +97,7 @@ import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
 
 import useStoreTemplate from '@store/template'
+import TitleBar from "./common/TitleBar.vue";
 
 const storeTemplate = useStoreTemplate()
 
