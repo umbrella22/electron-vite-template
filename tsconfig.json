@@ -25,6 +25,9 @@
             ],
             "@main/*": [
                 "src/main/*"
+            ],
+            "@store/*": [
+                "src/renderer/store/modules/*"
             ]
         },
         "typeRoots": [
