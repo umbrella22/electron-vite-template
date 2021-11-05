@@ -36,15 +36,26 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-const { ipcRenderer } = window;
+let { ipcRenderer } = window;
 
 const IsUseSysTitle = ref(false);
 const mix = ref(false);
 const isNotMac = ref(process.platform !== "darwin");
 const IsWeb = ref(process.env.BUILD_TARGET);
-ipcRenderer.invoke("IsUseSysTitle").then((res) => {
-  IsUseSysTitle.value = res;
-});
+
+if (!ipcRenderer) {
+	ipcRenderer = {} as any;
+	ipcRenderer.on =
+  ipcRenderer.invoke =
+  ipcRenderer.removeAllListeners =
+    (...args: any): any => {
+      console.log("not electron");
+    };
+} else {
+  ipcRenderer.invoke("IsUseSysTitle").then((res) => {
+    IsUseSysTitle.value = res;
+  });
+}
 
 const Mini = () => {
   ipcRenderer.invoke("windows-mini");

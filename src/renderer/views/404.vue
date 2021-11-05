@@ -20,8 +20,27 @@
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
 import useStoreTemplate from '@store/template'
+import { onMounted } from "vue";
+let { ipcRenderer } = window;
 const storeTemplate = useStoreTemplate()
 console.log(storeTemplate.$state.testData)
+
+if (!ipcRenderer) {
+	ipcRenderer = {} as any;
+	ipcRenderer.on =
+  ipcRenderer.invoke =
+  ipcRenderer.removeAllListeners =
+    (...args: any): any => {
+      console.log("not electron");
+    };
+}
+
+onMounted(() => {
+  ipcRenderer.on("send-data-test", (event, data) => {
+    console.log(event)
+    console.log(data)
+  })
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
