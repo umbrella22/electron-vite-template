@@ -14,6 +14,6 @@ module.exports = {
   DllFolder: '',
   HotUpdateFolder: 'update',
   UseStartupChart: true,
-  IsUseSysTitle: true,
+  IsUseSysTitle: false,
   BuiltInServerPort: 25565
 }
