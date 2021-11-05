@@ -39,7 +39,7 @@ class MainInit {
       minWidth: 1366,
       show: false,
       frame: config.IsUseSysTitle,
-      titleBarStyle: platform().includes('win32') ? 'default' : 'hidden',
+      titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
       webPreferences: {
         webSecurity: false,
         // 如果是开发模式可以使用devTools
