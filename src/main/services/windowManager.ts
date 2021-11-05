@@ -38,7 +38,7 @@ class MainInit {
       minWidth: 1366,
       show: false,
       frame: config.IsUseSysTitle,
-      titleBarStyle: platform().includes('win32') ? 'default' : 'hidden',
+      titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
       webPreferences: {
         contextIsolation: false,
         nodeIntegration: true,
