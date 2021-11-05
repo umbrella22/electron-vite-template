@@ -32,6 +32,8 @@
       </div>
     </div>
   </div>
+  <div v-else-if="!IsUseSysTitle && !isNotMac" class="window-title">
+  </div>
 </template>
 
 <script setup lang="ts">
