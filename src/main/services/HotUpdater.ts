@@ -65,7 +65,7 @@ export const updater = async (windows?: BrowserWindow) => {
             const filePath = join(updatePath, res.data.name)
             updateInfo.status = 'downloading'
             if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            await download(hotPublishConfig.url, filePath)
+            await download(`${hotPublishConfig.url}/${res.data.name}`, filePath);
             const buffer = await readFile(filePath)
             const sha256 = hash(buffer)
             if (sha256 !== res.data.hash) throw new Error('sha256 error')
