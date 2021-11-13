@@ -1,22 +1,12 @@
 import { autoUpdater } from 'electron-updater'
-import { ipcMain, BrowserWindow } from 'electron'
+import { BrowserWindow } from 'electron'
 /**
  * -1 检查更新失败 0 正在检查更新 1 检测到新版本，准备下载 2 未检测到新版本 3 下载中 4 下载完成
  **/
 class Update {
   public mainWindow: BrowserWindow
-  constructor(mainWindow: BrowserWindow) {
+  constructor() {
     autoUpdater.setFeedURL('http://127.0.0.1:25565/')
-    this.mainWindow = mainWindow
-    // 注册事件
-    this.checkUpdate()
-    this.start()
-    this.hasData()
-    this.noData()
-    this.listen()
-    this.done()
-    this.quitInstall()
-    this.error()
   }
   // 负责向渲染进程发送信息
   Message(mainWindow: BrowserWindow, type: Number, data?: String) {
@@ -80,19 +70,16 @@ class Update {
   }
 
   // 执行自动更新检查
-  checkUpdate() {
-    ipcMain.handle('check-update', () => {
-      autoUpdater.checkForUpdates().catch(err => {
-        console.log('网络连接问题', err)
-      })
+  checkUpdate(mainWindow: BrowserWindow) {
+    this.mainWindow = mainWindow
+    autoUpdater.checkForUpdates().catch(err => {
+      console.log('网络连接问题', err)
     })
   }
 
   // 退出并安装
   quitInstall() {
-    ipcMain.handle('confirm-update', () => {
-      autoUpdater.quitAndInstall()
-    })
+    autoUpdater.quitAndInstall()
   }
 }
 

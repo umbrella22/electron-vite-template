@@ -1,11 +1,10 @@
 import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
-import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { platform } from 'os'
 import { winURL, loadingURL } from '../config/StaticPath'
-import path from "path"
+import { join } from "path"
 
 class MainInit {
 
@@ -47,8 +46,8 @@ class MainInit {
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin',
         preload: process.env.NODE_ENV === 'development'
-          ? path.join(app.getAppPath(), 'preload.js')
-          : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
+          ? join(app.getAppPath(), 'preload.js')
+          : join(app.getAppPath(), 'dist/electron/main/preload.js')
       }
     })
     // 赋予模板
@@ -57,8 +56,6 @@ class MainInit {
     Menu.setApplicationMenu(menu)
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
-    // electron-update注册
-    new Update(this.mainWindow)
     // dom-ready之后显示界面
     this.mainWindow.webContents.once('dom-ready', () => {
       this.mainWindow.show()
@@ -184,8 +181,8 @@ class MainInit {
       webPreferences: {
         experimentalFeatures: true,
         preload: process.env.NODE_ENV === 'development'
-          ? path.join(app.getAppPath(), 'preload.js')
-          : path.join(app.getAppPath(), 'dist/electron/main/preload.js')
+          ? join(app.getAppPath(), 'preload.js')
+          : join(app.getAppPath(), 'dist/electron/main/preload.js')
       }
     })
 
