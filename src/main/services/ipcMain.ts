@@ -1,11 +1,15 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
+import config from '@config/index'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import DownloadFile from './downloadFile'
+import Update from './checkupdate';
+
 
 export default {
   Mainfunc(IsUseSysTitle: Boolean) {
+    const allUpdater = new Update();
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
     })
@@ -23,6 +27,12 @@ export default {
     })
     ipcMain.handle('window-close', (event, args) => {
       BrowserWindow.fromWebContents(event.sender)?.close()
+    })
+    ipcMain.handle('check-update', (event) => {
+      allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender))
+    })
+    ipcMain.handle('confirm-update', () => {
+      allUpdater.quitAndInstall()
     })
     ipcMain.handle('app-close', (event, args) => {
       app.quit()
@@ -76,10 +86,12 @@ export default {
       const ChildWin = new BrowserWindow({
         height: 595,
         useContentSize: true,
-        width: 842,
+        width: 1140,
         autoHideMenuBar: true,
         minWidth: 842,
         show: false,
+        frame: config.IsUseSysTitle,
+        titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
         webPreferences: {
           nodeIntegration: true,
           contextIsolation: false,
