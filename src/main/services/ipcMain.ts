@@ -5,7 +5,7 @@ import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import DownloadFile from './downloadFile'
 import Update from './checkupdate';
-
+import { join } from "path"
 
 export default {
   Mainfunc(IsUseSysTitle: Boolean) {
@@ -41,7 +41,7 @@ export default {
       allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender))
     })
     ipcMain.handle('confirm-update', () => {
-      allUpdater.quitInstall()
+      allUpdater.quitAndInstall()
     })
     ipcMain.handle('open-messagebox', async (event, arg) => {
       const res = await dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {
@@ -98,8 +98,6 @@ export default {
         frame: config.IsUseSysTitle,
         titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
         show: false,
-        frame: config.IsUseSysTitle,
-        titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
         webPreferences: {
           webSecurity: false,
           // 如果是开发模式可以使用devTools
