@@ -1,7 +1,6 @@
 import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
-import Update from './checkupdate';
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { platform } from 'os'
 import { winURL, loadingURL } from '../config/StaticPath'
@@ -57,8 +56,6 @@ class MainInit {
     Menu.setApplicationMenu(menu)
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
-    // electron-update注册
-    new Update(this.mainWindow)
     // dom-ready之后显示界面
     this.mainWindow.webContents.once('dom-ready', () => {
       this.mainWindow.show()
