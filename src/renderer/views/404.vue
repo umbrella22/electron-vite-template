@@ -20,16 +20,13 @@
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
 import useStoreTemplate from '@store/template'
-import { onMounted } from "vue";
 const { ipcRenderer } = require("electron");
 const storeTemplate = useStoreTemplate()
 console.log(storeTemplate.$state.testData)
 
-onMounted(() => {
-  ipcRenderer.on("send-data-test", (event, data) => {
-    console.log(event)
-    console.log(data)
-  })
+ipcRenderer.on("send-data-test", (event, data) => {
+  console.log(event)
+  console.log(data)
 })
 </script>
 
