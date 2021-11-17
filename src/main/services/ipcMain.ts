@@ -35,7 +35,7 @@ export default {
       allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender))
     })
     ipcMain.handle('confirm-update', () => {
-      allUpdater.quitInstall()
+      allUpdater.quitAndInstall()
     })
     ipcMain.handle('open-messagebox', async (event, arg) => {
       const res = await dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {

@@ -78,7 +78,7 @@ class Update {
   }
 
   // 退出并安装
-  quitInstall() {
+  quitAndInstall() {
     autoUpdater.quitAndInstall()
   }
 }
