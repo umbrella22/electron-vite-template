@@ -13,7 +13,7 @@ class Performance {
      * @returns {Function}  执行返回值获取时间信息
      * @date 2019-11-29
      */
-  startExecute(name = '') {
+  startExecute(name = ''): Function {
     const timer = Timer.start()
     const usedJSHeapSize = this.getMemoryInfo().usedJSHeapSize
     return (name2 = '') => {

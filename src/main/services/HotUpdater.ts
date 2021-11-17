@@ -12,7 +12,7 @@ import { createHmac } from 'crypto'
 import extract from 'extract-zip'
 import { version } from '../../../package.json'
 import { hotPublishConfig } from '../config/hotPublish'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 const streamPipeline = promisify(pipeline)
 const appPath = app.getAppPath()
@@ -27,7 +27,7 @@ const request = axios.create({ adapter: require("axios/lib/adapters/http") })
  * @author umbrella22
  * @date 2021-03-05
  */
-function hash(data, type = 'sha256', key = 'Sky') {
+function hash(data, type = 'sha256', key = 'Sky'): string {
     const hmac = createHmac(type, key)
     hmac.update(data)
     return hmac.digest('hex')
@@ -41,7 +41,7 @@ function hash(data, type = 'sha256', key = 'Sky') {
  * @author umbrella22
  * @date 2021-03-05
  */
-async function download(url: string, filePath: string) {
+async function download(url: string, filePath: string): Promise<void> {
     const res = await request({ url, responseType: "stream" })
     await streamPipeline(res.data, createWriteStream(filePath))
 }
@@ -51,15 +51,23 @@ const updateInfo = {
     message: ''
 }
 
+interface Res extends AxiosResponse<any> {
+    data: {
+        version?: string;
+        name?: string;
+        hash?: string;
+    };
+}
+
 /**
  * @param windows 指主窗口
  * @returns {void}
  * @author umbrella22
  * @date 2021-03-05
  */
-export const updater = async (windows?: BrowserWindow) => {
+export const updater = async (windows?: BrowserWindow): Promise<void> => {
     try {
-        const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
+        const res: Res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
         if (gt(res.data.version, version)) {
             await emptyDir(updatePath)
             const filePath = join(updatePath, res.data.name)
@@ -77,7 +85,6 @@ export const updater = async (windows?: BrowserWindow) => {
             await copy(appPathTemp, appPath)
             updateInfo.status = 'finished'
             if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            resolve('success')
         }
 
 

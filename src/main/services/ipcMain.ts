@@ -37,6 +37,12 @@ export default {
     ipcMain.handle('app-close', (event, args) => {
       app.quit()
     })
+    ipcMain.handle('check-update', (event) => {
+      allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender))
+    })
+    ipcMain.handle('confirm-update', () => {
+      allUpdater.quitInstall()
+    })
     ipcMain.handle('open-messagebox', async (event, arg) => {
       const res = await dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {
         type: arg.type || 'info',
@@ -89,18 +95,21 @@ export default {
         width: 1140,
         autoHideMenuBar: true,
         minWidth: 842,
+        frame: config.IsUseSysTitle,
+        titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
         show: false,
         frame: config.IsUseSysTitle,
         titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
         webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
           webSecurity: false,
           // 如果是开发模式可以使用devTools
           devTools: process.env.NODE_ENV === 'development',
           // devTools: true,
           // 在macos中启用橡皮动画
-          scrollBounce: process.platform === 'darwin'
+          scrollBounce: process.platform === 'darwin',
+          preload: process.env.NODE_ENV === 'development'
+          ? join(app.getAppPath(), 'preload.js')
+          : join(app.getAppPath(), 'dist/electron/main/preload.js')
         }
       })
       // 开发模式下自动开启devtools

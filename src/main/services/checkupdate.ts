@@ -1,5 +1,5 @@
 import { autoUpdater } from 'electron-updater'
-import { ipcMain, BrowserWindow } from 'electron'
+import { BrowserWindow } from 'electron'
 /**
  * -1 检查更新失败 0 正在检查更新 1 检测到新版本，准备下载 2 未检测到新版本 3 下载中 4 下载完成
  **/
@@ -7,7 +7,6 @@ class Update {
   public mainWindow: BrowserWindow
   constructor() {
     autoUpdater.setFeedURL('http://127.0.0.1:25565/')
-
   }
   // 负责向渲染进程发送信息
   Message(mainWindow: BrowserWindow, type: Number, data?: String) {
