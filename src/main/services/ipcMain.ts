@@ -1,15 +1,15 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
-import config from '@config/index'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import DownloadFile from './downloadFile'
-import Update from './checkupdate';
-import { join } from "path"
+import Update from './checkupdate'
+import { join } from 'path'
+import config from '@config/index'
 
 export default {
   Mainfunc(IsUseSysTitle: Boolean) {
-    const allUpdater = new Update();
+    const allUpdater = new Update()
     ipcMain.handle('IsUseSysTitle', async () => {
       return IsUseSysTitle
     })
@@ -27,12 +27,6 @@ export default {
     })
     ipcMain.handle('window-close', (event, args) => {
       BrowserWindow.fromWebContents(event.sender)?.close()
-    })
-    ipcMain.handle('check-update', (event) => {
-      allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender))
-    })
-    ipcMain.handle('confirm-update', () => {
-      allUpdater.quitAndInstall()
     })
     ipcMain.handle('app-close', (event, args) => {
       app.quit()
