@@ -3,7 +3,6 @@ import config from '@config/index'
 import menuconfig from '../config/menu'
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
-import { platform } from 'os';
 
 class MainInit {
 

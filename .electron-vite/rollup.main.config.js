@@ -1,13 +1,14 @@
 const path = require('path')
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
 const commonjs = require('@rollup/plugin-commonjs')
-const esbuild = require('rollup-plugin-esbuild')
+const esbuild = require('rollup-plugin-esbuild').default
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
-const obfuscator  = require('rollup-plugin-obfuscator').default
+const obfuscator = require('rollup-plugin-obfuscator').default
 
-module.exports = (env = 'production') => {
-  return {
+
+const config = () => {
+  const configObject = {
     input: path.join(__dirname, '../src/main/index.ts'),
     output: {
       file: path.join(__dirname, '../dist/electron/main/main.js'),
@@ -23,7 +24,7 @@ module.exports = (env = 'production') => {
       json(),
       esbuild({
         // All options are optional
-        include: /\.[jt]sx?$/, // default, inferred from `loaders` option
+        include: /\.[jt]s?$/, // default, inferred from `loaders` option
         exclude: /node_modules/, // default
         // watch: process.argv.includes('--watch'), // rollup 中有配置
         sourceMap: false, // default
@@ -39,10 +40,8 @@ module.exports = (env = 'production') => {
           // require @rollup/plugin-commonjs
           '.json': 'json',
           // Enable JSX in .js files too
-          '.js': 'jsx'
         },
       }),
-      obfuscator({}),
       alias({
         entries: [
           { find: '@main', replacement: path.join(__dirname, '../src/main'), },
@@ -71,4 +70,12 @@ module.exports = (env = 'production') => {
       'glob'
     ],
   }
+
+  if (process.env.NODE_ENV == "production") {
+    configObject.plugins.push(obfuscator({}));
+  }
+
+  return configObject
 }
+
+module.exports = config
