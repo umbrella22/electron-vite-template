@@ -1,7 +1,7 @@
 const path = require("path");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const commonjs = require("@rollup/plugin-commonjs");
-const esbuild = require("rollup-plugin-esbuild");
+const esbuild = require("rollup-plugin-esbuild").default;
 const alias = require("@rollup/plugin-alias");
 const json = require("@rollup/plugin-json");
 const obfuscator = require("rollup-plugin-obfuscator").default;
@@ -29,7 +29,7 @@ const config = (env = "production", type = "main") => {
       json(),
       esbuild({
         // All options are optional
-        include: /\.[jt]sx?$/, // default, inferred from `loaders` option
+        include: /\.[jt]s?$/, // default, inferred from `loaders` option
         exclude: /node_modules/, // default
         // watch: process.argv.includes('--watch'), // rollup 中有配置
         sourceMap: false, // default
@@ -78,7 +78,7 @@ const config = (env = "production", type = "main") => {
       "glob",
     ],
   };
-  
+
   if (process.env.NODE_ENV == "production") {
     configObject.plugins.push(obfuscator({}));
   }

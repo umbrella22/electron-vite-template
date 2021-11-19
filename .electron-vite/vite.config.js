@@ -1,5 +1,6 @@
 const { join } = require("path")
 const vuePlugin = require("@vitejs/plugin-vue")
+const vueJsx = require("@vitejs/plugin-vue-jsx");
 const { defineConfig } = require("vite")
 const userConfig = require("../config")
 const IsWeb = process.env.BUILD_TARGET === 'web'
@@ -34,6 +35,7 @@ const config = defineConfig({
     server: {
     },
     plugins: [
+        vueJsx(),
         vuePlugin({
             script: {
                 refSugar: true

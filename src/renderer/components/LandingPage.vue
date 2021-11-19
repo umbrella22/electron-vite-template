@@ -329,7 +329,7 @@ body {
 }
 
 #wrapper {
-  padding: 60px 80px;
+  padding: 124px 80px;
 }
 
 #logo {
