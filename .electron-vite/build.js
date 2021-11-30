@@ -79,6 +79,32 @@ function web() {
     })
 }
 
+async function packResources() {
+    const packResourcesPath = resolve("./build/resources/dist");
+    const packPackagePath = resolve("./build/resources");
+    const resourcesPath = resolve("./dist");
+    try {
+        await ensureDir(packResourcesPath);
+        await emptyDir(packResourcesPath);
+        await copy(resourcesPath, packResourcesPath);
+        await outputJSON(resolve(packPackagePath, "package.json"), {
+            name: packageFile.name,
+            productName: packageFile.productName,
+            version: packageFile.version,
+            private: packageFile.private,
+            description: packageFile.description,
+            main: packageFile.main,
+            author: packageFile.author,
+            dependencies: packageFile.dependencies
+        });
+        console.log(`${okayLog} Resources File pack success \n`);
+    } catch (error) {
+        console.log(`\n  ${errorLog} failed to pack Resources File`);
+        console.error(`\n${error}\n`);
+        process.exit(1);
+    }
+}
+
 function greeting() {
     const cols = process.stdout.columns
     let text = ''
