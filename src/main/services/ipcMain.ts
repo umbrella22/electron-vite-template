@@ -6,6 +6,7 @@ import DownloadFile from './downloadFile'
 import Update from './checkupdate'
 import { join } from 'path'
 import config from '@config/index'
+import { otherWindowConfig } from "../config/windowsConfig"
 
 export default {
   Mainfunc(IsUseSysTitle: Boolean) {
@@ -84,25 +85,14 @@ export default {
     })
     ipcMain.handle('open-win', (event, arg) => {
       const ChildWin = new BrowserWindow({
-        height: 595,
-        useContentSize: true,
-        width: 1140,
-        autoHideMenuBar: true,
-        minWidth: 842,
-        frame: config.IsUseSysTitle,
         titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-        show: false,
-        webPreferences: {
-          webSecurity: false,
-          // 如果是开发模式可以使用devTools
-          devTools: process.env.NODE_ENV === 'development',
-          // devTools: true,
-          // 在macos中启用橡皮动画
-          scrollBounce: process.platform === 'darwin',
-          preload: process.env.NODE_ENV === 'development'
-          ? join(app.getAppPath(), 'preload.js')
-          : join(app.getAppPath(), 'dist/electron/main/preload.js')
-        }
+        ...Object.assign(otherWindowConfig, {
+          webPreferences: {
+            preload: process.env.NODE_ENV === 'development'
+              ? join(app.getAppPath(), 'preload.js')
+              : join(app.getAppPath(), 'dist/electron/main/preload.js')
+          }
+        })
       })
       // 开发模式下自动开启devtools
       if (process.env.NODE_ENV === 'development') {
