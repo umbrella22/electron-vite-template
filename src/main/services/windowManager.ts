@@ -3,6 +3,7 @@ import config from '@config/index'
 import menuconfig from '../config/menu'
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
+import { mainWindowConfig } from "../config/windowsConfig"
 
 class MainInit {
 
@@ -30,22 +31,8 @@ class MainInit {
   // 主窗口函数
   createMainWindow() {
     this.mainWindow = new BrowserWindow({
-      height: 800,
-      useContentSize: true,
-      width: 1700,
-      minWidth: 1366,
-      show: false,
-      frame: config.IsUseSysTitle,
       titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      webPreferences: {
-        contextIsolation: false,
-        nodeIntegration: true,
-        webSecurity: false,
-        // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin'
-      }
+      ...Object.assign(mainWindowConfig, {})
     })
     // 赋予模板
     const menu = Menu.buildFromTemplate(menuconfig as any)

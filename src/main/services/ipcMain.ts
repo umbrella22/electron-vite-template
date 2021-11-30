@@ -5,6 +5,7 @@ import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import DownloadFile from './downloadFile'
 import Update from './checkupdate';
+import { otherWindowConfig } from "../config/windowsConfig"
 
 
 export default {
@@ -84,24 +85,8 @@ export default {
     })
     ipcMain.handle('open-win', (event, arg) => {
       const ChildWin = new BrowserWindow({
-        height: 595,
-        useContentSize: true,
-        width: 1140,
-        autoHideMenuBar: true,
-        minWidth: 842,
-        show: false,
-        frame: config.IsUseSysTitle,
         titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-        webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
-          webSecurity: false,
-          // 如果是开发模式可以使用devTools
-          devTools: process.env.NODE_ENV === 'development',
-          // devTools: true,
-          // 在macos中启用橡皮动画
-          scrollBounce: process.platform === 'darwin'
-        }
+        ...Object.assign(otherWindowConfig, {})
       })
       // 开发模式下自动开启devtools
       if (process.env.NODE_ENV === 'development') {
