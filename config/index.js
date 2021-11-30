@@ -3,7 +3,7 @@ module.exports = {
     DisableF12: true,
     env: require('./prod.env'),
     hotPublishUrl:"",
-    hotPublishConfigName: ""
+    hotPublishConfigName: "update-config"
   },
   dev: {
     env: require('./dev.env'),
