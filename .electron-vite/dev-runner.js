@@ -12,7 +12,7 @@ const { spawn } = require('child_process')
 const { createServer } = require('vite')
 
 const rendererOptions = require("./vite.config")
-const mainOptions = require("./rollup.main.config")
+const mainOptions = require("./rollup.config")
 const opt = mainOptions(process.env.NODE_ENV);
 
 let electronProcess = null
