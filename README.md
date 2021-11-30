@@ -2,17 +2,17 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
-[![vue](https://img.shields.io/badge/vue-3.2.20-brightgreen.svg)](https://github.com/vuejs/vue-next)
-[![vite](https://img.shields.io/badge/vite-2.6.5-brightgreen.svg)](https://github.com/vitejs/vite)
+[![vue](https://img.shields.io/badge/vue-3.2.23-brightgreen.svg)](https://github.com/vuejs/vue-next)
+[![vite](https://img.shields.io/badge/vite-2.6.14-brightgreen.svg)](https://github.com/vitejs/vite)
 [![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
-[![electron](https://img.shields.io/badge/electron-15.1.2-brightgreen.svg)](https://github.com/electron/electron)
+[![electron](https://img.shields.io/badge/electron-15.3.1-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
 # Installation
 
 You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
 
-To run a project, you need to have **node version 14** or higher and **use yarn as your dependency management tool**
+To run a project, you need to have **node version 16** or higher and **use yarn as your dependency management tool**
 
 [For Chinese Developers](/README_ZH.md)
 
