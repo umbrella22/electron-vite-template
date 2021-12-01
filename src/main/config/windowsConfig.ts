@@ -8,8 +8,6 @@ export const mainWindowConfig = {
     show: false,
     frame: config.IsUseSysTitle,
     webPreferences: {
-        contextIsolation: false,
-        nodeIntegration: true,
         webSecurity: false,
         // 如果是开发模式可以使用devTools
         devTools: process.env.NODE_ENV === 'development',
@@ -27,8 +25,6 @@ export const otherWindowConfig = {
     frame: config.IsUseSysTitle,
     show: false,
     webPreferences: {
-        contextIsolation: false,
-        nodeIntegration: true,
         webSecurity: false,
         // 如果是开发模式可以使用devTools
         devTools: process.env.NODE_ENV === 'development',

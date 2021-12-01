@@ -9,7 +9,6 @@ const rollup = require("rollup")
 const { build } = require('vite')
 const Multispinner = require('multispinner')
 
-const mainOptions = require('./rollup.config');
 const rendererOptions = require('./vite.config')
 const rollupOptions = require("./rollup.config")
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
