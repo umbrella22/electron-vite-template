@@ -2,7 +2,7 @@
  * power by biuuu
  */
 
-import { emptyDir, createWriteStream, readFile, copy } from 'fs-extra'
+import { emptyDir, createWriteStream, readFile, copy, remove } from 'fs-extra'
 import { join, resolve } from 'path'
 import { promisify } from 'util'
 import { pipeline } from 'stream'
@@ -73,7 +73,8 @@ export const updater = async (windows?: BrowserWindow) => {
             await extract(filePath, { dir: appPathTemp })
             updateInfo.status = 'moving'
             if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            await emptyDir(appPath)
+            await remove(join(`${appPath}`, 'dist'));
+            await remove(join(`${appPath}`, 'package.json'));
             await copy(appPathTemp, appPath)
             updateInfo.status = 'finished'
             if (windows) windows.webContents.send('hot-update-status', updateInfo);
