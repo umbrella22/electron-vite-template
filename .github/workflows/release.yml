@@ -21,18 +21,18 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Build Resoure file
       run: |
-            yarn --frozen-lockfile
-            yarn build
-            yarn pack:resources
+          yarn --frozen-lockfile
+          yarn build
+          yarn pack:resources
     - name: Create Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-           build/*.exe
-           build/*.dmg
-           build/*.AppImage
-           build/*.deb
+          build/*.exe
+          build/*.dmg
+          build/*.AppImage
+          build/*.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
