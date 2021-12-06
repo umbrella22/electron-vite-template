@@ -24,19 +24,15 @@ jobs:
             yarn --frozen-lockfile
             yarn build
             yarn pack:resources
-      - name: release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            build/*.*
-            # build/*.exe
-            # build/*.dmg
-            # build/*.AppImage
-            # build/*.deb
-            # build/latest-linux.yml
-            # build/latest-mac.yml
-            # build/latest.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+           build/*.exe
+           build/*.dmg
+           build/*.AppImage
+           build/*.deb
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
