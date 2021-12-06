@@ -16,7 +16,7 @@ To run a project, you need to have **node version 22** or higher and **use npm a
 
 [For Chinese Developers](/README_ZH.md)
 
-[![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml)
+[![Build Updater Status](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build%20Update.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build%20Update.yml)
 
 # Build Setup
 
