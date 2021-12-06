@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    branches: [ main ]
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
@@ -39,5 +40,5 @@ jobs:
             # build/latest-mac.yml
             # build/latest.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GDS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
