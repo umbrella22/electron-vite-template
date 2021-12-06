@@ -2,9 +2,9 @@ name: Build TEST
 
 on:
   push:
-    branches: [mini-main]
+    branches: [main]
   pull_request:
-    branches: [mini-main]
+    branches: [main]
 
 jobs:
   build:
