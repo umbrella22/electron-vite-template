@@ -1802,10 +1802,10 @@ electron@^15.3.1:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.2.0-beta.4:
-  version "1.2.0-beta.4"
-  resolved "https://registry.npmmirror.com/element-plus/download/element-plus-1.2.0-beta.4.tgz#970c7c6307ef7433a84691720cdd4c979116677b"
-  integrity sha512-wYOwa/Zop5xMqhqkS7jOd32FF0Y2IpquIu8JLMbmvwlWvRUVetE5RO5lvxiF6etZgq8urRVttisXnOzJ9YOItQ==
+element-plus@^1.2.0-beta.5:
+  version "1.2.0-beta.5"
+  resolved "https://registry.npmmirror.com/element-plus/download/element-plus-1.2.0-beta.5.tgz#ef4498c2d051a122cf5898189f4215129bb368bb"
+  integrity sha512-8KNGsNZ6RjVJ7kmxq/WLeTBMhVxSjfaGdW2QdcdXz4km1MgxbyBfdiNGVQG4XH/n+hbtLFldCPw0mVT4vkncuA==
   dependencies:
     "@element-plus/icons" "^0.0.11"
     "@popperjs/core" "^2.10.2"
@@ -3571,10 +3571,10 @@ pify@^3.0.0:
   resolved "https://registry.npm.taobao.org/pify/download/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
   integrity sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
 
-pinia@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.npmmirror.com/pinia/download/pinia-2.0.4.tgz#06f6a03f6f19e6ec8b63cc06459011d96948e53d"
-  integrity sha512-nAc2f9HmOcBbWRlnGDuBGedM1G6uFAR10FnJWP1/dgm1I2tM5jbgKL/3IgynP4mBnPCy//ky7g0WpCZl5Mmxsg==
+pinia@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmmirror.com/pinia/download/pinia-2.0.6.tgz#db7ebccd459ef8020d0c528d85be7930e0f4edd0"
+  integrity sha512-01mP4+KapIcTNSYLhQESy6GW0N8vY5wX3UqOwkC87e7DPjEusNJ8bENrKqdvZaRHbB2rDMOONeAbwMa3+n1/rw==
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.20.1"
     vue-demi "*"

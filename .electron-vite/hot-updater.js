@@ -80,7 +80,7 @@ const start = async () => {
                             hash: sha256
                         }
                     );
-                    // await remove(packPackagePath);
+                    await remove(packPackagePath);
                     console.log(
                         "\n" + chalk.bgGreen.white(" DONE ") + "  " + "The resource file is packaged!\n"
                     );
