@@ -2,7 +2,8 @@ module.exports = {
   build: {
     DisableF12: true,
     env: require('./prod.env'),
-    hotPublishUrl:"",
+    // 示例
+    hotPublishUrl:"http://umbrella22.github.io/electron-vite-template",
     hotPublishConfigName: "update-config"
   },
   dev: {
