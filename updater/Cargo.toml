@@ -1,0 +1,13 @@
+[package]
+name = "updater"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+druid = { git = "https://github.com/linebender/druid.git" }
+serde_json = "*"
+serde = "*"
+serde_derive = "*"
+sysinfo = "*"
