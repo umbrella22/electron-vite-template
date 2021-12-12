@@ -18,12 +18,19 @@ const errorLog = chalk.bgRed.white(' ERROR ') + ' '
 const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
 
+
 if (process.env.BUILD_TARGET === 'web') web()
 else unionBuild()
 
+function clean() {
+    sync(['dist/electron/main/*', 'dist/electron/renderer/*', 'dist/web/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
+    console.log(`\n${doneLog}clear done`)
+    if (process.env.BUILD_TARGET === 'onlyClean') process.exit()
+}
+
 function unionBuild() {
     greeting()
-    sync(['dist/electron/main/*', 'dist/electron/renderer/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
+    if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') clean()
 
     const tasks = ['main', 'renderer']
     const m = new Multispinner(tasks, {
