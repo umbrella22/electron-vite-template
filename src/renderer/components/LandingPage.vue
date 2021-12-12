@@ -28,6 +28,9 @@
           <el-button type="primary" round @click="CheckUpdate('three')">
             {{ $t("buttons.checkUpdateInc") }}
           </el-button>
+          <el-button type="primary" round @click="CheckUpdate('threetest')">
+            {{ '增量更新TEST' }}
+          </el-button>
           <el-button type="primary" round @click="CheckUpdate('four')">
             {{ $t("buttons.ForcedUpdate") }}
           </el-button>
@@ -194,10 +197,13 @@ function CheckUpdate(data) {
     case "three":
       ipcRenderer.invoke("hot-update");
       break;
+    case "threetest":
+      alert("更新后再次点击没有提示");
+      ipcRenderer.invoke("hot-update-test");
+      break;
     case "four":
       showForcedUpdate.value = true;
       break;
-
     default:
       break;
   }

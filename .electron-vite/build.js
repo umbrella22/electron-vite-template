@@ -18,15 +18,8 @@ const errorLog = chalk.bgRed.white(' ERROR ') + ' '
 const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
 
-if (process.env.BUILD_TARGET === 'clean') clean()
-else if (process.env.BUILD_TARGET === 'web') web()
+if (process.env.BUILD_TARGET === 'web') web()
 else unionBuild()
-
-function clean() {
-    sync(['dist/electron/main/*', 'dist/electron/renderer/*', 'dist/web/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
-    console.log(`\n${doneLog}clear done`)
-    process.exit()
-}
 
 function unionBuild() {
     greeting()

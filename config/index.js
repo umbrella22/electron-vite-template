@@ -3,8 +3,11 @@ module.exports = {
     DisableF12: true,
     env: require('./prod.env'),
     // 示例
-    hotPublishUrl:"http://umbrella22.github.io/electron-vite-template",
-    hotPublishConfigName: "update-config"
+    hotPublishUrl:"http://localhost:5000",
+    hotPublishConfigName: "update-config",
+    hotPublishGzipDirectory: "gzip",
+    hotPublishTempDirectory: "update_temp",
+    hostPublishOldDirectory: "old_temp",
   },
   dev: {
     env: require('./dev.env'),
