@@ -1,6 +1,6 @@
 {
   "asar": false,
-  "extraFiles": [],
+  "extraFiles": ["/updater/*", "updater.exe"],
   "publish": [
     {
       "provider": "generic",
