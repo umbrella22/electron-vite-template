@@ -60,26 +60,27 @@ const updateInfo = {
 export const updater = async (windows?: BrowserWindow) => {
     try {
         const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
-        if (gt(res.data.version, version)) {
-            await emptyDir(updatePath)
-            const filePath = join(updatePath, res.data.name)
-            updateInfo.status = 'downloading'
-            if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            await download(`${hotPublishConfig.url}/${res.data.name}`, filePath);
-            const buffer = await readFile(filePath)
-            const sha256 = hash(buffer)
-            if (sha256 !== res.data.hash) throw new Error('sha256 error')
-            const appPathTemp = join(updatePath, 'temp')
-            await extract(filePath, { dir: appPathTemp })
-            updateInfo.status = 'moving'
-            if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            await remove(join(`${appPath}`, 'dist'));
-            await remove(join(`${appPath}`, 'package.json'));
-            await copy(appPathTemp, appPath)
-            updateInfo.status = 'finished'
-            if (windows) windows.webContents.send('hot-update-status', updateInfo);
-            resolve('success')
-        }
+        if (!gt(res.data.version, version)) return
+        
+        await emptyDir(updatePath)
+        const filePath = join(updatePath, res.data.name)
+        updateInfo.status = 'downloading'
+        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        await download(`${hotPublishConfig.url}/${res.data.name}`, filePath);
+        const buffer = await readFile(filePath)
+        const sha256 = hash(buffer)
+        if (sha256 !== res.data.hash) throw new Error('sha256 error')
+        const appPathTemp = join(updatePath, 'temp')
+        await extract(filePath, { dir: appPathTemp })
+        updateInfo.status = 'moving'
+        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        await remove(join(`${appPath}`, 'dist'));
+        await remove(join(`${appPath}`, 'package.json'));
+        await copy(appPathTemp, appPath)
+        updateInfo.status = 'finished'
+        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        resolve('success')
+
 
 
     } catch (error) {
