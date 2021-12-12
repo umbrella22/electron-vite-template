@@ -14,6 +14,7 @@
     "build:clean": "cross-env BUILD_TARGET=onlyClean node .electron-vite/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vite/build.js",
     "pack:resources": "node .electron-vite/hot-updater.js",
+    "pack:resources:test": "node .electron-vite/hot-updater-test.js",
     "dep:upgrade": "yarn upgrade-interactive --latest",
     "postinstall": "electron-builder install-app-deps"
   },

@@ -3,6 +3,7 @@ import config from '@config/index'
 import Server from '../server'
 import { winURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
+import { updater as updaterTest } from './HotUpdaterTest'
 import DownloadFile from './downloadFile'
 import Update from './checkupdate';
 import { otherWindowConfig } from "../config/windowsConfig"
@@ -79,6 +80,11 @@ export default {
     })
     ipcMain.handle('hot-update', (event, arg) => {
       updater(BrowserWindow.fromWebContents(event.sender))
+    })
+    ipcMain.handle('hot-update-test', (event, arg) => {
+      console.log('hot-update-test')
+      updaterTest(BrowserWindow.fromWebContents(event.sender));
+      app.quit();
     })
     ipcMain.handle('start-download', (event, msg) => {
       new DownloadFile(BrowserWindow.fromWebContents(event.sender), msg.downloadUrl).start()
