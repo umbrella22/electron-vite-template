@@ -43,12 +43,12 @@ class MainInit {
     // dom-ready之后显示界面
     this.mainWindow.webContents.once('dom-ready', () => {
       this.mainWindow.show()
+      // 开发模式下自动开启devtools
+      if (process.env.NODE_ENV === 'development') {
+        this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
+      }
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
-    // 开发模式下自动开启devtools
-    if (process.env.NODE_ENV === 'development') {
-      this.mainWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
-    }
     // 当确定渲染进程卡死时，分类型进行告警操作
     app.on('render-process-gone', (event, webContents, details) => {
       const message = {
