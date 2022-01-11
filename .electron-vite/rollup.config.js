@@ -61,13 +61,14 @@ const config = () => {
       'https',
       'path',
       'electron',
+      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
       'ref-struct-napi',
       // 修正部分人会导致丢失依赖的问题，如果updater工作不正常请取消下面的注释，并自行安装semver
       'semver',
-      'glob'
+      'glob',
     ],
   }
 

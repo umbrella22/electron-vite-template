@@ -40,8 +40,8 @@ class MainInit {
     Menu.setApplicationMenu(menu)
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
-    // dom-ready之后显示界面
-    this.mainWindow.webContents.once('dom-ready', () => {
+    // ready-to-show之后显示界面
+    this.mainWindow.once('ready-to-show', () => {
       this.mainWindow.show()
       // 开发模式下自动开启devtools
       if (process.env.NODE_ENV === 'development') {

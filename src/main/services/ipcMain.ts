@@ -99,7 +99,7 @@ export default {
         ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
       }
       ChildWin.loadURL(winURL + `#${arg.url}`)
-      ChildWin.webContents.once('dom-ready', () => {
+      ChildWin.once('ready-to-show', () => {
         ChildWin.show()
         if (arg.IsPay) {
           // 检查支付时候自动关闭小窗口
