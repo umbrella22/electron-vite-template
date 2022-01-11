@@ -90,7 +90,7 @@ export default {
           webPreferences: {
             preload: process.env.NODE_ENV === 'development'
               ? join(app.getAppPath(), 'preload.js')
-              : join(app.getAppPath(), 'dist/electron/main/preload.js')
+              : join(app.getAppPath(), 'dist', 'electron', 'main', 'preload.js')
           }
         })
       })
@@ -99,7 +99,7 @@ export default {
         ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
       }
       ChildWin.loadURL(winURL + `#${arg.url}`)
-      ChildWin.webContents.once('dom-ready', () => {
+      ChildWin.once('ready-to-show', () => {
         ChildWin.show()
         if (arg.IsPay) {
           // 检查支付时候自动关闭小窗口
@@ -116,7 +116,7 @@ export default {
       })
       // 渲染进程显示时触发
       ChildWin.once("show", () => {
-        ChildWin.webContents.send('send-data-test', arg.sendData)
+        ChildWin.webContents.send('send-data', arg.sendData)
       })
     })
   }

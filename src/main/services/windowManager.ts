@@ -37,7 +37,7 @@ class MainInit {
         webPreferences: {
           preload: process.env.NODE_ENV === 'development'
             ? join(app.getAppPath(), 'preload.js')
-            : join(app.getAppPath(), 'dist/electron/main/preload.js')
+            : join(app.getAppPath(), "dist", "electron", "main", "preload.js")
         }
       })
     })
@@ -48,7 +48,7 @@ class MainInit {
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
     // dom-ready之后显示界面
-    this.mainWindow.webContents.once('dom-ready', () => {
+    this.mainWindow.once('ready-to-show', () => {
       this.mainWindow.show()
       if (config.UseStartupChart) this.loadWindow.destroy()
     })

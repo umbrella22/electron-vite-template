@@ -2,16 +2,16 @@
 import { join } from 'path'
 import { DllFolder, HotUpdateFolder } from '@config/index'
 
-if (process.env.NODE_ENV !== 'development') {
-  process.env.__static = join(__dirname, '..', 'renderer').replace(/\\/g, '\\\\')
-  process.env.__lib = join(__dirname, '..', '..', '..', '..', `${DllFolder}`).replace(/\\/g, '\\\\')
-  process.env.__updateFolder = join(__dirname, '..', '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
-} else {
-  process.env.__static = join(__dirname, '..', '..', '..', 'static').replace(/\\/g, '\\\\')
-  process.env.__updateFolder = join(__dirname, '..', '..', '..', `${HotUpdateFolder}`).replace(/\\/g, '\\\\')
-  process.env.__lib = join(__dirname, '..', '..', '..', `${DllFolder}`).replace(/\\/g, '\\\\')
-}
+if (process.env.NODE_ENV !== 'development') process.env.__static = join(__dirname, '..', 'renderer').replace(/\\/g, '\\\\');
+
+process.env.__lib = getAppRootPath(DllFolder)
+process.env.__updateFolder = getAppRootPath(HotUpdateFolder)
+
 export const winURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}` : `file://${join(__dirname, '..', 'renderer', 'index.html')}`
 export const loadingURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}/loader.html` : `file://${process.env.__static}/loader.html`
 export const lib = process.env.__lib
 export const updateFolder = process.env.__updateFolder
+
+function getAppRootPath(path: string) {
+  return process.env.NODE_ENV !== 'development' ? join(__dirname, '..', '..', '..', '..', path).replace(/\\/g, '\\\\') : join(__dirname, '..', '..', '..', path).replace(/\\/g, '\\\\')
+}

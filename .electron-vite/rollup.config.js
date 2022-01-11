@@ -10,15 +10,15 @@ const config = (env = "production", type = "main") => {
   const configObject = {
     input:
       type === "main"
-        ? path.join(__dirname, "../src/main/index.ts")
-        : path.join(__dirname, "./preload.ts"),
+        ? path.join(__dirname, "..", "src", "main", "index.ts")
+        : path.join(__dirname, "..", "src", "preload", "index.ts"),
     output: {
       file: path.join(
         __dirname,
-        `../dist/electron/main/${type === "main" ? type : "preload"}.js`
+        "..", "dist", "electron", "main", `${type === "main" ? type : "preload"}.js`
       ),
       format: "cjs",
-      name: type === "main" ? "MainProcess" : "MainProcessPreload",
+      name: type === "main" ? "MainProcess" : "MainPreloadProcess",
       sourcemap: false,
     },
     plugins: [
