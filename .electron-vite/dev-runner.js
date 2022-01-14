@@ -176,15 +176,13 @@ function electronLog(data, color) {
         data.forEach(line => {
             log += `  ${line}\n`
         })
-        if (/[0-9A-z]+/.test(log)) {
-            console.log(
-                chalk[color].bold(`┏ ${config.dev.chineseLog ? '主程序日志' : 'Electron'} -------------------`) +
-                '\n\n' +
-                log +
-                chalk[color].bold('┗ ----------------------------') +
-                '\n'
-            )
-        }
+        console.log(
+            chalk[color].bold(`┏ ${config.dev.chineseLog ? '主程序日志' : 'Electron'} -------------------`) +
+            '\n\n' +
+            log +
+            chalk[color].bold('┗ ----------------------------') +
+            '\n'
+        )
     }
 
 }
