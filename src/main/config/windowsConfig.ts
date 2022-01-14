@@ -1,6 +1,7 @@
 import config from '@config/index'
+import type { BrowserWindowConstructorOptions } from "electron"
 
-export const mainWindowConfig = {
+export const mainWindowConfig: BrowserWindowConstructorOptions = {
     height: 800,
     useContentSize: true,
     width: 1700,
@@ -16,7 +17,7 @@ export const mainWindowConfig = {
     }
 };
 
-export const otherWindowConfig = {
+export const otherWindowConfig: BrowserWindowConstructorOptions = {
     height: 595,
     useContentSize: true,
     width: 1140,

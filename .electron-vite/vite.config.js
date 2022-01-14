@@ -8,6 +8,8 @@ const IsWeb = process.env.BUILD_TARGET === 'web'
 function resolve(dir) {
     return join(__dirname, '..', dir)
 }
+userConfig.build.env.is_web = IsWeb
+userConfig.dev.env.is_web = IsWeb
 
 const root = resolve('src/renderer')
 
@@ -16,8 +18,6 @@ const config = defineConfig({
     root,
     define: {
         'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env,
-        'process.env.IS_WEB': IsWeb,
-        'process.env.PORT': userConfig.dev.port
     },
     resolve: {
         alias: {

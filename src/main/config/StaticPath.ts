@@ -1,19 +1,21 @@
 // 这里定义了静态文件路径的位置
 import { join } from 'path'
 import { DllFolder, HotUpdateFolder } from '@config/index'
+import { app } from 'electron'
 
 const filePath = {
   winURL: {
     development: `http://localhost:${process.env.PORT}`,
-    production: `file://${join(__dirname, '..', 'renderer', 'index.html')}`
+    production: `file://${join(app.getAppPath(), "dist", "electron", 'renderer', 'index.html')}`
   },
   loadingURL: {
     development: `http://localhost:${process.env.PORT}/loader.html`,
-    production: `file://${join(__dirname, '..', 'renderer', 'loader.html')}`
+    production: `file://${join(app.getAppPath(), "dist", "electron", 'renderer', 'loader.html')}`
   },
 }
 
-if (process.env.NODE_ENV !== 'development') process.env.__static = join(__dirname, '..', 'renderer').replace(/\\/g, '\\\\');
+if (process.env.NODE_ENV !== 'development') process.env.__static = join(app.getAppPath(), "dist", "electron", 'renderer').replace(/\\/g, '\\\\');
+
 
 process.env.__lib = getAppRootPath(DllFolder)
 process.env.__updateFolder = getAppRootPath(HotUpdateFolder)

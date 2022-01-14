@@ -32,32 +32,33 @@
       </div>
     </div>
   </div>
-  <div v-else-if="!IsUseSysTitle && !isNotMac" class="window-title">
-  </div>
+  <div v-else-if="!IsUseSysTitle && !isNotMac" class="window-title"></div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-let { ipcRenderer } = window;
+let { ipcRenderer, systemInfo } = window;
 
 const IsUseSysTitle = ref(false);
 const mix = ref(false);
-const isNotMac = ref(process.platform !== "darwin");
-const IsWeb = ref(process.env.BUILD_TARGET);
+const isNotMac = ref(false);
+const IsWeb = ref(process.env.IS_WEB);
 
 if (!ipcRenderer) {
-	ipcRenderer = {} as any;
-	ipcRenderer.on =
-  ipcRenderer.invoke =
-  ipcRenderer.removeAllListeners =
-    (...args: any): any => {
-      console.log("not electron");
-    };
+  ipcRenderer = {} as any;
+  ipcRenderer.on =
+    ipcRenderer.invoke =
+    ipcRenderer.removeAllListeners =
+      (...args: any): any => {
+        console.log("not electron");
+      };
 } else {
+  isNotMac.value = systemInfo.platform !== "darwin";
   ipcRenderer.invoke("IsUseSysTitle").then((res) => {
     IsUseSysTitle.value = res;
   });
 }
+console.log(isNotMac.value, process.env, IsUseSysTitle.value);
 
 const Mini = () => {
   ipcRenderer.invoke("windows-mini");
