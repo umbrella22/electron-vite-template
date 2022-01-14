@@ -1,13 +1,15 @@
 const path = require('path')
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
 const commonjs = require('@rollup/plugin-commonjs')
-const esbuild = require('rollup-plugin-esbuild').default
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
+const replace = require("@rollup/plugin-replace");
 const obfuscator = require('rollup-plugin-obfuscator').default
+const esbuild = require('rollup-plugin-esbuild').default
 
 
-const config = () => {
+
+const config = (env = 'production') => {
   const configObject = {
     input: path.join(__dirname, '../src/main/index.ts'),
     output: {
@@ -17,6 +19,10 @@ const config = () => {
       sourcemap: false,
     },
     plugins: [
+      replace({
+        preventAssignment: true,
+        "process.env.NODE_ENV": JSON.stringify(env),
+      }),
       nodeResolve({ preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
       commonjs({
         sourceMap: false,
@@ -61,7 +67,6 @@ const config = () => {
       'https',
       'path',
       'electron',
-      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
