@@ -1,7 +1,7 @@
 /* eslint-disable prefer-promise-reject-errors */
 import app from './server'
 import config from '@config/index'
-import { createServer, RequestListener, Server } from 'http';
+import { createServer, Server } from 'http';
 const port = config.BuiltInServerPort
 
 class SingleServer {
