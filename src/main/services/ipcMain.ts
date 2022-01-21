@@ -10,10 +10,10 @@ import { otherWindowConfig } from "../config/windowsConfig"
 
 
 export default {
-  Mainfunc(IsUseSysTitle: Boolean) {
+  Mainfunc() {
     const allUpdater = new Update();
     ipcMain.handle('IsUseSysTitle', async () => {
-      return IsUseSysTitle
+      return config.IsUseSysTitle
     })
     ipcMain.handle('windows-mini', (event, args) => {
       BrowserWindow.fromWebContents(event.sender)?.minimize()

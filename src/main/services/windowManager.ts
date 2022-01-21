@@ -26,7 +26,7 @@ class MainInit {
       })
     }
     // 启用协议
-    setIpc.Mainfunc(config.IsUseSysTitle)
+    setIpc.Mainfunc()
   }
   // 主窗口函数
   createMainWindow() {

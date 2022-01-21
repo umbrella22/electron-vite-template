@@ -50,7 +50,7 @@ const config = (env = 'production') => {
       }),
       alias({
         entries: [
-          { find: '@main', replacement: path.join(__dirname, '../src/main'), },
+          { find: '@main', replacement: path.join(__dirname, '..', 'src', 'main'), },
           { find: '@config', replacement: path.join(__dirname, '..', 'config') }
         ]
       })
