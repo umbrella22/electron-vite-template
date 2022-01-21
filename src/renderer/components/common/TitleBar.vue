@@ -58,7 +58,6 @@ if (!ipcRenderer) {
     IsUseSysTitle.value = res;
   });
 }
-console.log(isNotMac.value, process.env, IsUseSysTitle.value);
 
 const Mini = () => {
   ipcRenderer.invoke("windows-mini");

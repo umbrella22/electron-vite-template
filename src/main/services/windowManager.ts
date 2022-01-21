@@ -6,7 +6,7 @@ import { winURL, loadingURL } from '../config/StaticPath'
 import { join } from "path"
 import { mainWindowConfig } from "../config/windowsConfig"
 
-setIpc.Mainfunc(config.IsUseSysTitle)
+setIpc.Mainfunc()
 
 class MainInit {
 

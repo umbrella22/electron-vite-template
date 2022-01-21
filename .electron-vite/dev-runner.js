@@ -71,9 +71,8 @@ function startRenderer() {
             } else {
                 const server = await createServer(rendererOptions)
                 process.env.PORT = port
-                server.listen(port).then(() => {
-                    console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备主进程，请等待...' : '  Preparing main process, please wait...'}`) + '\n\n')
-                })
+                await server.listen(port)
+                console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备主进程，请等待...' : '  Preparing main process, please wait...'}`) + '\n\n')
                 resolve()
             }
         })
