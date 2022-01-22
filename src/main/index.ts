@@ -3,19 +3,19 @@
 import { app } from 'electron'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
-import electronDevtoolsInstaller, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 function onAppReady() {
   new InitWindow().initWindow()
   DisableButton.Disablef12()
   if (process.env.NODE_ENV === 'development') {
-    electronDevtoolsInstaller(VUEJS3_DEVTOOLS)
-      .then((name) => console.log(`已安装: ${name}`))
-      .catch(err => console.log('无法安装 `vue-devtools`: \n', err))
+    import("electron-devtools-installer").then(installer => {
+      installer.default(installer.VUEJS3_DEVTOOLS).then((name) => console.log(`已安装: ${name}`))
+        .catch(err => console.log('无法安装 `vue-devtools`: \n', err))
+    })
   }
 }
 
-app.isReady() ? onAppReady() : app.on('ready', onAppReady)
+app.whenReady().then(onAppReady)
 // 由于9.x版本问题，需要加入该配置关闭跨域问题
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
 

@@ -1,5 +1,6 @@
 const path = require("path");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
+const { builtinModules } = require('module')
 const commonjs = require("@rollup/plugin-commonjs");
 const alias = require("@rollup/plugin-alias");
 const json = require("@rollup/plugin-json");
@@ -27,7 +28,7 @@ const config = (env = "production", type = "main") => {
         preventAssignment: true,
         "process.env.NODE_ENV": JSON.stringify(env),
       }),
-      nodeResolve({ jsnext: true, preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
+      nodeResolve({ jsnext: true, preferBuiltins: true, browser: false }), // 消除碰到 node.js 模块时⚠警告
       commonjs({
         sourceMap: false,
       }),
@@ -64,23 +65,17 @@ const config = (env = "production", type = "main") => {
       }),
     ],
     external: [
-      "crypto",
-      "assert",
-      "fs",
-      "util",
-      "os",
-      "events",
-      "child_process",
-      "http",
-      "https",
-      "path",
-      "electron",
-      "express",
-      "ffi-napi",
-      "ref-napi",
-      "ref-struct-napi",
-      "semver",
-      "glob",
+      ...builtinModules,
+      'axios',
+      'electron',
+      'electron-devtools-installer',
+      'express',
+      'ffi-napi',
+      'ref-napi',
+      'ref-struct-napi',
+      // 修正部分人会导致丢失依赖的问题，如果updater工作不正常请取消下面的注释，并自行安装semver
+      'semver',
+      'glob',
     ],
   };
 

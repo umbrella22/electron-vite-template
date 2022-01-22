@@ -17,7 +17,7 @@ import axios, { AxiosResponse } from 'axios'
 const streamPipeline = promisify(pipeline)
 const appPath = app.getAppPath()
 const updatePath = resolve(appPath, '..', '..', 'update')
-const request = axios.create({ adapter: require("axios/lib/adapters/http") })
+const request = axios.create()
 
 /**
  * @param data 文件流
