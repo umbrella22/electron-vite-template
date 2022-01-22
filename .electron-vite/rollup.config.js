@@ -1,5 +1,6 @@
 const path = require('path')
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
+const { builtinModules } = require('module')
 const commonjs = require('@rollup/plugin-commonjs')
 const alias = require('@rollup/plugin-alias')
 const json = require('@rollup/plugin-json')
@@ -23,7 +24,7 @@ const config = (env = 'production') => {
         preventAssignment: true,
         "process.env.NODE_ENV": JSON.stringify(env),
       }),
-      nodeResolve({ preferBuiltins: true, browser: true }), // 消除碰到 node.js 模块时⚠警告
+      nodeResolve({ preferBuiltins: true, browser: false }), // 消除碰到 node.js 模块时⚠警告
       commonjs({
         sourceMap: false,
       }),
@@ -56,17 +57,10 @@ const config = (env = 'production') => {
       })
     ],
     external: [
-      'crypto',
-      'assert',
-      'fs',
-      'util',
-      'os',
-      'events',
-      'child_process',
-      'http',
-      'https',
-      'path',
+      ...builtinModules,
+      'axios',
       'electron',
+      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',
