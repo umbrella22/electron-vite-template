@@ -3,7 +3,6 @@
 import { app, session } from 'electron'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
-// import {VUEJS3_DEVTOOLS} from 'electron-devtools-vendor'
 
 function onAppReady() {
   new InitWindow().initWindow()
