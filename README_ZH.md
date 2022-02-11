@@ -16,11 +16,11 @@
 
 ```bash
 npm config edit
-# 该命令会打开npm的配置文件，请在空白处添加
-# registry=https://registry.npmmirror.com
-# ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
-# ELECTRON_CUSTOM_DIR="{{ version }}"
-# ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
+# 该命令会打开npm的配置文件，请在空白处添加，记得去除#号
+# electron_builder_binaries_mirror=https://npmmirror.com/mirrors/electron-builder-binaries/
+# electron_custom_dir={{ version }}
+# electron_mirror=https://cdn.npmmirror.com/binaries/electron/v
+# registry=https://registry.npmmirror.com/
 # 然后关闭该窗口，重启命令行.
 # 使用yarn安装
 yarn or yarn install
