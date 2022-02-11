@@ -68,7 +68,6 @@ const config = (env = "production", type = "main") => {
       ...builtinModules,
       'axios',
       'electron',
-      'electron-devtools-installer',
       'express',
       'ffi-napi',
       'ref-napi',

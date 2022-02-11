@@ -1,17 +1,19 @@
 'use strict'
 
-import { app } from 'electron'
+import { app, session } from 'electron'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
+// import {VUEJS3_DEVTOOLS} from 'electron-devtools-vendor'
 
 function onAppReady() {
   new InitWindow().initWindow()
   DisableButton.Disablef12()
   if (process.env.NODE_ENV === 'development') {
-    import("electron-devtools-installer").then(installer => {
-      installer.default(installer.VUEJS3_DEVTOOLS).then((name) => console.log(`已安装: ${name}`))
-        .catch(err => console.log('无法安装 `vue-devtools`: \n', err))
-    })
+    const { VUEJS3_DEVTOOLS } = require("electron-devtools-vendor");
+    session.defaultSession.loadExtension(VUEJS3_DEVTOOLS, {
+      allowFileAccess: true,
+    });
+    console.log('已安装: vue-devtools')
   }
 }
 
