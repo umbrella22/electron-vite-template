@@ -24,7 +24,8 @@ const config = (env = 'production') => {
         preventAssignment: true,
         "process.env.NODE_ENV": JSON.stringify(env),
       }),
-      nodeResolve({ preferBuiltins: true, browser: false }), // 消除碰到 node.js 模块时⚠警告
+      // 提供路径和读取别名
+      nodeResolve({ preferBuiltins: true, browser: false, extensions: ['.mjs', '.ts', '.js', '.json', '.node'] }),
       commonjs({
         sourceMap: false,
       }),
@@ -46,13 +47,15 @@ const config = (env = 'production') => {
           // Add .json files support
           // require @rollup/plugin-commonjs
           '.json': 'json',
+          '.ts': 'ts'
           // Enable JSX in .js files too
         },
       }),
       alias({
         entries: [
           { find: '@main', replacement: path.join(__dirname, '..', 'src', 'main'), },
-          { find: '@config', replacement: path.join(__dirname, '..', 'config') }
+          { find: '@config', replacement: path.join(__dirname, '..', 'config') },
+          { find: '@common', replacement: path.join(__dirname, '..', 'src', 'common') },
         ]
       })
     ],
