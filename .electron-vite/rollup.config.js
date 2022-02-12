@@ -28,7 +28,8 @@ const config = (env = "production", type = "main") => {
         preventAssignment: true,
         "process.env.NODE_ENV": JSON.stringify(env),
       }),
-      nodeResolve({ jsnext: true, preferBuiltins: true, browser: false }), // 消除碰到 node.js 模块时⚠警告
+      // 提供路径和读取别名
+      nodeResolve({ preferBuiltins: true, browser: false, extensions: ['.mjs', '.ts', '.js', '.json', '.node'] }),
       commonjs({
         sourceMap: false,
       }),
