@@ -19,7 +19,7 @@ class Performance {
     return (name2 = '') => {
       const executeTime = timer.stop()
       const endMemoryInfo = this.getMemoryInfo()
-      console.log('%cPerformance%c \n1. 执行方法：%c%s%c\n2. 执行耗时： %c%sms%c \n3. 内存波动：%sB \n4. 已分配内存： %sMB \n5. 已使用内存：%sMB \n6. 剩余内存： %sMB',
+      console.log('%cPerformance%c \n1. 路由路径：%c%s%c\n2. 执行耗时： %c%sms%c \n3. 内存波动：%sB \n4. 已分配内存： %sMB \n5. 已使用内存：%sMB \n6. 剩余内存： %sMB',
         'padding: 2px 4px 2px 4px; background-color: #4caf50; color: #fff; border-radius: 4px;', '',
         'color: #ff6f00', `${name} ${name2}`, '',
         'color: #ff6f00', executeTime, '',
