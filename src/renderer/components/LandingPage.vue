@@ -40,7 +40,7 @@
           <el-button type="primary" round @click="getMessage">
             {{ $t("buttons.viewMessage") }}
           </el-button>
-          <el-button type="primary" round @click="crash">
+          <el-button type="primary" round @click="startCrash">
             {{ $t("buttons.simulatedCrash") }}
           </el-button>
         </div>
@@ -95,28 +95,28 @@ import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
-let { ipcRenderer, shell } = window;
+let { ipcRenderer, shell, crash } = window;
 
-import useStoreTemplate from '@store/template'
+import useStoreTemplate from "@store/template";
 import TitleBar from "./common/TitleBar.vue";
 
 if (!ipcRenderer) {
-	ipcRenderer = {} as any;
-	ipcRenderer.on =
-		ipcRenderer.invoke =
-		ipcRenderer.removeAllListeners =
-		(...args: any): any => {
-			console.log("not electron");
-		};
+  ipcRenderer = {} as any;
+  ipcRenderer.on =
+    ipcRenderer.invoke =
+    ipcRenderer.removeAllListeners =
+      (...args: any): any => {
+        console.log("not electron");
+      };
 }
 
 let percentage = ref(0);
 let colors = ref([
-	{ color: "#f56c6c", percentage: 20 },
-	{ color: "#e6a23c", percentage: 40 },
-	{ color: "#6f7ad3", percentage: 60 },
-	{ color: "#1989fa", percentage: 80 },
-	{ color: "#5cb87a", percentage: 100 },
+  { color: "#f56c6c", percentage: 20 },
+  { color: "#e6a23c", percentage: 40 },
+  { color: "#6f7ad3", percentage: 60 },
+  { color: "#1989fa", percentage: 80 },
+  { color: "#5cb87a", percentage: 100 },
 ] as string | ColorInfo[]);
 let dialogVisible = ref(false);
 let progressStaus = ref(null);
@@ -124,16 +124,16 @@ let filePath = ref("");
 let updateStatus = ref("");
 let showForcedUpdate = ref(false);
 
-const storeTemplate = useStoreTemplate()
+const storeTemplate = useStoreTemplate();
 
-console.log(`storeTemplate`, storeTemplate.getTest)
-console.log(`storeTemplate`, storeTemplate.getTest1)
-console.log(`storeTemplate`, storeTemplate.$state.testData)
+console.log(`storeTemplate`, storeTemplate.getTest);
+console.log(`storeTemplate`, storeTemplate.getTest1);
+console.log(`storeTemplate`, storeTemplate.$state.testData);
 
 setTimeout(() => {
-  storeTemplate.TEST_ACTION('654321')
-  console.log(`storeTemplate`, storeTemplate.getTest1)
-}, 1000)
+  storeTemplate.TEST_ACTION("654321");
+  console.log(`storeTemplate`, storeTemplate.getTest1);
+}, 1000);
 
 let elPageSize = ref(100);
 let elCPage = ref(1);
@@ -150,8 +150,8 @@ function handleCurrentChange(val: number) {
   elCPage.value = val;
 }
 
-function crash() {
-  process.crash();
+function startCrash() {
+  crash.start();
 }
 
 function openNewWin() {

@@ -26,5 +26,8 @@ declare global {
         shell: {
             shell: typeof shell
         }
+        crash: {
+            start: () => void
+        }
     }
 }

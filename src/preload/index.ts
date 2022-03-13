@@ -21,3 +21,9 @@ contextBridge.exposeInMainWorld("systemInfo", {
 contextBridge.exposeInMainWorld("shell", {
     shell: shell
 })
+
+contextBridge.exposeInMainWorld("crash", {
+    start: () => {
+        process.crash()
+    }
+})
