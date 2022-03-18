@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
-import UpdateProgress from "./updataProgress/index.vue";
+import UpdateProgress from "./updateProgress/index.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";

@@ -36,7 +36,7 @@ let tips = ref(
     },
     {
       name: i18nt("about.nodeVersion"),
-      value: process.versions.node || "浏览器环境",
+      value: process.versions.node || "Node环境",
     },
     { name: i18nt("about.systemPlatform"), value: platform() },
     { name: i18nt("about.systemVersion"), value: release() },
