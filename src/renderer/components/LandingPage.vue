@@ -54,6 +54,9 @@
           <el-button type="primary" round @click="changeLanguage">{{
             $t("buttons.changeLanguage")
           }}</el-button>
+          <el-button type="primary" round @click="printDemo">{{
+            $t("buttons.printDemo")
+          }}</el-button>
         </div>
         <div class="doc">
           <el-pagination
@@ -136,6 +139,10 @@ let elCPage = ref(1);
 
 function changeLanguage() {
   setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
+}
+
+function printDemo() {
+  ipcRenderer.invoke('openPrintDemoWindow')
 }
 
 function handleSizeChange(val: number) {
