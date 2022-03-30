@@ -7,10 +7,11 @@ import { updater as updaterTest } from './HotUpdaterTest'
 import DownloadFile from './downloadFile'
 import Update from './checkupdate';
 import { otherWindowConfig } from "../config/windowsConfig"
-
+import { usePrintHandle } from './printHandle'
 
 export default {
   Mainfunc() {
+    usePrintHandle()
     const allUpdater = new Update();
     ipcMain.handle('IsUseSysTitle', async () => {
       return config.IsUseSysTitle

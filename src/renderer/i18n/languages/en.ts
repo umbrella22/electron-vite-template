@@ -28,7 +28,24 @@ export const lang = {
         openNewWindow: "Open new window",
         simulatedCrash: "Simulated crash",
         changeLanguage: "Change language",
-        ForcedUpdate:"Forced Update Mode"
+        ForcedUpdate:"Forced Update Mode",
+        printDemo: "Print demo"
+    },
+    print: {
+        print: 'Print',
+        silentPrinting: 'Silent printing',
+        backgroundColor: 'Background color',
+        use: 'Use ',
+        unuse: 'Unuse ',
+        notUse: 'Unuse ',
+        tips: 'It is recommended to use printed PDF test (paper saving), and then use the real situation after success',
+        blackAndWhite: 'Black and white',
+        colorful: 'Colorful',
+        margin: 'Margin',
+        top: 'Top ',
+        bottom: 'Bottom ',
+        right: 'Right ',
+        left: 'Left ',
     },
     el: enLocale
 }

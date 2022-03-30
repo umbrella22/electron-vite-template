@@ -28,7 +28,24 @@ export const lang = {
         openNewWindow: "打开新窗口",
         simulatedCrash: "模拟崩溃",
         changeLanguage: "切换语言",
-        ForcedUpdate:"强制更新模式"
+        ForcedUpdate:"强制更新模式",
+        printDemo: "打印例子"
+    },
+    print: {
+        print: '打印',
+        silentPrinting: '静默打印',
+        backgroundColor: '背景色',
+        use: '使用',
+        unuse: '不使用',
+        notUse: '非',
+        tips: '建议使用打印PDF测试（省纸），成功后再使用真实情况',
+        blackAndWhite: '黑白',
+        colorful: '彩色',
+        margin: '边距',
+        top: '上',
+        bottom: '下',
+        right: '右',
+        left: '左',
     },
     el: zhLocale
 }
