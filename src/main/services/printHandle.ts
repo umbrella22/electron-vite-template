@@ -5,8 +5,7 @@ import { printURL } from '@main/config/StaticPath'
 
 export function usePrintHandle() {
   ipcMain.handle('getPrinters', async event => {
-    // return await event.sender.getPrintersAsync()
-    return event.sender.getPrinters()
+    return await event.sender.getPrintersAsync()
   })
 
   ipcMain.handle('printHandlePrint', async (event, options: WebContentsPrintOptions) => {
