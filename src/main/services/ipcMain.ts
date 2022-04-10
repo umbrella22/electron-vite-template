@@ -8,6 +8,7 @@ import DownloadFile from './downloadFile'
 import Update from './checkupdate';
 import { otherWindowConfig } from "../config/windowsConfig"
 import { usePrintHandle } from './printHandle'
+import { UpdateStatus } from 'electron_updater_node_core'
 
 export default {
   Mainfunc() {
@@ -82,10 +83,21 @@ export default {
     ipcMain.handle('hot-update', (event, arg) => {
       updater(BrowserWindow.fromWebContents(event.sender))
     })
-    ipcMain.handle('hot-update-test', (event, arg) => {
+    ipcMain.handle('hot-update-test', async (event, arg) => {
       console.log('hot-update-test')
-      updaterTest(BrowserWindow.fromWebContents(event.sender));
-      app.quit();
+      try {
+        let updateInfo = await updaterTest(BrowserWindow.fromWebContents(event.sender));
+        if (updateInfo === UpdateStatus.Success) {
+          app.quit();
+        } else if (updateInfo === UpdateStatus.HaveNothingUpdate) {
+          console.log('不需要更新');
+        } else if (updateInfo === UpdateStatus.Failed) {
+          console.error('更新出错');
+        }
+      } catch (error) {
+        // 更新出错
+        console.error('更新出错');
+      }
     })
     ipcMain.handle('start-download', (event, msg) => {
       new DownloadFile(BrowserWindow.fromWebContents(event.sender), msg.downloadUrl).start()

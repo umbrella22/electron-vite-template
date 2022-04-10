@@ -1,6 +1,6 @@
 {
-  "asar": false,
-  "extraFiles": ["/updater/*", "updater.exe"],
+  "asar": true,
+  "extraFiles": [],
   "publish": [
     {
       "provider": "generic",
@@ -15,6 +15,10 @@
   "files": [
     "dist/electron/**/*"
   ],
+  "extraResources":  {
+    "from": "./lib/",
+    "to": "extraResources/../../"
+  },
   "dmg": {
     "contents": [
       {

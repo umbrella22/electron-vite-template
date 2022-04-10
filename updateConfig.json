@@ -1,0 +1,11 @@
+{
+  "output": "./build",
+  "target": "gzip",
+  "input": "./build/win-unpacked",
+  "updateJsonName": "update-config",
+  "version": "1.0.0",
+  "tempDirectory": "update_temp",
+  "oldDirectory": "old_temp",
+  "url": "http://localhost:5000",
+  "updaterName": "updater"
+}
