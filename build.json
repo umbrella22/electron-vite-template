@@ -1,9 +1,11 @@
 {
   "asar": true,
-  "extraFiles": [{
-    "from": "./lib/",
-    "to": "lib/../"
-  }],
+  "extraFiles": [
+    {
+      "from": "rootLib/",
+      "to": "rootLib/../"
+    }
+  ],
   "publish": [
     {
       "provider": "generic",
