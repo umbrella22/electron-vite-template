@@ -5,11 +5,10 @@ const { join } = require('path');
 const { Arch } = require('electron-builder');
 // type ElectronPlatformName = "darwin" | "linux" | "win32" | "mas"
 exports.default = async context => {
-  const LIB_OUTPUT_DIR = join(context.appOutDir, "rootLib");
+  const LIB_OUTPUT_DIR = context.appOutDir;
   const LIB_INPUT_DIR = join("rootLib", context.electronPlatformName, Arch[context.arch]);
   const LIB_COMMON_INPUT_DIR = join("rootLib", "common");
-  const LIB_COMMON_OUTPUT_DIR = join(context.appOutDir, "common");
   // 移动文件文件
   copySync(LIB_INPUT_DIR, LIB_OUTPUT_DIR);
-  copySync(LIB_COMMON_INPUT_DIR, LIB_COMMON_OUTPUT_DIR);
+  copySync(LIB_COMMON_INPUT_DIR, LIB_OUTPUT_DIR);
 };
