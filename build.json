@@ -1,6 +1,9 @@
 {
   "asar": true,
-  "extraFiles": [],
+  "extraFiles": [{
+    "from": "./lib/",
+    "to": "lib/../"
+  }],
   "publish": [
     {
       "provider": "generic",
@@ -15,10 +18,6 @@
   "files": [
     "dist/electron/**/*"
   ],
-  "extraResources":  {
-    "from": "./lib/",
-    "to": "extraResources/../../"
-  },
   "dmg": {
     "contents": [
       {
