@@ -13,7 +13,6 @@ module.exports = {
     chineseLog: false,
     port: 9080,
   },
-  DllFolder: '',
   HotUpdateFolder: 'update',
   UseStartupChart: true,
   IsUseSysTitle: false,

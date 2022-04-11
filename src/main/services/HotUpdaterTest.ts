@@ -24,7 +24,7 @@ export async function updater(windows?: BrowserWindow) {
     });
     return response.data;
   }
-  const dirDirectory = dirname(app.getPath('exe'));
+  const dirDirectory = app.getAppPath();
   const tempDirectory = join(dirDirectory, updateConfig.tempDirectory);
   try {
     const res = await request({ url: `${updateConfig.url}/${updateConfig.updateJsonName}.json?time=${new Date().getTime()}`, })
