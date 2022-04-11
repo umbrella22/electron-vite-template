@@ -1,6 +1,11 @@
 {
-  "asar": false,
-  "extraFiles": ["/updater/*", "updater.exe"],
+  "asar": true,
+  "extraFiles": [
+    {
+      "from": "rootLib/",
+      "to": "rootLib/../"
+    }
+  ],
   "publish": [
     {
       "provider": "generic",
