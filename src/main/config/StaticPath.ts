@@ -2,18 +2,20 @@
 import { join } from 'path'
 import { HotUpdateFolder } from '@config/index'
 import { app } from 'electron'
+import { URL } from 'url';
 const isDev = process.env.NODE_ENV === 'development';
 class StaticPath {
   constructor() {
     const basePath = isDev ? join(__dirname, '..', '..', '..') : join(app.getAppPath(), '..', '..');
-    console.log("basePath", basePath);
     this.__updateFolder = join(basePath, `${HotUpdateFolder}`)
     if (isDev) {
       this.__static = join(basePath, 'static');
       this.__lib = join(basePath, `rootLib`, `${process.platform}`, `${process.arch}`);
+      this.__common = join(basePath, 'rootLib','common');
     } else {
       this.__static = join(__dirname, '..', 'renderer');
       this.__lib = basePath;
+      this.__common = basePath;
     }
   }
   /**
@@ -46,21 +48,25 @@ class StaticPath {
   __updateFolder: string;
 }
 const staticPath = new StaticPath();
-
 /**
  * 获取真正的地址
  *
  * @param {string} devPath 开发环境路径
  * @param {string} proPath 生产环境路径
- * @return {string} 返回真正的路径
+ * @param {string} [hash=""] hash值
+ * @param {string} [search=""] search值
+ * @return {*}  {string} 地址
  */
-const urlPrefix = isDev ? `http://localhost:${process.env.PORT}` : 'file://';
-function getUrl(devPath: string, proPath: string): string {
-  return urlPrefix + (isDev ? devPath : proPath);
+function getUrl(devPath: string, proPath: string, hash:string= "", search: string = ""): string {
+  const url = isDev ? new URL(`http://localhost:${process.env.PORT}`) : new URL('file://');
+  url.pathname = isDev ? devPath : proPath;
+  url.hash = hash;
+  url.search = search;
+  return url.href;
 }
 export const winURL = getUrl("", join(__dirname, '..', 'renderer', 'index.html'));
 export const loadingURL = getUrl("/loader.html",`${staticPath.__static}/loader.html`);
-export const printURL = getUrl("#/Print", `${staticPath.__static}/loader.html#/Print`);
+export const printURL = getUrl("", join(__dirname, '..', 'renderer', 'index.html'), "#/Print");
 
 export const lib = staticPath.__lib
 export const common = staticPath.__common
