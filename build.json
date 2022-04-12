@@ -1,5 +1,5 @@
 {
-  "asar": true,
+  "asar": false,
   "extraFiles": [],
   "publish": [
     {
