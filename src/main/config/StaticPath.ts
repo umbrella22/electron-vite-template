@@ -11,7 +11,7 @@ class StaticPath {
     if (isDev) {
       this.__static = join(basePath, 'static');
       this.__lib = join(basePath, `rootLib`, `${process.platform}`, `${process.arch}`);
-      this.__common = join(basePath, 'rootLib','common');
+      this.__common = join(basePath, 'rootLib', 'common');
     } else {
       this.__static = join(__dirname, '..', 'renderer');
       this.__lib = basePath;
@@ -57,7 +57,7 @@ const staticPath = new StaticPath();
  * @param {string} [search=""] search值
  * @return {*}  {string} 地址
  */
-function getUrl(devPath: string, proPath: string, hash:string= "", search: string = ""): string {
+function getUrl(devPath: string, proPath: string, hash: string = "", search: string = ""): string {
   const url = isDev ? new URL(`http://localhost:${process.env.PORT}`) : new URL('file://');
   url.pathname = isDev ? devPath : proPath;
   url.hash = hash;
@@ -65,9 +65,10 @@ function getUrl(devPath: string, proPath: string, hash:string= "", search: strin
   return url.href;
 }
 export const winURL = getUrl("", join(__dirname, '..', 'renderer', 'index.html'));
-export const loadingURL = getUrl("/loader.html",`${staticPath.__static}/loader.html`);
+export const loadingURL = getUrl("/loader.html", `${staticPath.__static}/loader.html`);
+export const preloadURL = getUrl("/preload.html", `${staticPath.__static}/preload.html`);
 export const printURL = getUrl("", join(__dirname, '..', 'renderer', 'index.html'), "#/Print");
-
+export const preloadPath = isDev ? join(app.getAppPath(), "..", "preload.js") : join(app.getAppPath(), "dist", "electron", "preload.js");
 export const lib = staticPath.__lib
 export const common = staticPath.__common
 export const updateFolder = staticPath.__updateFolder

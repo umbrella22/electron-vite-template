@@ -1,12 +1,12 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
 import config from '@config/index'
 import Server from '../server'
-import { winURL } from '../config/StaticPath'
+import { winURL, preloadURL } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import { updater as updaterTest } from './HotUpdaterTest'
 import DownloadFile from './downloadFile'
 import Update from './checkupdate';
-import { otherWindowConfig } from "../config/windowsConfig"
+import { otherWindowConfig, preloadWindowConfig } from "../config/windowsConfig"
 import { usePrintHandle } from './printHandle'
 import { UpdateStatus } from 'electron_updater_node_core'
 
@@ -131,6 +131,22 @@ export default {
       ChildWin.once("show", () => {
         ChildWin.webContents.send('send-data-test', arg.sendData)
       })
+    })
+    ipcMain.handle('open-preload-window', (event, msg) => {
+      const ChildWin = new BrowserWindow({
+        ...Object.assign(preloadWindowConfig, {})
+      })
+      // 开发模式下自动开启devtools
+      if (process.env.NODE_ENV === 'development') {
+        ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
+      }
+      ChildWin.loadURL(preloadURL);
+      ChildWin.once('ready-to-show', () => {
+        ChildWin.show()
+      })
+    })
+    ipcMain.handle('preload-test', (event, msg) => {
+      return "preload-test-res"
     })
   }
 }

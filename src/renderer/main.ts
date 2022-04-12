@@ -23,3 +23,4 @@ errorHandler(app)
 app.component("TitleBar", TitleBar);
 
 app.mount("#app")
+

@@ -29,8 +29,9 @@
             {{ $t("buttons.checkUpdateInc") }}
           </el-button>
           <el-button type="primary" round @click="CheckUpdate('threetest')">
-            {{ '增量更新TEST' }}
+            {{ $t("buttons.incrementalUpdateTest") }}
           </el-button>
+
           <el-button type="primary" round @click="CheckUpdate('four')">
             {{ $t("buttons.ForcedUpdate") }}
           </el-button>
@@ -45,6 +46,9 @@
           </el-button>
           <el-button type="primary" round @click="crash">
             {{ $t("buttons.simulatedCrash") }}
+          </el-button>
+          <el-button type="primary" round @click="openPreloadWindow">
+            {{ $t("buttons.openPreloadWindow") }}
           </el-button>
         </div>
         <div class="doc">
@@ -102,20 +106,19 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
 
-import useStoreTemplate from '@store/template'
+import useStoreTemplate from "@store/template";
 import TitleBar from "./common/TitleBar.vue";
 
-const storeTemplate = useStoreTemplate()
+const storeTemplate = useStoreTemplate();
 
-console.log(`storeTemplate`, storeTemplate.getTest)
-console.log(`storeTemplate`, storeTemplate.getTest1)
-console.log(`storeTemplate`, storeTemplate.$state.testData)
+console.log(`storeTemplate`, storeTemplate.getTest);
+console.log(`storeTemplate`, storeTemplate.getTest1);
+console.log(`storeTemplate`, storeTemplate.$state.testData);
 
 setTimeout(() => {
-  storeTemplate.TEST_ACTION('654321')
-  console.log(`storeTemplate`, storeTemplate.getTest1)
-}, 1000)
-
+  storeTemplate.TEST_ACTION("654321");
+  console.log(`storeTemplate`, storeTemplate.getTest1);
+}, 1000);
 
 const { ipcRenderer, shell } = require("electron");
 
@@ -142,7 +145,7 @@ function changeLanguage() {
 }
 
 function printDemo() {
-  ipcRenderer.invoke('openPrintDemoWindow')
+  ipcRenderer.invoke("openPrintDemoWindow");
 }
 
 function handleSizeChange(val: number) {
@@ -215,6 +218,10 @@ function CheckUpdate(data) {
       break;
   }
 }
+function openPreloadWindow() {
+  ipcRenderer.invoke("open-preload-window");
+}
+
 function handleClose() {
   dialogVisible.value = false;
 }
