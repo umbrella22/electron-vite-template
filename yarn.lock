@@ -1813,14 +1813,14 @@ electron@17.2.0:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-electron_updater_node_cli@^0.1.2:
+electron_updater_node_cli@^0.1.3:
   version "0.1.3"
   resolved "https://registry.npmmirror.com/electron_updater_node_cli/-/electron_updater_node_cli-0.1.3.tgz#9d6b92800d959dbcc830c4a684ad83c5e65520b1"
   integrity sha512-bS8uuWlnd4TCzZYyt6qm+w8gTNazA5PlEMqjIPRX2JtnZGoHyfYASzAWx5c2ou5HwIbYWV1a9l3s1E6UoWEjFg==
   dependencies:
     chalk "4.1.2"
 
-electron_updater_node_core@^0.1.2:
+electron_updater_node_core@^0.1.3:
   version "0.1.3"
   resolved "https://registry.npmmirror.com/electron_updater_node_core/-/electron_updater_node_core-0.1.3.tgz#59b4bb8e1c5da9af583139295a0475e7ecd2ef86"
   integrity sha512-l30X2tY/rPVXnKkjUmiZbDs8tnpdex/4eHSOf7VcbsSaAz/H0bj8EEnAVhFDFjuEGa0oHlJkH6xFS7I2sVSZBw==
