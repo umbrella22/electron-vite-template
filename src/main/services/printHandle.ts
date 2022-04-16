@@ -10,7 +10,6 @@ export function usePrintHandle() {
 
   ipcMain.handle('printHandlePrint', async (event, options: WebContentsPrintOptions) => {
     return new Promise(resolve => {
-      event.sender.getPrinters
       event.sender.print(options, (success: boolean, failureReason: string) => {
         resolve({ success, failureReason })
       })
@@ -20,8 +19,6 @@ export function usePrintHandle() {
   ipcMain.handle('openPrintDemoWindow', () => {
     openPrintDemoWindow()
   })
-
-  ipcMain.handle
 }
 
 let win: BrowserWindow
@@ -32,10 +29,13 @@ export function openPrintDemoWindow() {
   }
   win = new BrowserWindow({
     titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      ...Object.assign(otherWindowConfig, {})
+    ...Object.assign(otherWindowConfig, {})
   })
   win.loadURL(printURL)
   win.on('ready-to-show', () => {
     win.show()
+  })
+  win.on('closed', () => {
+    win = null
   })
 }
