@@ -3,7 +3,6 @@
 import { app, session } from 'electron'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
-
 function onAppReady() {
   new InitWindow().initWindow()
   DisableButton.Disablef12()

@@ -1,7 +1,8 @@
 import config from '@config/index'
+import { BrowserWindowConstructorOptions } from 'electron';
+import { preloadPath } from './StaticPath';
 
-
-export const mainWindowConfig = {
+export const mainWindowConfig: BrowserWindowConstructorOptions = {
     height: 800,
     useContentSize: true,
     width: 1700,
@@ -19,7 +20,7 @@ export const mainWindowConfig = {
     }
 };
 
-export const otherWindowConfig = {
+export const otherWindowConfig: BrowserWindowConstructorOptions = {
     height: 595,
     useContentSize: true,
     width: 1140,
@@ -35,5 +36,24 @@ export const otherWindowConfig = {
         devTools: process.env.NODE_ENV === 'development',
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin',
+    }
+}
+
+export const preloadWindowConfig: BrowserWindowConstructorOptions = {
+    height: 595,
+    useContentSize: true,
+    width: 1140,
+    minWidth: 842,
+    show: false,
+    webPreferences: {
+        contextIsolation: true,
+        nodeIntegration: false,
+        webSecurity: false,
+        // 如果是开发模式可以使用devTools
+        devTools: process.env.NODE_ENV === 'development',
+        // 在macos中启用橡皮动画
+        scrollBounce: process.platform === 'darwin',
+        preload: preloadPath,
+        webviewTag: true,
     }
 }

@@ -11,7 +11,6 @@ const Multispinner = require('multispinner')
 
 const mainOptions = require('./rollup.config');
 const rendererOptions = require('./vite.config')
-const opt = mainOptions(process.env.NODE_ENV);
 
 const doneLog = chalk.bgGreen.white(' DONE ') + ' '
 const errorLog = chalk.bgRed.white(' ERROR ') + ' '
@@ -28,7 +27,7 @@ function clean() {
     if (process.env.BUILD_TARGET === 'onlyClean') process.exit()
 }
 
-function unionBuild() {
+async function unionBuild() {
     greeting()
     if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') clean()
 
@@ -45,21 +44,37 @@ function unionBuild() {
         console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
         process.exit()
     })
-
-    rollup.rollup(opt)
-        .then(build => {
-            results += `${doneLog}MainProcess build success` + '\n\n'
-            build.write(opt.output).then(() => {
-                m.success('main')
+    const opt = mainOptions(process.env.NODE_ENV);
+    if (Array.isArray(opt)) {
+        for (let i = 0; i < opt.length; i++) {
+            rollup.rollup(opt[i])
+                .then(build => {
+                    results += `${doneLog}${opt[i].output.name} build success` + '\n\n'
+                    build.write(opt[i].output).then(() => {
+                        m.success('main')
+                    })
+                }).catch(error => {
+                    m.error('main')
+                    console.log(`\n  ${errorLog}failed to build ${opt[i].output.name} process`)
+                    console.error(`\n${error}\n`)
+                    process.exit(1)
+                });
+        }
+    } else {
+        rollup.rollup(opt)
+            .then(build => {
+                results += `${doneLog}MainProcess build success` + '\n\n'
+                build.write(opt.output).then(() => {
+                    m.success('main')
+                })
             })
-        })
-        .catch(error => {
-            m.error('main')
-            console.log(`\n  ${errorLog}failed to build main process`)
-            console.error(`\n${error}\n`)
-            process.exit(1)
-        });
-
+            .catch(error => {
+                m.error('main')
+                console.log(`\n  ${errorLog}failed to build main process`)
+                console.error(`\n${error}\n`)
+                process.exit(1)
+            });
+    }
     build(rendererOptions).then(res => {
         results += `${doneLog}RendererProcess build success` + '\n\n'
         m.success('renderer')

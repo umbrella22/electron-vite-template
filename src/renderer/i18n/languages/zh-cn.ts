@@ -28,8 +28,10 @@ export const lang = {
         openNewWindow: "打开新窗口",
         simulatedCrash: "模拟崩溃",
         changeLanguage: "切换语言",
-        ForcedUpdate:"强制更新模式",
-        printDemo: "打印例子"
+        ForcedUpdate: "强制更新模式",
+        printDemo: "打印例子",
+        incrementalUpdateTest: "增量更新测试",
+        openPreloadWindow: "preload.js测试",
     },
     print: {
         print: '打印',

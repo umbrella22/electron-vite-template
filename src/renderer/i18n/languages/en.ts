@@ -28,8 +28,10 @@ export const lang = {
         openNewWindow: "Open new window",
         simulatedCrash: "Simulated crash",
         changeLanguage: "Change language",
-        ForcedUpdate:"Forced Update Mode",
-        printDemo: "Print demo"
+        ForcedUpdate: "Forced Update Mode",
+        printDemo: "Print demo",
+        incrementalUpdateTest: "Incremental Update test",
+        openPreloadWindow: "preload.js test"
     },
     print: {
         print: 'Print',
