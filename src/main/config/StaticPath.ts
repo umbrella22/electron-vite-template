@@ -72,6 +72,7 @@ export const preloadPath = isDev ? join(app.getAppPath(), "..", "preload.js") : 
 export const lib = staticPath.__lib
 export const common = staticPath.__common
 export const updateFolder = staticPath.__updateFolder
+export const staticPaths = getUrl('', staticPath.__static)
 
 // process.env 修改
 for (const key in staticPath) {

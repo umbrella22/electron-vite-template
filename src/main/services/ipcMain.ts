@@ -1,7 +1,7 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
 import config from '@config/index'
 import Server from '../server'
-import { winURL, preloadURL } from '../config/StaticPath'
+import { winURL, preloadURL, staticPaths } from '../config/StaticPath'
 import { updater } from './HotUpdater'
 import { updater as updaterTest } from './HotUpdaterTest'
 import DownloadFile from './downloadFile'
@@ -40,6 +40,9 @@ export default {
     })
     ipcMain.handle('app-close', (event, args) => {
       app.quit()
+    })
+    ipcMain.handle('get-static-path', (event, args) => {
+      return staticPaths
     })
     ipcMain.handle('open-messagebox', async (event, arg) => {
       const res = await dialog.showMessageBox(BrowserWindow.fromWebContents(event.sender), {

@@ -140,6 +140,10 @@ let updateStatus = ref("");
 let elPageSize = ref(100);
 let elCPage = ref(1);
 
+ipcRenderer.invoke("get-static-path").then((res) => {
+  console.log("staticPath", res);
+});
+
 function changeLanguage() {
   setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
 }
