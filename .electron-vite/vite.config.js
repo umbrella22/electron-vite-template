@@ -1,13 +1,10 @@
-const { join } = require("path")
+const { join,resolve } = require("path")
 const vuePlugin = require("@vitejs/plugin-vue")
 const vueJsx = require("@vitejs/plugin-vue-jsx");
 const { defineConfig } = require("vite")
 const userConfig = require("../config")
 const IsWeb = process.env.BUILD_TARGET === 'web'
 
-function resolve(dir) {
-    return join(__dirname, '..', dir)
-}
 userConfig.build.env.is_web = IsWeb
 userConfig.dev.env.is_web = IsWeb
 
