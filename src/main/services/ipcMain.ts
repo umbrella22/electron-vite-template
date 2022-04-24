@@ -135,21 +135,21 @@ export default {
         ChildWin.webContents.send('send-data-test', arg.sendData)
       })
     })
-    ipcMain.handle('open-preload-window', (event, msg) => {
-      const ChildWin = new BrowserWindow({
-        ...Object.assign(preloadWindowConfig, {})
-      })
-      // 开发模式下自动开启devtools
-      if (process.env.NODE_ENV === 'development') {
-        ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
-      }
-      ChildWin.loadURL(preloadURL);
-      ChildWin.once('ready-to-show', () => {
-        ChildWin.show()
-      })
-    })
-    ipcMain.handle('preload-test', (event, msg) => {
-      return "preload-test-res"
-    })
+    // ipcMain.handle('open-preload-window', (event, msg) => {
+    //   const ChildWin = new BrowserWindow({
+    //     ...Object.assign(preloadWindowConfig, {})
+    //   })
+    //   // 开发模式下自动开启devtools
+    //   if (process.env.NODE_ENV === 'development') {
+    //     ChildWin.webContents.openDevTools({ mode: 'undocked', activate: true })
+    //   }
+    //   ChildWin.loadURL(preloadURL);
+    //   ChildWin.once('ready-to-show', () => {
+    //     ChildWin.show()
+    //   })
+    // })
+    // ipcMain.handle('preload-test', (event, msg) => {
+    //   return "preload-test-res"
+    // })
   }
 }

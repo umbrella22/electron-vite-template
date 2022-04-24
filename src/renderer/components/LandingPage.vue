@@ -223,7 +223,11 @@ function CheckUpdate(data) {
   }
 }
 function openPreloadWindow() {
-  ipcRenderer.invoke("open-preload-window");
+  ElMessageBox.alert("请移步项目的strict分支", "提示", {
+      confirmButtonText: "确定",
+      callback: (action) => {
+      },
+    });
 }
 
 function handleClose() {

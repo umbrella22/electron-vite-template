@@ -139,8 +139,8 @@ const config = (env = 'production') => {
     preloadConfig.plugins.push(obfuscator({}));
   }
   config.push(mainConfig);
-  config.push(preloadConfig);
-  return config;
+  // config.push(preloadConfig);
+  return mainConfig;
 }
 
 module.exports = config
