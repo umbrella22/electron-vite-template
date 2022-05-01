@@ -1,25 +1,25 @@
 process.env.NODE_ENV = 'development'
 
-const chalk = require('chalk')
-const electron = require('electron')
-const path = require('path')
-const rollup = require("rollup")
-const Portfinder = require("portfinder")
-const config = require('../config')
+import electron from 'electron';
+import chalk from 'chalk';
+import { join } from 'path';
+import { watch } from 'rollup';
+import Portfinder from 'Portfinder';
+import config from '../config'
+import { say } from 'cfonts';
+import { spawn } from 'child_process';
+import type { ChildProcess } from 'child_process'
+import { createServer } from 'vite'
+import rollupOptions from './rollup.config'
 
-const { say } = require('cfonts')
-const { spawn } = require('child_process')
-const { createServer } = require('vite')
 
-const rendererOptions = require("./vite.config")
-const rollupOptions = require("./rollup.config")
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
 
-let electronProcess = null
+let electronProcess: ChildProcess | null = null
 let manualRestart = false
 
-function logStats(proc, data) {
+function logStats(proc: string, data: any) {
     let log = ''
 
     log += chalk.yellow.bold(`┏ ${proc} ${config.dev.chineseLog ? '编译过程' : 'Process'} ${new Array((19 - proc.length) + 1).join('-')}`)
@@ -40,7 +40,7 @@ function logStats(proc, data) {
     console.log(log)
 }
 
-function removeJunk(chunk) {
+function removeJunk(chunk: string) {
     if (config.dev.removeElectronJunk) {
         // Example: 2018-08-10 22:48:42.866 Electron[90311:4883863] *** WARNING: Textured window <AtomNSWindow: 0x7fb75f68a770>
         if (/\d+-\d+-\d+ \d+:\d+:\d+\.\d+ Electron(?: Helper)?\[\d+:\d+] /.test(chunk)) {
@@ -62,15 +62,15 @@ function removeJunk(chunk) {
     return chunk;
 }
 
-function startRenderer() {
+function startRenderer(): Promise<void> {
     return new Promise((resolve, reject) => {
         Portfinder.basePort = config.dev.port || 9080
         Portfinder.getPort(async (err, port) => {
             if (err) {
                 reject("PortError:" + err)
             } else {
-                const server = await createServer(rendererOptions)
-                process.env.PORT = port
+                const server = await createServer({ configFile: join(__dirname, 'vite.config') })
+                process.env.PORT = String(port)
                 await server.listen(port)
                 console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备主进程，请等待...' : '  Preparing main process, please wait...'}`) + '\n\n')
                 resolve()
@@ -79,9 +79,9 @@ function startRenderer() {
     })
 }
 
-function startMain() {
+function startMain(): Promise<void> {
     return new Promise((resolve, reject) => {
-        const MainWatcher = rollup.watch(mainOpt);
+        const MainWatcher = watch(mainOpt);
         MainWatcher.on('change', filename => {
             // 主进程日志部分
             logStats(`${config.dev.chineseLog ? '主进程文件变更' : 'Main-FileChange'}`, filename)
@@ -108,10 +108,10 @@ function startMain() {
     })
 }
 
-function startPreload() {
+function startPreload(): Promise<void> {
     console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备预加载脚本，请等待...' : '  Preparing preLoad File, please wait...'}`) + '\n\n')
     return new Promise((resolve, reject) => {
-        const PreloadWatcher = rollup.watch(preloadOpt)
+        const PreloadWatcher = watch(preloadOpt)
         PreloadWatcher.on('change', filename => {
             // 预加载脚本日志部分
             logStats(`${config.dev.chineseLog ? '预加载脚本文件变更' : 'preLoad-FileChange'}`, filename)
@@ -144,7 +144,7 @@ function startElectron() {
 
     var args = [
         '--inspect=5858',
-        path.join(__dirname, '../dist/electron/main/main.js')
+        join(__dirname, '../dist/electron/main/main.js')
     ]
 
     // detect yarn or npm and process commandline args accordingly
@@ -154,12 +154,12 @@ function startElectron() {
         args = args.concat(process.argv.slice(2))
     }
 
-    electronProcess = spawn(electron, args)
+    electronProcess = spawn(electron as any, args)
 
-    electronProcess.stdout.on('data', data => {
+    electronProcess.stdout.on('data', (data: string) => {
         electronLog(removeJunk(data), 'blue')
     })
-    electronProcess.stderr.on('data', data => {
+    electronProcess.stderr.on('data', (data: string) => {
         electronLog(removeJunk(data), 'red')
     })
 
@@ -168,7 +168,7 @@ function startElectron() {
     })
 }
 
-function electronLog(data, color) {
+function electronLog(data: any, color: string) {
     if (data) {
         let log = ''
         data = data.toString().split(/\r?\n/)
@@ -188,7 +188,7 @@ function electronLog(data, color) {
 
 function greeting() {
     const cols = process.stdout.columns
-    let text = ''
+    let text: string | boolean = ''
 
     if (cols > 104) text = 'electron-vite'
     else if (cols > 76) text = 'electron-|vite'
@@ -211,7 +211,7 @@ async function init() {
         await startRenderer()
         await startMain()
         await startPreload()
-        await startElectron()
+        startElectron()
     } catch (error) {
         console.error(error)
         process.exit(1)

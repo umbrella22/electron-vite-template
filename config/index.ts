@@ -1,12 +1,15 @@
-module.exports = {
+import prod from './prod.env'
+import dev from './dev.env'
+
+export default {
   build: {
     DisableF12: true,
-    env: require('./prod.env'),
-    hotPublishUrl:"",
+    env: prod,
+    hotPublishUrl: "",
     hotPublishConfigName: "update-config"
   },
   dev: {
-    env: require('./dev.env'),
+    env: dev,
     removeElectronJunk: true,
     chineseLog: false,
     port: 9080,

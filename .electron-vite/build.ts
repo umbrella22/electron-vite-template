@@ -1,22 +1,18 @@
-'use strict'
 process.env.NODE_ENV = 'production'
 
-const { say } = require('cfonts')
-const { sync } = require('del')
+import { join } from 'path'
+import { say } from 'cfonts'
+import { sync } from 'del'
+import { build } from 'vite'
+import chalk from 'chalk'
+import { rollup, OutputOptions } from 'rollup'
+import Multispinner from 'Multispinner'
+import rollupOptions from './rollup.config'
+import { okayLog, errorLog, doneLog } from './log'
 
-const chalk = require('chalk')
-const rollup = require("rollup")
-const { build } = require('vite')
-const Multispinner = require('multispinner')
 
-const rendererOptions = require('./vite.config')
-const rollupOptions = require("./rollup.config")
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
-
-const doneLog = chalk.bgGreen.white(' DONE ') + ' '
-const errorLog = chalk.bgRed.white(' ERROR ') + ' '
-const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
 
 
@@ -47,10 +43,10 @@ function unionBuild() {
         process.exit()
     })
 
-    rollup.rollup(mainOpt)
+    rollup(mainOpt)
         .then(build => {
             results += `${doneLog}MainProcess build success` + '\n\n'
-            build.write(mainOpt.output).then(() => {
+            build.write(mainOpt.output as OutputOptions).then(() => {
                 m.success('main')
             })
         })
@@ -61,10 +57,10 @@ function unionBuild() {
             process.exit(1)
         });
 
-    rollup.rollup(preloadOpt)
+    rollup(preloadOpt)
         .then(build => {
             results += `${doneLog}preLoad build success` + '\n\n'
-            build.write(preloadOpt.output).then(() => {
+            build.write(preloadOpt.output as OutputOptions).then(() => {
                 m.success('preload')
             })
         })
@@ -75,7 +71,7 @@ function unionBuild() {
             process.exit(1)
         });
 
-    build(rendererOptions).then(res => {
+    build({ configFile: join(__dirname, 'vite.config') }).then(res => {
         results += `${doneLog}RendererProcess build success` + '\n\n'
         m.success('renderer')
     }).catch(err => {
@@ -88,7 +84,7 @@ function unionBuild() {
 
 function web() {
     sync(['dist/web/*', '!.gitkeep'])
-    build(rendererOptions).then(res => {
+    build({ configFile: join(__dirname, 'vite.config') }).then(res => {
         console.log(`${doneLog}RendererProcess build success`)
         process.exit()
     })
@@ -96,7 +92,7 @@ function web() {
 
 function greeting() {
     const cols = process.stdout.columns
-    let text = ''
+    let text: boolean | string = ''
 
     if (cols > 85) text = `let's-build`
     else if (cols > 60) text = `let's-|build`
