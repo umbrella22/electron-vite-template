@@ -1,20 +1,17 @@
-'use strict'
 process.env.NODE_ENV = 'production'
 
-const { say } = require('cfonts')
-const { sync } = require('del')
+import { join } from 'path'
+import { say } from 'cfonts'
+import { sync } from 'del'
+import { build } from 'vite'
+import chalk from 'chalk'
+import { rollup, OutputOptions } from 'rollup'
+import Multispinner from 'Multispinner'
+import rollupOptions from './rollup.config'
+import { okayLog, errorLog, doneLog } from './log'
 
-const chalk = require('chalk')
-const rollup = require("rollup")
-const { build } = require('vite')
-const Multispinner = require('multispinner')
 
-const mainOptions = require('./rollup.config');
-const rendererOptions = require('./vite.config')
-
-const doneLog = chalk.bgGreen.white(' DONE ') + ' '
-const errorLog = chalk.bgRed.white(' ERROR ') + ' '
-const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
+const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const isCI = process.env.CI || false
 
 
@@ -27,7 +24,7 @@ function clean() {
     if (process.env.BUILD_TARGET === 'onlyClean') process.exit()
 }
 
-async function unionBuild() {
+function unionBuild() {
     greeting()
     if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') clean()
 
@@ -44,38 +41,22 @@ async function unionBuild() {
         console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
         process.exit()
     })
-    const opt = mainOptions(process.env.NODE_ENV);
-    if (Array.isArray(opt)) {
-        for (let i = 0; i < opt.length; i++) {
-            rollup.rollup(opt[i])
-                .then(build => {
-                    results += `${doneLog}${opt[i].output.name} build success` + '\n\n'
-                    build.write(opt[i].output).then(() => {
-                        m.success('main')
-                    })
-                }).catch(error => {
-                    m.error('main')
-                    console.log(`\n  ${errorLog}failed to build ${opt[i].output.name} process`)
-                    console.error(`\n${error}\n`)
-                    process.exit(1)
-                });
-        }
-    } else {
-        rollup.rollup(opt)
-            .then(build => {
-                results += `${doneLog}MainProcess build success` + '\n\n'
-                build.write(opt.output).then(() => {
-                    m.success('main')
-                })
+
+    rollup(mainOpt)
+        .then(build => {
+            results += `${doneLog}MainProcess build success` + '\n\n'
+            build.write(mainOpt.output as OutputOptions).then(() => {
+                m.success('main')
             })
-            .catch(error => {
-                m.error('main')
-                console.log(`\n  ${errorLog}failed to build main process`)
-                console.error(`\n${error}\n`)
-                process.exit(1)
-            });
-    }
-    build(rendererOptions).then(res => {
+        })
+        .catch(error => {
+            m.error('main')
+            console.log(`\n  ${errorLog}failed to build main process`)
+            console.error(`\n${error}\n`)
+            process.exit(1)
+        });
+
+    build({ configFile: join(__dirname, 'vite.config') }).then(res => {
         results += `${doneLog}RendererProcess build success` + '\n\n'
         m.success('renderer')
     }).catch(err => {
@@ -88,7 +69,7 @@ async function unionBuild() {
 
 function web() {
     sync(['dist/web/*', '!.gitkeep'])
-    build(rendererOptions).then(res => {
+    build({ configFile: join(__dirname, 'vite.config') }).then(res => {
         console.log(`${doneLog}RendererProcess build success`)
         process.exit()
     })
@@ -96,7 +77,7 @@ function web() {
 
 function greeting() {
     const cols = process.stdout.columns
-    let text = ''
+    let text: boolean | string = ''
 
     if (cols > 85) text = `let's-build`
     else if (cols > 60) text = `let's-|build`

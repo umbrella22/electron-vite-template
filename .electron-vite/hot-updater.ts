@@ -2,39 +2,41 @@
  * power by biuuu
  */
 
-const chalk = require("chalk");
-const { join } = require('path')
-const crypto = require('crypto')
-const AdmZip = require('adm-zip')
-const packageFile = require('../package.json')
-const buildConfig = require('../build.json')
-const { build } = require("../config/index")
-const { platform } = require("os")
-const { ensureDir, emptyDir, copy, outputJSON, remove, stat, readFile } = require("fs-extra");
+import chalk from 'chalk'
+import { join } from 'path'
+import { ensureDir, emptyDir, copy, outputJSON, remove, stat, readFile } from 'fs-extra'
+import { createHmac } from 'crypto'
+import { platform } from 'os'
+import AdmZip from 'adm-zip'
+import packageFile from '../package.json'
+import buildConfig from '../build.json'
+import config from '../config'
+import { okayLog, infoLog, errorLog, doneLog } from './log'
+
 
 const platformName = platform().includes('win32') ? 'win' : platform().includes('darwin') ? 'mac' : 'linux'
 const buildPath = join('.', 'build', `${platformName === 'mac' ? 'mac' : platformName + '-unpacked'}`)
 
 const hash = (data, type = 'sha256') => {
-    const hmac = crypto.createHmac(type, 'Sky')
+    const hmac = createHmac(type, 'Sky')
     hmac.update(data)
     return hmac.digest('hex')
 }
 
-const createZip = (filePath, dest) => {
-    const zip = new AdmZip()
-    zip.addLocalFolder(filePath)
+const createZip = (filePath: string, dest: string) => {
+    const zip = AdmZip()
+    zip.addLocalFolder(filePath, "", null)
     zip.toBuffer()
-    zip.writeZip(dest)
+    zip.writeZip(dest, null)
 }
 
 const start = async () => {
-    console.log(chalk.green.bold(`\n  Start packing`))
+    console.log(chalk.green.bold(`Start packing  \n`))
 
     if (buildConfig.asar) {
         console.log(
             "\n" +
-            chalk.bgRed.white(" ERROR ") +
+            errorLog +
             "  " +
             chalk.red("Please make sure the build.asar option in the Package.json file is set to false") +
             "\n"
@@ -42,10 +44,10 @@ const start = async () => {
         return;
     }
 
-    if (build.hotPublishConfigName === '') {
+    if (config.build.hotPublishConfigName === '') {
         console.log(
             "\n" +
-            chalk.bgRed.white(" ERROR ") +
+            errorLog +
             "  " +
             chalk.red("HotPublishConfigName is not set, which will cause the update to fail, please set it in the config/index.js \n")
             + chalk.red.bold(`\n  Packing failed \n`)
@@ -57,7 +59,7 @@ const start = async () => {
         if (err) {
             console.log(
                 "\n" +
-                chalk.bgRed.white(" ERROR ") +
+                errorLog +
                 "  " +
                 chalk.red("No resource files were found, please execute this command after the build command") +
                 "\n"
@@ -66,6 +68,7 @@ const start = async () => {
         }
 
         try {
+            console.log(chalk.green.bold(`Check the resource files \n`))
             const packResourcesPath = join('.', 'build', 'resources', 'dist');
             const packPackagePath = join('.', 'build', 'resources');
             const resourcesPath = join('.', 'dist');
@@ -74,19 +77,21 @@ const start = async () => {
             const outputPath = join('.', 'build', 'update');
             const zipPath = join(outputPath, name);
 
+
             await ensureDir(packResourcesPath);
             await emptyDir(packResourcesPath);
             await copy(resourcesPath, packResourcesPath);
+            console.log(`${okayLog} ${chalk.cyan.bold(`File copy complete \n`)}`)
             await outputJSON(join(packPackagePath, "package.json"), {
                 name: packageFile.name,
-                productName: packageFile.productName,
+                productName: buildConfig.productName,
                 version: packageFile.version,
-                private: packageFile.private,
                 description: packageFile.description,
                 main: packageFile.main,
                 author: packageFile.author,
                 dependencies: packageFile.dependencies
             });
+            console.log(`${okayLog} ${chalk.cyan.bold(`Rewrite package file complete \n`)}`)
             await ensureDir(outputPath);
             await emptyDir(outputPath);
             createZip(appPath, zipPath);
@@ -94,22 +99,25 @@ const start = async () => {
             const sha256 = hash(buffer);
             const hashName = sha256.slice(7, 12);
             await copy(zipPath, join(outputPath, `${hashName}.zip`));
-            await remove(zipPath);
-            await outputJSON(join(outputPath, `${build.hotPublishConfigName}.json`),
+            await outputJSON(join(outputPath, `${config.build.hotPublishConfigName}.json`),
                 {
                     version: packageFile.version,
                     name: `${hashName}.zip`,
                     hash: sha256
                 }
             );
+            console.log(`${okayLog} ${chalk.cyan.bold(`Zip file complete, Start cleaning up redundant files \n`)}`)
+            await remove(zipPath);
+            await remove(appPath)
+            console.log(`${okayLog} ${chalk.cyan.bold(`Cleaning up redundant files completed \n`)}`)
             console.log(
-                "\n" + chalk.bgGreen.white(" DONE ") + "  " + "The resource file is packaged!\n"
+                "\n" + doneLog + "  " + "The resource file is packaged!\n"
             );
             console.log("File location: " + chalk.green(outputPath) + "\n");
         } catch (error) {
             console.log(
                 "\n" +
-                chalk.bgRed.white(" ERROR ") +
+                errorLog +
                 "  " +
                 chalk.red(error.message || error) +
                 "\n"

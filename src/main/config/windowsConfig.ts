@@ -38,22 +38,3 @@ export const otherWindowConfig: BrowserWindowConstructorOptions = {
         scrollBounce: process.platform === 'darwin',
     }
 }
-
-export const preloadWindowConfig: BrowserWindowConstructorOptions = {
-    height: 595,
-    useContentSize: true,
-    width: 1140,
-    minWidth: 842,
-    show: false,
-    webPreferences: {
-        contextIsolation: true,
-        nodeIntegration: false,
-        webSecurity: false,
-        // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin',
-        preload: preloadPath,
-        webviewTag: true,
-    }
-}

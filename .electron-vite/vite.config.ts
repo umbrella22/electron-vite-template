@@ -1,20 +1,24 @@
-const { join,resolve } = require("path")
-const vuePlugin = require("@vitejs/plugin-vue")
-const vueJsx = require("@vitejs/plugin-vue-jsx");
-const { defineConfig } = require("vite")
-const userConfig = require("../config")
+import { join } from 'path'
+import { defineConfig } from 'vite'
+import vuePlugin from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import userConfig from '../config'
+
 const IsWeb = process.env.BUILD_TARGET === 'web'
 
+function resolve(dir: string) {
+    return join(__dirname, '..', dir)
+}
 userConfig.build.env.is_web = IsWeb
 userConfig.dev.env.is_web = IsWeb
 
 const root = resolve('src/renderer')
 
-const config = defineConfig({
+export default defineConfig({
     mode: process.env.NODE_ENV,
     root,
     define: {
-        'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env
+        'process.env': process.env.NODE_ENV === 'production' ? userConfig.build.env : userConfig.dev.env,
     },
     resolve: {
         alias: {
@@ -43,5 +47,3 @@ const config = defineConfig({
     },
     publicDir: resolve('static')
 })
-
-module.exports = config

@@ -1,13 +1,13 @@
 // 这里定义了静态文件路径的位置
 import { join } from 'path'
-import { HotUpdateFolder } from '@config/index'
+import config from '@config/index'
 import { app } from 'electron'
 import { URL } from 'url';
 const isDev = process.env.NODE_ENV === 'development';
 class StaticPath {
   constructor() {
     const basePath = isDev ? join(__dirname, '..', '..', '..') : join(app.getAppPath(), '..', '..');
-    this.__updateFolder = join(basePath, `${HotUpdateFolder}`)
+    this.__updateFolder = join(basePath, `${config.HotUpdateFolder}`)
     if (isDev) {
       this.__static = join(basePath, 'static');
       this.__lib = join(basePath, `rootLib`, `${process.platform}`, `${process.arch}`);

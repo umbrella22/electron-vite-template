@@ -1,10 +1,10 @@
-import { build } from '@config/index.js'
+import config from '@config/index.js'
 interface hotPublish {
     url: string;
     configName: string;
 }
 
 export const hotPublishConfig: hotPublish = {
-    url: build.hotPublishUrl,
-    configName: build.hotPublishConfigName
+    url: config.build.hotPublishUrl,
+    configName: config.build.hotPublishConfigName
 }
