@@ -3,9 +3,9 @@
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template/tree/strict)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
 [![vue](https://img.shields.io/badge/vue-3.2.23-brightgreen.svg)](https://github.com/vuejs/vue-next)
-[![vite](https://img.shields.io/badge/vite-2.6.14-brightgreen.svg)](https://github.com/vitejs/vite)
+[![vite](https://img.shields.io/badge/vite-2.9.11-brightgreen.svg)](https://github.com/vitejs/vite)
 [![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
-[![electron](https://img.shields.io/badge/electron-15.3.1-brightgreen.svg)](https://github.com/electron/electron)
+[![electron](https://img.shields.io/badge/electron-19.0.4-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
 [国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
@@ -23,7 +23,7 @@ npm config edit
 # ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
 # 然后关闭该窗口，重启命令行.
 # 使用yarn安装
-yarn or yarn install
+yarn 或 yarn install
 
 # 启动之后，会在9080端口监听
 yarn dev
