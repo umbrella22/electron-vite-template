@@ -8,6 +8,7 @@ import json from '@rollup/plugin-json';
 import esbuild from 'rollup-plugin-esbuild'
 import obfuscator from 'rollup-plugin-obfuscator'
 import { defineConfig } from 'rollup'
+import { dependencies } from "../package.json"
 
 export default (env = "production", type = "main") => {
     return defineConfig({
@@ -69,15 +70,13 @@ export default (env = "production", type = "main") => {
         ],
         external: [
             ...builtinModules,
-            'axios',
+            ...Object.keys(dependencies),
             'electron',
             'express',
             'ffi-napi',
             'ref-napi',
             'ref-struct-napi',
             // 修正部分人会导致丢失依赖的问题，如果updater工作不正常请取消下面的注释，并自行安装semver
-            'semver',
-            'glob',
         ],
     })
 };
