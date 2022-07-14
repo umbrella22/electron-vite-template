@@ -6,7 +6,7 @@ import { sync } from 'del'
 import { build } from 'vite'
 import chalk from 'chalk'
 import { rollup, OutputOptions } from 'rollup'
-import Multispinner from 'Multispinner'
+import Multispinner from 'multispinner'
 import rollupOptions from './rollup.config'
 import { okayLog, errorLog, doneLog } from './log'
 
