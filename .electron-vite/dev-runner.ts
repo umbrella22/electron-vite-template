@@ -69,7 +69,7 @@ function startRenderer(): Promise<void> {
             if (err) {
                 reject("PortError:" + err)
             } else {
-                const server = await createServer({ configFile: join(__dirname, 'vite.config') })
+                const server = await createServer({ configFile: join(__dirname, 'vite.config.ts') })
                 process.env.PORT = String(port)
                 await server.listen(port)
                 console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备主进程，请等待...' : '  Preparing main process, please wait...'}`) + '\n\n')
@@ -88,9 +88,9 @@ function startMain(): Promise<void> {
         });
         MainWatcher.on('event', event => {
             if (event.code === 'END') {
-                if (electronProcess && electronProcess.kill) {
+                if (electronProcess) {
                     manualRestart = true
-                    process.kill(electronProcess.pid)
+                    electronProcess.pid && process.kill(electronProcess.pid)
                     electronProcess = null
                     startElectron()
 
@@ -118,9 +118,9 @@ function startPreload(): Promise<void> {
         });
         PreloadWatcher.on('event', event => {
             if (event.code === 'END') {
-                if (electronProcess && electronProcess.kill) {
+                if (electronProcess) {
                     manualRestart = true
-                    process.kill(electronProcess.pid)
+                    electronProcess.pid && process.kill(electronProcess.pid)
                     electronProcess = null
                     startElectron()
 
