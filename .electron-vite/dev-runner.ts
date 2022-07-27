@@ -68,7 +68,7 @@ function startRenderer(): Promise<void> {
             if (err) {
                 reject("PortError:" + err)
             } else {
-                const server = await createServer({ configFile: join(__dirname, 'vite.config') })
+                const server = await createServer({ configFile: join(__dirname, 'vite.config.ts') })
                 process.env.PORT = String(port)
                 await server.listen(port)
                 console.log('\n\n' + chalk.blue(`${config.dev.chineseLog ? '  正在准备主进程，请等待...' : '  Preparing main process, please wait...'}`) + '\n\n')
@@ -116,8 +116,6 @@ function startElectron() {
     ]
 
     // detect yarn or npm and process commandline args accordingly
-
-    console.log("process.env.npm_execpath", process.env.npm_execpath)
 
     if (process.env.npm_execpath?.endsWith('yarn.js')) {
         args = args.concat(process.argv.slice(3))

@@ -56,7 +56,7 @@ function unionBuild() {
             process.exit(1)
         });
 
-    build({ configFile: join(__dirname, 'vite.config') }).then(res => {
+    build({ configFile: join(__dirname, 'vite.config.ts') }).then(res => {
         results += `${doneLog}RendererProcess build success` + '\n\n'
         m.success('renderer')
     }).catch(err => {
