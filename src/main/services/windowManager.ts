@@ -4,7 +4,6 @@ import menuconfig from '../config/menu'
 import { app, BrowserWindow, Menu, dialog } from 'electron'
 import { winURL, loadingURL } from '../config/StaticPath'
 import { join } from "path"
-import { mainWindowConfig } from "../config/windowsConfig"
 
 setIpc.Mainfunc()
 
@@ -33,13 +32,24 @@ class MainInit {
   createMainWindow() {
     this.mainWindow = new BrowserWindow({
       titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      ...Object.assign(mainWindowConfig, {
-        webPreferences: {
-          preload: process.env.NODE_ENV === 'development'
-            ? join(app.getAppPath(), 'preload.js')
-            : join(app.getAppPath(), "dist", "electron", "main", "preload.js")
-        }
-      })
+      height: 800,
+      useContentSize: true,
+      width: 1700,
+      minWidth: 1366,
+      show: false,
+      frame: config.IsUseSysTitle,
+      webPreferences: {
+        sandbox: false,
+        webSecurity: false,
+        // 如果是开发模式可以使用devTools
+        devTools: process.env.NODE_ENV === 'development',
+        // 在macos中启用橡皮动画
+        scrollBounce: process.platform === 'darwin',
+        preload: process.env.NODE_ENV === 'development'
+          ? join(app.getAppPath(), 'preload.js')
+          : join(app.getAppPath(), "dist", "electron", "main", "preload.js")
+
+      }
     })
     // 赋予模板
     const menu = Menu.buildFromTemplate(menuconfig as any)
