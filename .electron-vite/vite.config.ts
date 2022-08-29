@@ -31,17 +31,14 @@ export default defineConfig({
         outDir: IsWeb ? resolve('dist/web') : resolve('dist/electron/renderer'),
         emptyOutDir: true,
         target: 'esnext',
-        minify: 'esbuild'
+        minify: 'esbuild',
+        cssCodeSplit:false
     },
     server: {
     },
     plugins: [
         vueJsx(),
-        vuePlugin({
-            script: {
-                refSugar: true
-            }
-        })
+        vuePlugin()
     ],
     optimizeDeps: {
     },

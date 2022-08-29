@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'production'
 
 import { join } from 'path'
 import { say } from 'cfonts'
-import { sync } from 'del'
+import { deleteAsync } from 'del'
 import { build } from 'vite'
 import chalk from 'chalk'
 import { rollup, OutputOptions } from 'rollup'
@@ -18,8 +18,8 @@ const isCI = process.env.CI || false
 if (process.env.BUILD_TARGET === 'web') web()
 else unionBuild()
 
-function clean() {
-    sync(['dist/electron/main/*', 'dist/electron/renderer/*', 'dist/web/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
+async function clean() {
+    await deleteAsync(['dist/electron/main/*', 'dist/electron/renderer/*', 'dist/web/*', 'build/*', '!build/icons', '!build/lib', '!build/lib/electron-build.*', '!build/icons/icon.*'])
     console.log(`\n${doneLog}clear done`)
     if (process.env.BUILD_TARGET === 'onlyClean') process.exit()
 }
