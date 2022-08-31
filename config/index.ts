@@ -3,7 +3,6 @@ import dev from './dev.env'
 
 export default {
   build: {
-    DisableF12: true,
     env: prod,
     hotPublishUrl: "",
     hotPublishConfigName: "update-config"
@@ -14,6 +13,7 @@ export default {
     chineseLog: false,
     port: 9080,
   },
+  DisableF12: true,
   DllFolder: '',
   HotUpdateFolder: 'update',
   UseStartupChart: true,
