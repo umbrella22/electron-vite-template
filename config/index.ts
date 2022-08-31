@@ -3,7 +3,6 @@ import dev from './dev.env'
 
 export default {
   build: {
-    DisableF12: true,
     env: prod,
     // 示例
     hotPublishUrl:"http://umbrella22.github.io/electron-vite-template",
@@ -15,6 +14,7 @@ export default {
     chineseLog: false,
     port: 9080,
   },
+  DisableF12: true,
   DllFolder: '',
   HotUpdateFolder: 'update',
   UseStartupChart: true,
