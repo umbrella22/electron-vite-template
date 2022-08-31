@@ -6,7 +6,7 @@ import { deleteAsync } from 'del'
 import { build } from 'vite'
 import chalk from 'chalk'
 import { rollup, OutputOptions } from 'rollup'
-import Multispinner from 'multispinner'
+import { Listr } from 'listr2'
 import rollupOptions from './rollup.config'
 import { okayLog, errorLog, doneLog } from './log'
 
@@ -28,47 +28,42 @@ function unionBuild() {
     greeting()
     if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') clean()
 
-    const tasks = ['main', 'renderer']
-    const m = new Multispinner(tasks, {
-        preText: 'building',
-        postText: 'process'
+    const tasksLister = new Listr([
+        {
+            title: 'building main process',
+            task: async () => {
+                try {
+                    const build = await rollup(mainOpt)
+                    await build.write(mainOpt.output as OutputOptions)
+                } catch (error) {
+                    console.error(`\n${error}\n`)
+                    console.log(`\n  ${errorLog}failed to build main process`)
+                    process.exit(1)
+                }
+            }
+        },
+        {
+            title: "building renderer process",
+            task: async (_, tasks) => {
+                try {
+                    await build({ configFile: join(__dirname, 'vite.config.ts') })
+                    tasks.output = `${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`
+                } catch (error) {
+                    console.error(`\n${error}\n`)
+                    console.log(`\n  ${errorLog}failed to build renderer process`)
+                    process.exit(1)
+                }
+            },
+            options: { persistentOutput: true }
+        }
+    ], {
+        exitOnError: false
     })
-    let results = ''
-
-    m.on('success', () => {
-        process.stdout.write('\x1B[2J\x1B[0f')
-        console.log(`\n\n${results}`)
-        console.log(`${okayLog}take it away ${chalk.yellow('`electron-builder`')}\n`)
-        process.exit()
-    })
-
-    rollup(mainOpt)
-        .then(build => {
-            results += `${doneLog}MainProcess build success` + '\n\n'
-            build.write(mainOpt.output as OutputOptions).then(() => {
-                m.success('main')
-            })
-        })
-        .catch(error => {
-            m.error('main')
-            console.log(`\n  ${errorLog}failed to build main process`)
-            console.error(`\n${error}\n`)
-            process.exit(1)
-        });
-
-    build({ configFile: join(__dirname, 'vite.config.ts') }).then(res => {
-        results += `${doneLog}RendererProcess build success` + '\n\n'
-        m.success('renderer')
-    }).catch(err => {
-        m.error('renderer')
-        console.log(`\n  ${errorLog}failed to build renderer process`)
-        console.error(`\n${err}\n`)
-        process.exit(1)
-    })
+    tasksLister.run()
 }
 
-function web() {
-    sync(['dist/web/*', '!.gitkeep'])
+async function web() {
+    await deleteAsync(['dist/web/*', '!.gitkeep'])
     build({ configFile: join(__dirname, 'vite.config') }).then(res => {
         console.log(`${doneLog}RendererProcess build success`)
         process.exit()
