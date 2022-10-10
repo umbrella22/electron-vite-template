@@ -65,7 +65,7 @@ export default (env = "production", type = "main") => {
                     },
                 ],
             }),
-            process.env.NODE_ENV == "production" ? obfuscator({}) : null,
+            process.env.NODE_ENV == "production" && obfuscator({}),
         ],
         external: [
             ...builtinModules,

@@ -2,7 +2,7 @@ import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
 import { app, BrowserWindow, Menu, dialog } from 'electron'
-import { winURL, loadingURL } from '../config/StaticPath'
+import { winURL, loadingURL,getPreloadFile } from '../config/StaticPath'
 import { join } from "path"
 
 setIpc.Mainfunc()
@@ -45,9 +45,7 @@ class MainInit {
         devTools: process.env.NODE_ENV === 'development',
         // 在macos中启用橡皮动画
         scrollBounce: process.platform === 'darwin',
-        preload: process.env.NODE_ENV === 'development'
-          ? join(app.getAppPath(), 'preload.js')
-          : join(app.getAppPath(), "dist", "electron", "main", "preload.js")
+        preload: getPreloadFile('preload')
 
       }
     })
