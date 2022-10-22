@@ -63,7 +63,6 @@ const r = createInterface({
   completer: (line) => {
     let cmds = platformOptional();
     pushLinuxOptional && (cmds = linuxOptional);
-    !cmds.includes('q') && cmds.push('q');
     const hits = cmds.filter((c) => c.toLocaleLowerCase().startsWith(line.toLocaleLowerCase()));
     return [hits.length ? hits : cmds, line];
   }
