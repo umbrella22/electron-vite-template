@@ -6,7 +6,6 @@ import DownloadFile from './downloadFile'
 import Update from './checkupdate'
 import { join } from 'path'
 import config from '@config/index'
-import { otherWindowConfig } from "../config/windowsConfig"
 
 export default {
   Mainfunc() {

@@ -34,11 +34,9 @@
     "icon": "build/icons/icon.icns"
   },
   "win": {
-    "icon": "build/icons/icon.ico",
-    "target": "nsis"
+    "icon": "build/icons/icon.ico"
   },
   "linux": {
-    "target": "deb",
     "icon": "build/icons"
   }
 }

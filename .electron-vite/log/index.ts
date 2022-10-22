@@ -12,7 +12,6 @@ export const okayLog = (text: string) => {
 export const warningLog = (text: string) => {
   console.log('\n ' + chalk.bgYellow.white(' WARNING ') + ' ' + text)
 }
-
 export const infoLog = (text: string) => {
   console.log('\n ' + chalk.bgCyan.white(' INFO ') + ' ' + text)
 }
