@@ -51,7 +51,7 @@ function platformOptional() {
     case 'win32':
       return ['web', ...optional.filter((item) => item.startsWith('win'))];
     case 'linux':
-      return ['web', ...optional.filter((item) => !(item === 'mac' || item === 'darwin'))];
+      return ['web', ...optional.filter((item) => !(item === 'mac'))];
     default:
       return ['web', ...optional];
   }
