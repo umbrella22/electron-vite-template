@@ -5,6 +5,7 @@
   "author": "sky <https://github.com/umbrella22>",
   "description": "electron-vite-template project",
   "license": "MIT",
+  "encryptionLevel": 2,
   "scripts": {
     "dev": "tsx .electron-vite/dev-runner.ts",
     "build": "tsx .electron-vite/build.ts -m prod && electron-builder -c build.json",
