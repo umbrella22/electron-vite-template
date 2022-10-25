@@ -11,8 +11,8 @@ exports.byteCodeBeforePack = async (context) => {
     context.packager.info._framework.prepareApplicationStageDirectory = (...args) => {
       const reslut = hook.apply(context.packager.info._framework, args);
       reslut.then(() => {
-        const electron_compiler_path = path.resolve(__dirname, "./bytecode/electron-compiler.js");
-        const resourcesPath = path.resolve(__dirname, "./bytecode/_temp/resources");
+        const electron_compiler_path = path.resolve(__dirname, "../bytecode/electron-compiler.js");
+        const resourcesPath = path.resolve(__dirname, "../bytecode/_temp/resources");
         const targetResourcesPath = path.resolve(context.appOutDir, "resources");
         if (existsSync(targetResourcesPath)) {
           removeSync(targetResourcesPath)
