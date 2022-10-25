@@ -1,5 +1,5 @@
 {
-  "asar": false,
+  "asar": true,
   "extraFiles": [],
   "publish": [
     {
@@ -8,6 +8,9 @@
     }
   ],
   "afterPack": ".electron-vite/afterPack.js",
+  "beforePack": ".electron-vite/beforePack.js",
+
+
   "productName": "electron-vite-template",
   "appId": "org.sky.electron-vite-template",
   "directories": {
