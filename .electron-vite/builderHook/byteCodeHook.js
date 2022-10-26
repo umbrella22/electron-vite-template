@@ -35,7 +35,7 @@ exports.byteCodeAfterPack = async () => {
   // dist 还原
   if (encryptionLevel === 1 || encryptionLevel === 2) {
     const inputPath = path.resolve(__dirname, '../../dist/electron/main');
-    const mainTempPath = path.resolve(__dirname, "./_temp/main.js");
+    const mainTempPath = path.resolve(__dirname, "../bytecode/_temp/main.js");
     const mainjsPath = path.resolve(__dirname, "../../dist/electron/main/main.js");
     removeSync(inputPath);
     ensureDir(inputPath);

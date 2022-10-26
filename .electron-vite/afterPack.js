@@ -1,7 +1,7 @@
 'use strict';
-const { byteCodeBeforePack } = require("./builderHook/byteCodeHook")
+const { byteCodeAfterPack } = require("./builderHook/byteCodeHook")
 const { copyFileHook } = require("./builderHook/copyFileHook")
 exports.default = async context => {
-  await byteCodeBeforePack(context);
+  await byteCodeAfterPack(context);
   await copyFileHook(context);
 };
