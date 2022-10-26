@@ -17,7 +17,7 @@
     "index.js"
   ],
   "napi": {
-    "name": "encryption",
+    "name": "index",
     "triples": {
       "defaults": true,
       "additional": [

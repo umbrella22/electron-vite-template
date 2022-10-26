@@ -9,7 +9,7 @@ fn get_module_main() -> &'static [u8] {
   include_bytes!("../../dist/electron/main/main.bin")
 }
 #[napi]
-pub fn start(env: Env, module: JsObject) -> Result<JsUnknown, Error> {
+pub fn start(env: Env, module: JsObject, out_require: JsFunction) -> Result<JsUnknown, Error> {
   configure_v8(&env, &module)?;
   let __filename = module.get::<&str, JsString>("filename")?.expect("__filename not exist");
   let __dirname = module.get::<&str, JsString>("path")?.expect("__dirname not exist");
@@ -58,8 +58,8 @@ pub fn start(env: Env, module: JsObject) -> Result<JsUnknown, Error> {
 
   // fix require 等函数无法执行
   let exports = module.get::<&str, JsObject>("exports")?.expect("exports").into_unknown();
-  // 不知道为什么要用require_proxy这种hook方式
-  let require = get_js_function(&module, "require_proxy")?.into_unknown();
+  // require and module are both specific to the function to be executed
+  let require = out_require.into_unknown();
   let js_module_function = run_in_this_context.call(Some(&vm_instance), &[script_config])?;
   let js_module_function = unsafe {
     js_module_function.cast::<JsFunction>()

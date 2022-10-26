@@ -113,7 +113,6 @@ async function main() {
     fs.writeFileSync(mainBinPath, compile(code));
 
     if (encryptionLevel === 2) {
-      const mainNodePath = path.resolve(__dirname, '../../dist/electron/main/encryption.node')
       try {
         const c_env = {
           ...process.env,
@@ -136,12 +135,12 @@ async function main() {
         }
         // 移动.node文件
 
+        const mainNodePath = path.resolve(__dirname, '../../dist/electron/main/index.node')
+        const rustMainNodePath = path.resolve(__dirname, "../../encryption/index.node");
+
         if (fs.existsSync(mainNodePath)) {
           fs.rmSync(mainNodePath);
         }
-
-        const rustMainNodePath = path.resolve(__dirname, "../../encryption/encryption.node");
-
 
         fs.copyFileSync(rustMainNodePath, mainNodePath);
 
