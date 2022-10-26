@@ -1,9 +1,8 @@
 process.env.NODE_ENV = 'production'
 
-import { createInterface } from 'node:readline';
-import { promisify } from 'util';
 import { join } from 'path'
 import { say } from 'cfonts'
+import inquirer from 'inquirer';
 import { deleteSync } from 'del'
 import { build as viteBuild } from 'vite'
 import { Platform, build } from 'electron-builder'
@@ -15,7 +14,6 @@ import { Listr } from 'listr2'
 import rollupOptions from './rollup.config'
 import { errorLog, doneLog } from './log'
 
-
 const [, , arch] = process.argv;
 const EOL = process.platform === 'win32' ? "\r\n" : "\n";
 
@@ -23,16 +21,10 @@ const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload")
 const isCI = process.env.CI || false
 
-
-const [optional, linuxOptional] = [
+const [optional, linuxOptional, winOptional] = [
   [
     'web',
     'win',
-    'win32',
-    'win64',
-    'winp',
-    'winp32',
-    'winp64',
     'mac',
     'linux'
   ],
@@ -42,9 +34,16 @@ const [optional, linuxOptional] = [
     'deb',
     'rpm',
     'pacman'
+  ],
+  [
+    'win-any',
+    'win32',
+    'win64',
+    'winp-any',
+    'winp32',
+    'winp64',
   ]
 ];
-let pushLinuxOptional = false;
 
 function platformOptional() {
   switch (process.platform) {
@@ -57,17 +56,41 @@ function platformOptional() {
   }
 }
 
-const r = createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  completer: (line) => {
-    let cmds = platformOptional();
-    pushLinuxOptional && (cmds = linuxOptional);
-    const hits = cmds.filter((c) => c.toLocaleLowerCase().startsWith(line.toLocaleLowerCase()));
-    return [hits.length ? hits : cmds, line];
+function defaultPlatform() {
+  switch (process.platform) {
+    case 'win32':
+      return 'win'
+    case 'darwin':
+      return 'mac'
+    default:
+      return process.platform
   }
-});
-const question = promisify(r.question).bind(r);
+}
+
+const question = async (): Promise<string> => inquirer.prompt({
+  type: 'list',
+  name: 'platform',
+  message: 'Which platform is you want to build?',
+  choices: platformOptional(),
+  default: defaultPlatform(),
+}).then(({ platform }) => platform)
+
+const linuxQuestion = async (): Promise<string> => inquirer.prompt({
+  type: 'list',
+  name: 'platform',
+  message: 'Please select linux package',
+  choices: linuxOptional,
+  default: 'AppImage',
+}).then(({ platform }) => platform)
+
+
+const winQuestion = async (): Promise<string> => inquirer.prompt({
+  type: 'list',
+  name: 'platform',
+  message: 'Please select win package',
+  choices: winOptional,
+  default: 'win-any',
+}).then(({ platform }) => platform)
 
 
 process.env.BUILD_TARGET === 'onlyClean' && clean()
@@ -81,44 +104,22 @@ function clean() {
 }
 
 async function preBuild() {
-  let _arch = await (async function (arch: string) {
-    if (arch) {
-      if (!platformOptional().includes(arch.trim().toLowerCase())) {
-        errorLog(`${arch} is Illegal input, Please check input.`)
-        process.exit(1)
-      }
-      return arch
-    } else {
-      for (; ;) {
-        const line = await question(
-          `${chalk.cyan(`Which platform is you want to build?${EOL}`)}${chalk.cyan(` optional: `)}${chalk.yellow(`${platformOptional().join(' ')}`)}${EOL}`
-        );
-        if (line && platformOptional().includes(line.trim().toLowerCase())) {
-          return line
-        }
-        console.log(chalk.red(`There is no such option`));
-      }
-    }
-  })(arch)
+  let _arch = ''
+  if (arch) !platformOptional().includes(arch.trim().toLowerCase()) ? (_arch = await question()) : _arch = arch
+  else _arch = await question()
   let archTag: any = null;
   switch (_arch) {
     case 'web':
       return web();
     case 'win':
-    case 'win32':
-    case 'win64':
-    case 'winp':
-    case 'winp32':
-    case 'winp64':
       archTag = Platform.WINDOWS.createTarget();
+      _arch = await winQuestion()
       let bv = {
         target: 'nsis',
         arch: [] as string[]
       };
-      if (_arch.startsWith('winp')) {
-        bv.target = 'portable'
-      }
-      if (_arch.length === 4) bv.arch = ['x64', 'ia32'];
+      _arch.startsWith('winp') && (bv.target = 'portable')
+      if (_arch.indexOf('any') > -1) bv.arch = ['x64', 'ia32'];
       else if (_arch.indexOf('32') > -1) bv.arch = ['ia32'];
       else if (_arch.indexOf('64') > -1) bv.arch = ['x64'];
       buildConfig.win['target'] = [bv];
@@ -128,19 +129,8 @@ async function preBuild() {
       break;
     case 'linux':
       archTag = Platform.LINUX.createTarget();
-      pushLinuxOptional = true;
-      for (; ;) {
-        const line = await question(
-          `${chalk.cyan(`Please input linux package type:${EOL}`)}${chalk.cyan(` optional: `)}${chalk.yellow(`${linuxOptional.join(' ')}`)}${EOL}`
-        );
-        if (line && linuxOptional.includes(line.trim().toLowerCase())) {
-          buildConfig.linux['target'] = line;
-          break
-        }
-        console.log(chalk.red(`There is no such option`));
-      }
+      buildConfig.linux['target'] = await linuxQuestion();
   }
-  r.close()
   unionBuild(archTag)
 }
 
