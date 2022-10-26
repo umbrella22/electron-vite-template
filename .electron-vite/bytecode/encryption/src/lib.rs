@@ -6,7 +6,7 @@ type Module = JsObject;
 
 /// 获取electron 进程的main.bin 就是编译后的jsc
 fn get_module_main() -> &'static [u8] {
-  include_bytes!("../../dist/electron/main/main.bin")
+  include_bytes!("../../../../dist/electron/main/main.bin")
 }
 #[napi]
 pub fn start(env: Env, module: JsObject, out_require: JsFunction) -> Result<JsUnknown, Error> {
