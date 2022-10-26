@@ -21,26 +21,26 @@ class Update {
     })
 
     // 当开始检查更新的时候触发
-    autoUpdater.on('checking-for-update', (event, arg) => {
+    autoUpdater.on('checking-for-update', () => {
       console.log('开始检查更新')
       this.Message(this.mainWindow, 0)
     })
 
     // 发现可更新数据时
-    autoUpdater.on('update-available', (event, arg) => {
+    autoUpdater.on('update-available', () => {
       console.log('有更新')
       this.Message(this.mainWindow, 1)
     })
 
     // 没有可更新数据时
-    autoUpdater.on('update-not-available', (event, arg) => {
+    autoUpdater.on('update-not-available', () => {
       console.log('没有更新')
       this.Message(this.mainWindow, 2)
     })
 
     // 下载监听
     autoUpdater.on('download-progress', (progressObj) => {
-      this.Message(this.mainWindow, 3, progressObj)
+      this.Message(this.mainWindow, 3, `${progressObj}`)
     })
 
     // 下载完成
