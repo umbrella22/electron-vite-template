@@ -1,0 +1,1 @@
+console.log(require, module.require, require === module.require)
