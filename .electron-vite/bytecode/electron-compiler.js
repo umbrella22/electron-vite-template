@@ -118,7 +118,7 @@ async function main() {
           ...process.env,
           path: process.env + "./node_modules/.bin"
         };
-        const c_cwd = path.resolve(__dirname, "../../encryption");
+        const c_cwd = path.resolve(__dirname, "./encryption");
         // 检查编译
         execSync("cargo check", {
           cwd: c_cwd,
@@ -136,7 +136,7 @@ async function main() {
         // 移动.node文件
 
         const mainNodePath = path.resolve(__dirname, '../../dist/electron/main/index.node')
-        const rustMainNodePath = path.resolve(__dirname, "../../encryption/index.node");
+        const rustMainNodePath = path.resolve(__dirname, "./encryption/index.node");
 
         if (fs.existsSync(mainNodePath)) {
           fs.rmSync(mainNodePath);
