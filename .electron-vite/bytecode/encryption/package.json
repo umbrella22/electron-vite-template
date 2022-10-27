@@ -39,7 +39,8 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --release"
+    "build": "napi build --release",
+    "install-napi": "yarn install"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.11.4"

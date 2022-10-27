@@ -14,3 +14,4 @@ build/
 *.ntvs*
 *.njsproj
 *.sln
+.electron-vite/bytecode/_temp/main.js
