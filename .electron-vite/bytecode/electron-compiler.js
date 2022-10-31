@@ -83,6 +83,15 @@ function getRustTarget() {
   }
 }
 
+function checkOrDownNapiCli(dir) {
+  const binPath = path.resolve(dir, "./node_modules/.bin/napi");
+  if (!fs.existsSync(binPath)) {
+    execSync("npm run install-napi", {
+      cwd: dir
+    });
+  }
+}
+
 
 async function main() {
   if (encryptionLevel === 1 || encryptionLevel === 2) {
@@ -124,6 +133,9 @@ async function main() {
           cwd: c_cwd,
           env: c_env
         });
+
+        // check or napi cli 
+        checkOrDownNapiCli(c_cwd);
         // 编译.node
         execSync("npm run build -- --target " + getRustTarget(), {
           cwd: c_cwd,
