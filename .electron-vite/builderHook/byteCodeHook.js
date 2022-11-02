@@ -18,10 +18,12 @@ exports.byteCodeBeforePack = async (context) => {
           removeSync(targetResourcesPath)
         }
         copySync(resourcesPath, targetResourcesPath);
+        const node_modules_path = path.resolve(__dirname, "../../node_modules/.bin")
         execSync("electron " + electron_compiler_path, {
           env: {
             ...process.env,
-            ELECTRON_OVERRIDE_DIST_PATH: context.appOutDir
+            ELECTRON_OVERRIDE_DIST_PATH: context.appOutDir,
+            path: process.env + node_modules_path
           }
         })
         removeSync(targetResourcesPath)
