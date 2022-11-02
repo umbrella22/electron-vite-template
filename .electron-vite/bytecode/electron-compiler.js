@@ -120,12 +120,13 @@ async function main() {
 
 
     fs.writeFileSync(mainBinPath, compile(code));
+    const node_modules_path = path.resolve(__dirname, "../../node_modules/.bin")
 
     if (encryptionLevel === 2) {
       try {
         const c_env = {
           ...process.env,
-          path: process.env + "./node_modules/.bin"
+          path: process.env + node_modules_path
         };
         const c_cwd = path.resolve(__dirname, "./encryption");
         // 检查编译
