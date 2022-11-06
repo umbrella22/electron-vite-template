@@ -5,7 +5,7 @@
   "author": "sky <https://github.com/umbrella22>",
   "description": "electron-vite-template project",
   "license": "MIT",
-  "encryptionLevel": 2,
+  "encryptionLevel": 1,
   "scripts": {
     "dev": "esno .electron-vite/dev-runner.ts",
     "build": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts  && electron-builder -c build.json",
