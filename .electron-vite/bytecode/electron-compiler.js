@@ -7,6 +7,7 @@ const { execSync } = require("child_process");
 const { compile } = require('./bytecode');
 const { encryptionLevel } = require("../../package.json");
 const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
+
 function isMusl() {
   // For Node 10
   if (!process.report || typeof process.report.getReport !== 'function') {
@@ -125,8 +126,6 @@ async function main() {
 
     if (encryptionLevel === 2) {
       try {
-        const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
-
         const c_env = {
           ...process.env,
           ...isWindow ? {
@@ -135,7 +134,6 @@ async function main() {
             PATH: process.env.PATH + ":" + node_modules_path
           }
         };
-        console.log(c_env)
         const c_cwd = path.resolve(__dirname, "./encryption");
         // 检查编译
         execSync("cargo check", {
