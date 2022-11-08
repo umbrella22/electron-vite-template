@@ -4,7 +4,7 @@ const path = require('path');
 const { execSync } = require("child_process");
 const { encryptionLevel } = require("../../package.json");
 const { copySync, existsSync, removeSync, ensureDir } = require('fs-extra');
-
+const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 exports.byteCodeBeforePack = async (context) => {
   if (encryptionLevel === 1 || encryptionLevel === 2) {
     const hook = context.packager.info._framework.prepareApplicationStageDirectory;
@@ -23,7 +23,11 @@ exports.byteCodeBeforePack = async (context) => {
           env: {
             ...process.env,
             ELECTRON_OVERRIDE_DIST_PATH: context.appOutDir,
-            path: process.env + node_modules_path
+            ...isWindow ? {
+              path: process.env.path + ";" + node_modules_path,
+            } : {
+              PATH: process.env.PATH + ":" + node_modules_path
+            }
           }
         })
         removeSync(targetResourcesPath)
