@@ -125,6 +125,8 @@ async function main() {
 
     if (encryptionLevel === 2) {
       try {
+        const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
+
         const c_env = {
           ...process.env,
           ...isWindow ? {
@@ -133,6 +135,7 @@ async function main() {
             PATH: process.env.PATH + ":" + node_modules_path
           }
         };
+        console.log(c_env)
         const c_cwd = path.resolve(__dirname, "./encryption");
         // 检查编译
         execSync("cargo check", {
