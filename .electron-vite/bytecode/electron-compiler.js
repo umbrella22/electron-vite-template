@@ -6,6 +6,7 @@ const { BrowserWindow, app } = require('electron');
 const { execSync } = require("child_process");
 const { compile } = require('./bytecode');
 const { encryptionLevel } = require("../../package.json");
+const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 function isMusl() {
   // For Node 10
   if (!process.report || typeof process.report.getReport !== 'function') {
@@ -126,7 +127,11 @@ async function main() {
       try {
         const c_env = {
           ...process.env,
-          path: process.env + node_modules_path
+          ...isWindow ? {
+            path: process.env.path + ";" + node_modules_path,
+          } : {
+            PATH: process.env.PATH + ":" + node_modules_path
+          }
         };
         const c_cwd = path.resolve(__dirname, "./encryption");
         // 检查编译
