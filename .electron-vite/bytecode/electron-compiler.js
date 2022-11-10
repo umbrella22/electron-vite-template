@@ -178,7 +178,7 @@ async function main() {
     }
   }
 
-  app.quit();
+  app && app.quit();
 
   // 启动一个浏览器窗口用于渲染进程字节码的编译
   // await launchRenderer();
