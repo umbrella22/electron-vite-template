@@ -19,12 +19,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Test build
-      env:
-        ELECTRON_RUN_AS_NODE: “1”
+      # env:
+      #   ELECTRON_RUN_AS_NODE: “1”
       shell: bash
       run: |
         yarn --frozen-lockfile
-        yarn build
+        yarn add xvfb-maybe -D
+        ./node_modules/.bin/xvfb-maybe yarn build
 
 
 
