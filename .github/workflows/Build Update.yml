@@ -1,7 +1,7 @@
 name: Build Updater
 
 on:
-  push:
+  release:
     branches: [main]
 
 jobs:
