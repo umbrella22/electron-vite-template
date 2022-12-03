@@ -1,7 +1,7 @@
 <template>
   <div class="print column">
     <div class="row">
-      <span class="tips">{{ t('print.tips') }}</span>
+      <span class="tips">{{ $t('print.tips') }}</span>
     </div>
     <div class="row">
       <select class="grip-right" v-model="selName">
@@ -11,43 +11,43 @@
           :value="item.name"
         >{{ item.displayName }}</option>
       </select>
-      <button type="button" @click="print">{{ t('print.print') }}</button>
+      <button type="button" @click="print">{{ $t('print.print') }}</button>
     </div>
     <div class="row">
       <button
         class="grip-right"
         type="button"
         @click="() => silent = !silent"
-      >{{ silent ? '' : t('print.notUse') }}{{ t('print.silentPrinting') }}</button>
+      >{{ silent ? '' : $t('print.notUse') }}{{ $t('print.silentPrinting') }}</button>
       <button
         class="grip-right"
         type="button"
         @click="() => printBackground = !printBackground"
-      >{{ printBackground ? t('print.use') : t('print.unuse') }}{{ t('print.backgroundColor') }}</button>
-      <button type="button" @click="() => color = !color">{{ color ? t('print.colorful') : t('print.blackAndWhite') }}</button>
+      >{{ printBackground ? $t('print.use') : $t('print.unuse') }}{{ $t('print.backgroundColor') }}</button>
+      <button type="button" @click="() => color = !color">{{ color ? $t('print.colorful') : $t('print.blackAndWhite') }}</button>
     </div>
     <div class="line"></div>
     <div class="row">
-      <span class="grip-right">{{ t('print.margin') }}:</span>
+      <span class="grip-right">{{ $t('print.margin') }}:</span>
       <select class="grip-right" v-model="margins.marginType">
         <option v-for="(item, index) in marginTypes" :key="index" :value="item">{{ item }}</option>
       </select>
     </div>
     <div v-show="margins.marginType === 'custom'" class="row">
       <label class="grip-right">
-        {{ t('print.top') }}{{ t('print.margin') }}:
+        {{ $t('print.top') }}{{ $t('print.margin') }}:
         <input class="small" v-model.number="margins.top" />px
       </label>
       <label class="grip-right">
-        {{ t('print.bottom') }}{{ t('print.margin') }}:
+        {{ $t('print.bottom') }}{{ $t('print.margin') }}:
         <input class="small" v-model.number="margins.bottom" />px
       </label>
       <label class="grip-right">
-        {{ t('print.left') }}{{ t('print.margin') }}:
+        {{ $t('print.left') }}{{ $t('print.margin') }}:
         <input class="small" v-model.number="margins.left" />px
       </label>
       <label class="grip-right">
-        {{ t('print.right') }}{{ t('print.margin') }}:
+        {{ $t('print.right') }}{{ $t('print.margin') }}:
         <input class="small" v-model.number="margins.right" />px
       </label>
     </div>
@@ -73,17 +73,13 @@
       <img
         style="width: 100px; height: 100px; object-fit: cover;"
         src="https://img2.baidu.com/it/u=2173864545,554093748&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=882"
-        alt
       />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted, toRaw } from 'vue'
-import { useI18n } from 'vue-i18n'
 const { ipcRenderer } = require("electron")
-
-const { t } = useI18n()
 
 const selName = ref('')
 const printers = ref<Electron.PrinterInfo[]>([])
