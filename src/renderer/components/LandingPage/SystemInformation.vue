@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">{{ $t("about.system") }}</div>
+    <div class="title">{{ t("about.system") }}</div>
     <div class="items">
       <div class="item" v-for="(item, index) in tips" :key="index">
         <div class="name" v-text="item.name" />
@@ -11,36 +11,37 @@
 </template>
 
 <script setup lang="ts">
-import { i18nt } from "@renderer/i18n";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 const { platform, release, arch } = require("os");
 const { path, name } = useRoute();
+const { t } = useI18n();
 
 let tips = ref(
   computed(() => [
-    { name: i18nt("about.language"), value: i18nt("about.languageValue") },
-    { name: i18nt("about.currentPagePath"), value: path },
-    { name: i18nt("about.currentPageName"), value: name },
+    { name: t("about.language"), value: t("about.languageValue") },
+    { name: t("about.currentPagePath"), value: path },
+    { name: t("about.currentPageName"), value: name },
     {
-      name: i18nt("about.vueVersion"),
+      name: t("about.vueVersion"),
       value:
         process.env.NODE_ENV === "development"
           ? require("vue/package.json").version
           : "不可见",
     },
     {
-      name: i18nt("about.electronVersion"),
+      name: t("about.electronVersion"),
       value: process.versions.electron || "浏览器环境",
     },
     {
-      name: i18nt("about.nodeVersion"),
+      name: t("about.nodeVersion"),
       value: process.versions.node || "浏览器环境",
     },
-    { name: i18nt("about.systemPlatform"), value: platform() },
-    { name: i18nt("about.systemVersion"), value: release() },
-    { name: i18nt("about.systemArch"), value: arch() + "位" },
+    { name: t("about.systemPlatform"), value: platform() },
+    { name: t("about.systemVersion"), value: release() },
+    { name: t("about.systemArch"), value: arch() + "位" },
   ])
 );
 </script>
