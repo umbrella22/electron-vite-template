@@ -55,14 +55,13 @@ class Main {
         this.download(
           this.downloadUrl,
           (chunk: any, size: number, fullSize: number) => {
-            
             // 保存文件
             appendFileSync(this.filePath, chunk, { encoding: "binary" });
 
             //发送进度
             this.mainWindow.webContents.send(
               "download-progress",
-              (size / fullSize) * 100
+              ((size / fullSize) * 100).toFixed(2)
             );
 
             //完成后反馈
