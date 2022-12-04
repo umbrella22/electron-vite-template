@@ -1,12 +1,14 @@
-import { app, ipcMain, BrowserWindow, dialog } from 'electron'
-import { join } from 'path'
-import { arch, platform } from 'os'
-import { stat, remove } from 'fs-extra'
-import packageInfo from '../../../package.json'
-
+import { app, BrowserWindow, dialog } from "electron";
+import { join } from "path";
+import { arch, platform } from "os";
+import { stat, remove, appendFileSync } from "fs-extra";
+import type { IncomingMessage } from "http";
+import { request as httpRequest } from "http";
+import { request as httpsRequest } from "https";
+import packageInfo from "../../../package.json";
 
 /**
- * 
+ *
  * @description
  * @returns {void} 下载类
  * @param {mainWindow} 主窗口
@@ -16,18 +18,26 @@ import packageInfo from '../../../package.json'
  */
 
 class Main {
-
-  public mainWindow: BrowserWindow = null
-  public downloadUrl: string = ""
-  public version: string = packageInfo.version
-  public baseUrl: string = ''
-  public Sysarch: string = arch().includes('64') ? 'win64' : 'win32'
-  public HistoryFilePath = join(app.getPath('downloads'), platform().includes('win32') ? `electron_${this.version}_${this.Sysarch}.exe` : `electron_${this.version}_mac.dmg`)
-
+  public mainWindow: BrowserWindow = null;
+  public downloadUrl: string = "";
+  public version: string = packageInfo.version;
+  public baseUrl: string = "";
+  public Sysarch: string = arch().includes("64") ? "win64" : "win32";
+  public HistoryFilePath = join(
+    app.getPath("downloads"),
+    platform().includes("win32")
+      ? `electron_${this.version}_${this.Sysarch}.exe`
+      : `electron_${this.version}_mac.dmg`
+  );
 
   constructor(mainWindow: BrowserWindow, downloadUrl?: string) {
-    this.mainWindow = mainWindow
-    this.downloadUrl = downloadUrl || platform().includes('win32') ? this.baseUrl + `electron_${this.version}_${this.Sysarch}.exe?${new Date().getTime()}` : this.baseUrl + `electron_${this.version}_mac.dmg?${new Date().getTime()}`
+    this.mainWindow = mainWindow;
+    this.downloadUrl =
+      downloadUrl || platform().includes("win32")
+        ? this.baseUrl +
+          `electron_${this.version}_${this.Sysarch}.exe?${new Date().getTime()}`
+        : this.baseUrl +
+          `electron_${this.version}_mac.dmg?${new Date().getTime()}`;
   }
 
   start() {
@@ -35,43 +45,94 @@ class Main {
     stat(this.HistoryFilePath, async (err, stats) => {
       try {
         if (stats) {
-          await remove(this.HistoryFilePath)
+          await remove(this.HistoryFilePath);
         }
-        this.mainWindow.webContents.downloadURL(this.downloadUrl)
-      } catch (error) { console.log(error) }
-    })
-    this.mainWindow.webContents.session.on('will-download', (event: any, item: any, webContents: any) => {
-      const filePath = join(app.getPath('downloads'), item.getFilename())
-      item.setSavePath(filePath)
-      item.on('updated', (event: any, state: String) => {
-        switch (state) {
-          case 'progressing':
-            this.mainWindow.webContents.send('download-progress', (item.getReceivedBytes() / item.getTotalBytes() * 100).toFixed(0))
-            break
-          default:
-            this.mainWindow.webContents.send('download-error', true)
-            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致下载出错')
-            break
-        }
-      })
-      item.once('done', (event: any, state: String) => {
-        switch (state) {
-          case 'completed':
-            const data = {
-              filePath
+        let filePath = "";
+        this.download(
+          this.downloadUrl,
+          (chunk: any, size: number, fullSize: number, fileName: string) => {
+            console.log(chunk);
+            if (!filePath) {
+              filePath = join(app.getPath("downloads"), fileName);
             }
-            this.mainWindow.webContents.send('download-done', data)
-            break
-          case 'interrupted':
-            this.mainWindow.webContents.send('download-error', true)
-            dialog.showErrorBox('下载出错', '由于网络或其他未知原因导致下载出错.')
-            break
-          default:
-            break
+            // 保存文件
+            appendFileSync(filePath, chunk, { encoding: "binary" });
+
+            //发送进度
+            this.mainWindow.webContents.send(
+              "download-progress",
+              ((size / fullSize) * 100).toFixed(0)
+            );
+
+            //完成后反馈
+            if (size === fullSize) {
+              const data = {
+                filePath,
+              };
+              this.mainWindow.webContents.send("download-done", data);
+              return;
+            }
+          }
+        ).catch((err) => {
+          this.mainWindow.webContents.send("download-error", true);
+          dialog.showErrorBox("下载出错", err);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  download(
+    url: string,
+    onDown: (
+      chunk: any,
+      size: number,
+      fullSize: number,
+      fileName: string
+    ) => void
+  ) {
+    return new Promise((resolve, reject) => {
+      try {
+        let size: number = 0;
+        function ing(response: IncomingMessage) {
+          if (response.statusCode && response.statusCode === 301) {
+            this.download(response.headers.location as string, onDown)
+              .then(resolve)
+              .catch(reject);
+            return;
+          }
+          const fullSize = Number(response.headers["content-length"] || 0);
+          const fileName = response.headers["content-disposition"].split(
+            "attachment;filename="
+          )[1];
+          response.on("data", (chunk) => {
+            size += chunk.length;
+            onDown(chunk, size, fullSize, fileName);
+          });
+          response.on("end", () => {
+            if (response.statusCode && response.statusCode >= 400) {
+              reject(new Error(response.statusCode + ""));
+              return;
+            }
+            resolve({
+              msg: "downloaded",
+              fullSize,
+            });
+          });
         }
-      })
-    })
+        let request;
+        const isHttp = url.startsWith("http://");
+        if (isHttp) request = httpRequest(url, {}, ing);
+        request = httpsRequest(url, {}, ing);
+        request.on("destroyed", () => reject(new Error("destroy")));
+        request.on("error", (err) => reject(err.message));
+        request.end();
+      } catch (error) {
+        reject(error.message);
+      }
+    });
   }
 }
 
-export default Main
+export default Main;
