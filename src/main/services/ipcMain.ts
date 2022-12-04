@@ -98,10 +98,10 @@ export default {
         console.error("更新出错");
       }
     });
-    ipcMain.handle("start-download", (event, msg) => {
+    ipcMain.handle("start-download", (event, downloadUrl) => {
       new DownloadFile(
         BrowserWindow.fromWebContents(event.sender),
-        msg?.downloadUrl
+        downloadUrl
       ).start();
     });
     ipcMain.handle("open-win", (event, arg) => {

@@ -20,8 +20,10 @@ import packageInfo from "../../../package.json";
 class Main {
   public mainWindow: BrowserWindow = null;
   public downloadUrl: string = "";
+  public fileName: string = "";
+  public filePath: string = "";
   public version: string = packageInfo.version;
-  public baseUrl: string = "";
+  public baseUrl: string = process.env.BASE_API;
   public Sysarch: string = arch().includes("64") ? "win64" : "win32";
   public HistoryFilePath = join(
     app.getPath("downloads"),
@@ -32,12 +34,15 @@ class Main {
 
   constructor(mainWindow: BrowserWindow, downloadUrl?: string) {
     this.mainWindow = mainWindow;
-    this.downloadUrl =
-      downloadUrl || platform().includes("win32")
+    if (downloadUrl) {
+      this.downloadUrl = downloadUrl;
+    } else {
+      this.downloadUrl = platform().includes("win32")
         ? this.baseUrl +
           `electron_${this.version}_${this.Sysarch}.exe?${new Date().getTime()}`
         : this.baseUrl +
           `electron_${this.version}_mac.dmg?${new Date().getTime()}`;
+    }
   }
 
   start() {
@@ -47,27 +52,23 @@ class Main {
         if (stats) {
           await remove(this.HistoryFilePath);
         }
-        let filePath = "";
         this.download(
           this.downloadUrl,
-          (chunk: any, size: number, fullSize: number, fileName: string) => {
-            console.log(chunk);
-            if (!filePath) {
-              filePath = join(app.getPath("downloads"), fileName);
-            }
+          (chunk: any, size: number, fullSize: number) => {
+            
             // 保存文件
-            appendFileSync(filePath, chunk, { encoding: "binary" });
+            appendFileSync(this.filePath, chunk, { encoding: "binary" });
 
             //发送进度
             this.mainWindow.webContents.send(
               "download-progress",
-              ((size / fullSize) * 100).toFixed(0)
+              (size / fullSize) * 100
             );
 
             //完成后反馈
             if (size === fullSize) {
               const data = {
-                filePath,
+                filePath: this.filePath,
               };
               this.mainWindow.webContents.send("download-done", data);
               return;
@@ -75,7 +76,8 @@ class Main {
           }
         ).catch((err) => {
           this.mainWindow.webContents.send("download-error", true);
-          dialog.showErrorBox("下载出错", err);
+          console.error(err);
+          dialog.showErrorBox("下载出错", err.message);
         });
       } catch (error) {
         console.log(error);
@@ -85,17 +87,12 @@ class Main {
 
   download(
     url: string,
-    onDown: (
-      chunk: any,
-      size: number,
-      fullSize: number,
-      fileName: string
-    ) => void
+    onDown: (chunk: any, size: number, fullSize: number) => void
   ) {
     return new Promise((resolve, reject) => {
       try {
         let size: number = 0;
-        function ing(response: IncomingMessage) {
+        const ing = (response: IncomingMessage) => {
           if (response.statusCode && response.statusCode === 301) {
             this.download(response.headers.location as string, onDown)
               .then(resolve)
@@ -103,12 +100,13 @@ class Main {
             return;
           }
           const fullSize = Number(response.headers["content-length"] || 0);
-          const fileName = response.headers["content-disposition"].split(
-            "attachment;filename="
-          )[1];
+          this.fileName = response.headers["content-disposition"]
+            .match(/filename=[\"|'](.*?)[\"|']/gi)[0]
+            .match(/["|'](.*)["|']/)[1];
+          this.filePath = join(app.getPath("downloads"), this.fileName);
           response.on("data", (chunk) => {
             size += chunk.length;
-            onDown(chunk, size, fullSize, fileName);
+            onDown(chunk, size, fullSize);
           });
           response.on("end", () => {
             if (response.statusCode && response.statusCode >= 400) {
@@ -120,16 +118,17 @@ class Main {
               fullSize,
             });
           });
-        }
+        };
         let request;
         const isHttp = url.startsWith("http://");
         if (isHttp) request = httpRequest(url, {}, ing);
         request = httpsRequest(url, {}, ing);
         request.on("destroyed", () => reject(new Error("destroy")));
-        request.on("error", (err) => reject(err.message));
+        request.on("error", (err) => reject(err));
         request.end();
       } catch (error) {
-        reject(error.message);
+        console.log(error);
+        reject(error);
       }
     });
   }
