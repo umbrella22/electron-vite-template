@@ -17,15 +17,16 @@ export function loadLanguages() {
 }
 
 export function i18nt(key: string) {
-    return i18n.global.t(key);
+    return i18n.global.d(key);
 }
 
 export const i18n = createI18n({
+    legacy: false,
     locale: 'zh-cn',
     fallbackLocale: 'zh-cn',
     messages: loadLanguages()
 })
 
 export function setLanguage(locale: string) {
-    i18n.global.locale = locale
+    i18n.global.locale.value = locale
 }

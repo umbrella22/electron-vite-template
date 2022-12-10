@@ -73,7 +73,6 @@
       <img
         style="width: 100px; height: 100px; object-fit: cover;"
         src="https://img2.baidu.com/it/u=2173864545,554093748&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=882"
-        alt
       />
     </div>
   </div>
@@ -82,8 +81,6 @@
 import { ref, onMounted, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { ipcRenderer } = require("electron")
-
-const { t } = useI18n()
 
 const selName = ref('')
 const printers = ref<Electron.PrinterInfo[]>([])
@@ -114,6 +111,8 @@ onMounted(async () => {
     }
   }
 })
+
+const { t } = useI18n()
 
 async function print() {
   if (selName.value) {

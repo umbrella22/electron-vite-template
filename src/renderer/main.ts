@@ -13,7 +13,7 @@ import { i18n } from "./i18n"
 
 import TitleBar from "./components/common/TitleBar.vue"
 const app = createApp(App)
-app.use(ElementPlus, { i18n: i18n.global.t })
+app.use(ElementPlus, { i18n: i18n.global.d })
 app.use(router)
 app.use(store)
 app.use(i18n)

@@ -4,7 +4,7 @@
     <main>
       <div class="left-side">
         <span class="title">
-          {{ $t("welcome") }}
+          {{ t("welcome") }}
         </span>
         <system-information></system-information>
       </div>
@@ -12,54 +12,54 @@
       <div class="right-side">
         <div class="doc">
           <div class="title alt">
-            {{ $t("buttonTips") }}
+            {{ t("buttonTips") }}
           </div>
           <el-button type="primary" round @click="open()">
-            {{ $t("buttons.console") }}
+            {{ t("buttons.console") }}
           </el-button>
           <el-button type="primary" round @click="CheckUpdate('one')">
-            {{ $t("buttons.checkUpdate") }}
+            {{ t("buttons.checkUpdate") }}
           </el-button>
         </div>
         <div class="doc">
           <el-button type="primary" round @click="CheckUpdate('two')">
-            {{ $t("buttons.checkUpdate2") }}
+            {{ t("buttons.checkUpdate2") }}
           </el-button>
           <el-button type="primary" round @click="CheckUpdate('three')">
-            {{ $t("buttons.checkUpdateInc") }}
+            {{ t("buttons.checkUpdateInc") }}
           </el-button>
           <el-button type="primary" round @click="CheckUpdate('threetest')">
-            {{ $t("buttons.incrementalUpdateTest") }}
+            {{ t("buttons.incrementalUpdateTest") }}
           </el-button>
 
           <el-button type="primary" round @click="CheckUpdate('four')">
-            {{ $t("buttons.ForcedUpdate") }}
+            {{ t("buttons.ForcedUpdate") }}
           </el-button>
           <el-button type="primary" round @click="StartServer">
-            {{ $t("buttons.startServer") }}
+            {{ t("buttons.startServer") }}
           </el-button>
           <el-button type="primary" round @click="StopServer">
-            {{ $t("buttons.stopServer") }}
+            {{ t("buttons.stopServer") }}
           </el-button>
           <el-button type="primary" round @click="getMessage">
-            {{ $t("buttons.viewMessage") }}
+            {{ t("buttons.viewMessage") }}
           </el-button>
           <el-button type="primary" round @click="crash">
-            {{ $t("buttons.simulatedCrash") }}
+            {{ t("buttons.simulatedCrash") }}
           </el-button>
           <el-button type="primary" round @click="openPreloadWindow">
-            {{ $t("buttons.openPreloadWindow") }}
+            {{ t("buttons.openPreloadWindow") }}
           </el-button>
         </div>
         <div class="doc">
           <el-button type="primary" round @click="openNewWin">
-            {{ $t("buttons.openNewWindow") }}
+            {{ t("buttons.openNewWindow") }}
           </el-button>
           <el-button type="primary" round @click="changeLanguage">{{
-            $t("buttons.changeLanguage")
+            t("buttons.changeLanguage")
           }}</el-button>
           <el-button type="primary" round @click="printDemo">{{
-            $t("buttons.printDemo")
+            t("buttons.printDemo")
           }}</el-button>
         </div>
         <div class="doc">
@@ -105,11 +105,14 @@ import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
+import { useI18n } from "vue-i18n";
 
 import useStoreTemplate from "@store/template";
 import TitleBar from "./common/TitleBar.vue";
 
 const storeTemplate = useStoreTemplate();
+
+const { t } = useI18n();
 
 console.log(`storeTemplate`, storeTemplate.getTest);
 console.log(`storeTemplate`, storeTemplate.getTest1);
@@ -145,7 +148,7 @@ ipcRenderer.invoke("get-static-path").then((res) => {
 });
 
 function changeLanguage() {
-  setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
+  setLanguage(i18n.global.locale.value === "zh-cn" ? "en" : "zh-cn");
 }
 
 function printDemo() {
