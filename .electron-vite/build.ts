@@ -26,7 +26,10 @@ async function clean() {
 
 function unionBuild() {
     greeting()
-    if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') clean()
+    if (process.env.BUILD_TARGET === 'clean' || process.env.BUILD_TARGET === 'onlyClean') {
+        clean()
+        return
+    }
 
     const tasksLister = new Listr([
         {
