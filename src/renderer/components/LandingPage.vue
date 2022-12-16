@@ -207,9 +207,15 @@ function CheckUpdate(data) {
       console.log("启动检查");
       break;
     case "two":
-      ipcRenderer.invoke("start-download").then(() => {
-        dialogVisible.value = true;
-      });
+      // TODO 测试链接
+      ipcRenderer
+        .invoke(
+          "start-download",
+          "https://az764295.vo.msecnd.net/stable/6261075646f055b99068d3688932416f2346dd3b/VSCodeUserSetup-x64-1.73.1.exe"
+        )
+        .then(() => {
+          dialogVisible.value = true;
+        });
       break;
     case "three":
       ipcRenderer.invoke("hot-update");
@@ -227,16 +233,16 @@ function CheckUpdate(data) {
 }
 function openPreloadWindow() {
   ElMessageBox.alert("请移步项目的strict分支", "提示", {
-      confirmButtonText: "确定",
-      callback: (action) => {
-      },
-    });
+    confirmButtonText: "确定",
+    callback: (action) => {},
+  });
 }
 
 function handleClose() {
   dialogVisible.value = false;
 }
 ipcRenderer.on("download-progress", (event, arg) => {
+  console.log(arg);
   percentage.value = Number(arg);
 });
 ipcRenderer.on("download-error", (event, arg) => {
