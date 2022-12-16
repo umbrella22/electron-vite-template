@@ -19,16 +19,16 @@
 <script setup lang="ts">
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
-import useStoreTemplate from '@store/template'
+import { useStoreTemplate } from '@store/template'
 let { ipcRenderer } = window;
 const storeTemplate = useStoreTemplate()
 console.log(storeTemplate.$state.testData)
 
 if (!ipcRenderer) {
-	ipcRenderer = {} as any;
-	ipcRenderer.on =
-  ipcRenderer.invoke =
-  ipcRenderer.removeAllListeners =
+  ipcRenderer = {} as any;
+  ipcRenderer.on =
+    ipcRenderer.invoke =
+    ipcRenderer.removeAllListeners =
     (...args: any): any => {
       console.log("not electron");
     };
@@ -47,17 +47,21 @@ ipcRenderer.on("send-data-test", (event, data) => {
   margin: 20px auto 60px;
   padding: 0 100px;
   overflow: hidden;
+
   .pic-404 {
     position: relative;
     float: left;
     width: 600px;
     padding: 150px 0;
     overflow: hidden;
+
     &__parent {
       width: 100%;
     }
+
     &__child {
       position: absolute;
+
       &.left {
         width: 80px;
         top: 17px;
@@ -69,6 +73,7 @@ ipcRenderer.on("send-data-test", (event, data) => {
         animation-fill-mode: forwards;
         animation-delay: 1s;
       }
+
       &.mid {
         width: 46px;
         top: 10px;
@@ -80,6 +85,7 @@ ipcRenderer.on("send-data-test", (event, data) => {
         animation-fill-mode: forwards;
         animation-delay: 1.2s;
       }
+
       &.right {
         width: 62px;
         top: 100px;
@@ -91,66 +97,78 @@ ipcRenderer.on("send-data-test", (event, data) => {
         animation-fill-mode: forwards;
         animation-delay: 1s;
       }
+
       @keyframes cloudLeft {
         0% {
           top: 17px;
           left: 220px;
           opacity: 0;
         }
+
         20% {
           top: 33px;
           left: 188px;
           opacity: 1;
         }
+
         80% {
           top: 81px;
           left: 92px;
           opacity: 1;
         }
+
         100% {
           top: 97px;
           left: 60px;
           opacity: 0;
         }
       }
+
       @keyframes cloudMid {
         0% {
           top: 10px;
           left: 420px;
           opacity: 0;
         }
+
         20% {
           top: 40px;
           left: 360px;
           opacity: 1;
         }
+
         70% {
           top: 130px;
           left: 180px;
           opacity: 1;
         }
+
         100% {
           top: 160px;
           left: 120px;
           opacity: 0;
         }
       }
+
       @keyframes cloudRight {
         0% {
           top: 100px;
           left: 500px;
           opacity: 0;
         }
+
         20% {
           top: 120px;
           left: 460px;
           opacity: 1;
         }
+
         80% {
           top: 180px;
           left: 340px;
           opacity: 1;
         }
+
         100% {
           top: 200px;
           left: 300px;
@@ -159,12 +177,14 @@ ipcRenderer.on("send-data-test", (event, data) => {
       }
     }
   }
+
   .bullshit {
     position: relative;
     float: left;
     width: 300px;
     padding: 150px 0;
     overflow: hidden;
+
     &__oops {
       font-size: 32px;
       font-weight: bold;
@@ -176,6 +196,7 @@ ipcRenderer.on("send-data-test", (event, data) => {
       animation-duration: 0.5s;
       animation-fill-mode: forwards;
     }
+
     &__headline {
       font-size: 20px;
       line-height: 24px;
@@ -187,6 +208,7 @@ ipcRenderer.on("send-data-test", (event, data) => {
       animation-delay: 0.1s;
       animation-fill-mode: forwards;
     }
+
     &__info {
       font-size: 13px;
       line-height: 21px;
@@ -198,6 +220,7 @@ ipcRenderer.on("send-data-test", (event, data) => {
       animation-delay: 0.2s;
       animation-fill-mode: forwards;
     }
+
     &__return-home {
       display: block;
       float: left;
@@ -216,11 +239,13 @@ ipcRenderer.on("send-data-test", (event, data) => {
       animation-delay: 0.3s;
       animation-fill-mode: forwards;
     }
+
     @keyframes slideUp {
       0% {
         transform: translateY(60px);
         opacity: 0;
       }
+
       100% {
         transform: translateY(0);
         opacity: 1;

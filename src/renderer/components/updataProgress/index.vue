@@ -101,7 +101,7 @@ onUnmounted(() => {
   ipcRenderer.removeAllListeners("download-error");
 });
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .mask-box {
   height: 100%;
   width: 100%;

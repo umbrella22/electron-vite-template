@@ -49,38 +49,20 @@
             {{ $t("buttons.openNewWindow") }}
           </el-button>
           <el-button type="primary" round @click="changeLanguage">{{
-            $t("buttons.changeLanguage")
+              $t("buttons.changeLanguage")
           }}</el-button>
         </div>
         <div class="doc">
-          <el-pagination
-            :current-page="elCPage"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="elPageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          >
+          <el-pagination :current-page="elCPage" :page-sizes="[100, 200, 300, 400]" :page-size="elPageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange">
           </el-pagination>
         </div>
       </div>
     </main>
-    <el-dialog
-      title="进度"
-      v-model="dialogVisible"
-      :before-close="handleClose"
-      center
-      width="14%"
-      top="45vh"
-    >
+    <el-dialog title="进度" v-model="dialogVisible" :before-close="handleClose" center width="14%" top="45vh">
       <div class="conten">
-        <el-progress
-          type="dashboard"
-          :percentage="percentage"
-          :color="colors"
-          :status="progressStaus"
-        ></el-progress>
+        <el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
       </div>
     </el-dialog>
     <update-progress v-model="showForcedUpdate" />
@@ -95,34 +77,34 @@ import logo from "@renderer/assets/logo.png";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
+import { useStoreTemplate } from "@store/template";
+
 let { ipcRenderer, shell, crash } = window;
 
-import useStoreTemplate from "@store/template";
-import TitleBar from "./common/TitleBar.vue";
 
 if (!ipcRenderer) {
   ipcRenderer = {} as any;
   ipcRenderer.on =
     ipcRenderer.invoke =
     ipcRenderer.removeAllListeners =
-      (...args: any): any => {
-        console.log("not electron");
-      };
+    (...args: any): any => {
+      console.log("not electron");
+    };
 }
 
-let percentage = ref(0);
-let colors = ref([
+const percentage = ref(0);
+const colors = ref([
   { color: "#f56c6c", percentage: 20 },
   { color: "#e6a23c", percentage: 40 },
   { color: "#6f7ad3", percentage: 60 },
   { color: "#1989fa", percentage: 80 },
   { color: "#5cb87a", percentage: 100 },
 ] as string | ColorInfo[]);
-let dialogVisible = ref(false);
-let progressStaus = ref(null);
-let filePath = ref("");
-let updateStatus = ref("");
-let showForcedUpdate = ref(false);
+const dialogVisible = ref(false);
+const progressStaus = ref(null);
+const filePath = ref("");
+const updateStatus = ref("");
+const showForcedUpdate = ref(false);
 
 const storeTemplate = useStoreTemplate();
 
@@ -135,8 +117,8 @@ setTimeout(() => {
   console.log(`storeTemplate`, storeTemplate.getTest1);
 }, 1000);
 
-let elPageSize = ref(100);
-let elCPage = ref(1);
+const elPageSize = ref(100);
+const elCPage = ref(1);
 
 function changeLanguage() {
   setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
@@ -155,7 +137,7 @@ function startCrash() {
 }
 
 function openNewWin() {
-  let data = {
+  const data = {
     url: "/form/index",
   };
   ipcRenderer.invoke("open-win", data);
@@ -186,7 +168,7 @@ function StartServer() {
   });
 }
 // 获取electron方法
-function open() {}
+function open() { }
 function CheckUpdate(data) {
   switch (data) {
     case "one":
@@ -217,14 +199,14 @@ ipcRenderer.on("download-progress", (event, arg) => {
 });
 ipcRenderer.on("download-error", (event, arg) => {
   if (arg) {
-    progressStaus = "exception";
+    progressStaus.value = "exception";
     percentage.value = 40;
     colors.value = "#d81e06";
   }
 });
 ipcRenderer.on("download-paused", (event, arg) => {
   if (arg) {
-    progressStaus = "warning";
+    progressStaus.value = "warning";
     ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
       confirmButtonText: "重试",
       callback: (action) => {
@@ -235,7 +217,7 @@ ipcRenderer.on("download-paused", (event, arg) => {
 });
 ipcRenderer.on("download-done", (event, age) => {
   filePath.value = age.filePath;
-  progressStaus = "success";
+  progressStaus.value = "success";
   ElMessageBox.alert("更新下载完成！", "提示", {
     confirmButtonText: "确定",
     callback: (action) => {
@@ -268,10 +250,10 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
       ElMessage({ type: "success", message: "无新版本" });
       break;
     case 3:
-      percentage = age.msg.percent.toFixed(1);
+      percentage.value = age.msg.percent.toFixed(1);
       break;
     case 4:
-      progressStaus = "success";
+      progressStaus.value = "success";
       ElMessageBox.alert("更新下载完成！", "提示", {
         confirmButtonText: "确定",
         callback: (action) => {
@@ -302,7 +284,7 @@ ipcRenderer.on("hot-update-status", (event, msg) => {
       break;
   }
   console.log(msg);
-  updateStatus = msg.status;
+  updateStatus.value = msg.status;
 });
 onUnmounted(() => {
   console.log("销毁了哦");
@@ -317,7 +299,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style>
+<style scoped lang="scss">
 * {
   box-sizing: border-box;
   margin: 0;
@@ -343,7 +325,7 @@ main {
   justify-content: space-between;
 }
 
-main > div {
+main>div {
   flex-basis: 50%;
 }
 
@@ -369,20 +351,25 @@ main > div {
   font-size: 18px;
   margin-bottom: 10px;
 }
+
 .doc {
   margin-bottom: 10px;
 }
+
 .doc p {
   color: black;
   margin-bottom: 10px;
 }
+
 .doc .el-button {
   margin-top: 10px;
   margin-right: 10px;
 }
-.doc .el-button + .el-button {
+
+.doc .el-button+.el-button {
   margin-left: 0;
 }
+
 .conten {
   text-align: center;
 }

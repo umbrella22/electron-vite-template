@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
@@ -7,12 +8,12 @@ import './permission'
 import App from './App.vue'
 import router from './router'
 import { errorHandler } from './error'
-import store from './store'
 import { i18n } from "./i18n"
 
 
 const app = createApp(App)
-app.use(ElementPlus, { i18n: i18n.global.t })
+const store = createPinia()
+app.use(ElementPlus)
 app.use(router)
 app.use(store)
 app.use(i18n)

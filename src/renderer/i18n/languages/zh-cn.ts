@@ -27,7 +27,7 @@ export const lang = {
         viewMessage: "查看消息",
         openNewWindow: "打开新窗口",
         simulatedCrash: "模拟崩溃",
-        changeLanguage: "切换语言",
+        changeLanguage: "Change language",
         ForcedUpdate:"强制更新模式"
     },
     el: zhLocale

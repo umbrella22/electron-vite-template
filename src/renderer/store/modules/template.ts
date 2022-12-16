@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia'
-import store from '../index'
 
 interface StateType {
   testData: string
 }
 
-const useStore = defineStore({
-  id: 'template',
+export const useStoreTemplate = defineStore('template',{
   state: (): StateType => ({
     testData: localStorage.getItem('testData') || ''
   }),
@@ -23,7 +21,3 @@ const useStore = defineStore({
     }
   }
 })
-
-export default function useStoreTemplate() {
-  return useStore(store)
-}
