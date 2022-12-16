@@ -179,7 +179,7 @@ function unionBuild(archTag: any) {
       options: { persistentOutput: true }
     },
     {
-      title: "building electron process",
+      title: "building package",
       task: async (_, tasks) => {
         try {
           await build({
