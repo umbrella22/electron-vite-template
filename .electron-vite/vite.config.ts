@@ -32,7 +32,7 @@ export default defineConfig({
         emptyOutDir: true,
         target: 'esnext',
         minify: 'esbuild',
-        cssCodeSplit:false
+        cssCodeSplit: false
     },
     server: {
     },
@@ -42,5 +42,4 @@ export default defineConfig({
     ],
     optimizeDeps: {
     },
-    publicDir: resolve('static')
 })
