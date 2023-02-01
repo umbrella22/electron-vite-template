@@ -5,7 +5,7 @@ import { say } from 'cfonts'
 import inquirer from 'inquirer';
 import { deleteSync } from 'del'
 import { build as viteBuild } from 'vite'
-import { Platform, build } from 'electron-builder'
+import { Platform, build, Arch } from 'electron-builder'
 import type { Configuration } from 'electron-builder'
 import buildConfig from '../build.json'
 import chalk from 'chalk'
@@ -52,7 +52,7 @@ function platformOptional() {
     case 'linux':
       return ['web', ...optional.filter((item) => !(item === 'mac'))];
     default:
-      return ['web', ...optional];
+      return [...optional];
   }
 }
 
@@ -107,7 +107,7 @@ async function preBuild() {
   let _arch = ''
   if (arch) !platformOptional().includes(arch.trim().toLowerCase()) ? (_arch = await question()) : _arch = arch
   else _arch = await question()
-  let archTag: any = null;
+  let archTag: null | Map<Platform, Map<Arch, Array<string>>> = null;
   switch (_arch) {
     case 'web':
       return web();
@@ -131,10 +131,10 @@ async function preBuild() {
       archTag = Platform.LINUX.createTarget();
       buildConfig.linux['target'] = await linuxQuestion();
   }
-  unionBuild(archTag)
+  archTag && unionBuild(archTag)
 }
 
-function unionBuild(archTag: any) {
+function unionBuild(archTag: Map<Platform, Map<Arch, Array<string>>>) {
   greeting()
   if (process.env.BUILD_TARGET === 'clean') clean()
 
