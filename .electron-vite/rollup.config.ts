@@ -9,6 +9,8 @@ import esbuild from "rollup-plugin-esbuild";
 import obfuscator from "rollup-plugin-obfuscator";
 import { defineConfig } from "rollup";
 import { dependencies } from "../package.json";
+import { getConfig } from "./utils";
+const config = getConfig();
 
 export default (env = "production", type = "main") => {
   return defineConfig({
@@ -32,7 +34,7 @@ export default (env = "production", type = "main") => {
     plugins: [
       replace({
         preventAssignment: true,
-        "process.env.NODE_ENV": JSON.stringify(env),
+        "process.env.userConfig": config ? JSON.stringify(config) : "{}",
       }),
       // 提供路径和读取别名
       nodeResolve({

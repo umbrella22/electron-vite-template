@@ -99,6 +99,7 @@ const { t } = useI18n();
 console.log(`storeTemplate`, storeTemplate.getTest);
 console.log(`storeTemplate`, storeTemplate.getTest1);
 console.log(`storeTemplate`, storeTemplate.$state.testData);
+console.log('__CONFIG__', __CONFIG__)
 
 setTimeout(() => {
   storeTemplate.TEST_ACTION("654321");
@@ -186,18 +187,18 @@ function CheckUpdate(data) {
   switch (data) {
     case "one":
       ipcRenderer.invoke("check-update");
-      console.log("启动检查");
       break;
     case "two":
       // TODO 测试链接
-      ipcRenderer
-        .invoke(
-          "start-download",
-          "https://az764295.vo.msecnd.net/stable/6261075646f055b99068d3688932416f2346dd3b/VSCodeUserSetup-x64-1.73.1.exe"
-        )
-        .then(() => {
-          dialogVisible.value = true;
-        });
+      console.log('test Url')
+      // ipcRenderer
+      //   .invoke(
+      //     "start-download",
+      //     "https://az764295.vo.msecnd.net/stable/6261075646f055b99068d3688932416f2346dd3b/VSCodeUserSetup-x64-1.73.1.exe"
+      //   )
+      //   .then(() => {
+      //     dialogVisible.value = true;
+      //   });
       break;
     case "three":
       ipcRenderer.invoke("hot-update");
@@ -214,8 +215,8 @@ function CheckUpdate(data) {
   }
 }
 function openPreloadWindow() {
-  ElMessageBox.alert("请移步项目的strict分支", "提示", {
-    confirmButtonText: "确定",
+  ElMessageBox.alert(t("home.openPreloadWindowError.content"), t("home.openPreloadWindowError.title"), {
+    confirmButtonText: t("home.openPreloadWindowError.confirm"),
     callback: (action) => { },
   });
 }
