@@ -99,7 +99,7 @@ const { t } = useI18n();
 console.log(`storeTemplate`, storeTemplate.getTest);
 console.log(`storeTemplate`, storeTemplate.getTest1);
 console.log(`storeTemplate`, storeTemplate.$state.testData);
-console.log('__CONFIG__', __CONFIG__)
+console.log(__CONFIG__)
 
 setTimeout(() => {
   storeTemplate.TEST_ACTION("654321");
