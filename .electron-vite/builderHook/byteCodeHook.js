@@ -7,6 +7,7 @@ const { copySync, existsSync, removeSync, ensureDir } = require('fs-extra');
 const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 const isMac = process.platform === 'darwin';
 exports.byteCodeBeforePack = async (context) => {
+  if (encryptionLevel === 0) return context
   if (encryptionLevel === 1 || encryptionLevel === 2) {
     const hook = context.packager.info._framework.prepareApplicationStageDirectory;
     context.packager.info._framework.prepareApplicationStageDirectory = (...args) => {
@@ -15,10 +16,10 @@ exports.byteCodeBeforePack = async (context) => {
         const electron_compiler_path = path.resolve(__dirname, "../bytecode/electron-compiler.js");
         let resourcesPath;
         let targetResourcesPath;
-        if(isMac) {
+        if (isMac) {
           resourcesPath = path.resolve(__dirname, "../bytecode/_temp/resources/default_app.asar")
           targetResourcesPath = path.resolve(context.appOutDir, "Electron.app/Contents/Resources/default_app.asar")
-        }else {
+        } else {
           resourcesPath = path.resolve(__dirname, "../bytecode/_temp/resources")
           targetResourcesPath = path.resolve(context.appOutDir, "resources");
         }
@@ -46,6 +47,7 @@ exports.byteCodeBeforePack = async (context) => {
 }
 
 exports.byteCodeAfterPack = async () => {
+  if (encryptionLevel === 0) return
   // dist 还原
   if (encryptionLevel === 1 || encryptionLevel === 2) {
     const inputPath = path.resolve(__dirname, '../../dist/electron/main');
