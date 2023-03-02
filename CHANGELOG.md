@@ -3,7 +3,7 @@
 - 升级依赖
 - 修改 pinia 引入方式
 - 新增字节码控制，修改如下
-  - `package.json`文件中的`encryptionLevel`字段用于控制住进程字节码
+  - `package.json`文件中的`encryptionLevel`字段用于控制主进程字节码
     - 0 表示不启用字节码，但是会启用 obfuscator 混淆 js
     - 1 表示启用字节码，但是不会进行混淆操作
     - 2 表示启用字节码并执行加密行为
