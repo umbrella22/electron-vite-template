@@ -63,34 +63,16 @@
           }}</el-button>
         </div>
         <div class="doc">
-          <el-pagination
-            :current-page="elCPage"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="elPageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          >
+          <el-pagination :current-page="elCPage" :page-sizes="[100, 200, 300, 400]" :page-size="elPageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange">
           </el-pagination>
         </div>
       </div>
     </main>
-    <el-dialog
-      title="进度"
-      v-model="dialogVisible"
-      :before-close="handleClose"
-      center
-      width="14%"
-      top="45vh"
-    >
+    <el-dialog title="进度" v-model="dialogVisible" :before-close="handleClose" center width="14%" top="45vh">
       <div class="conten">
-        <el-progress
-          type="dashboard"
-          :percentage="percentage"
-          :color="colors"
-          :status="progressStaus"
-        ></el-progress>
+        <el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
       </div>
     </el-dialog>
     <update-progress v-model="showForcedUpdate" />
@@ -107,10 +89,10 @@ import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
 import { useI18n } from "vue-i18n";
 
-import useStoreTemplate from "@store/template";
+import { useTemplateStore } from "@renderer/store/modules/template";
 import TitleBar from "./common/TitleBar.vue";
 
-const storeTemplate = useStoreTemplate();
+const storeTemplate = useTemplateStore();
 
 const { t } = useI18n();
 
@@ -199,7 +181,7 @@ function StartServer() {
   });
 }
 // 获取electron方法
-function open() {}
+function open() { }
 function CheckUpdate(data) {
   switch (data) {
     case "one":
@@ -234,7 +216,7 @@ function CheckUpdate(data) {
 function openPreloadWindow() {
   ElMessageBox.alert("请移步项目的strict分支", "提示", {
     confirmButtonText: "确定",
-    callback: (action) => {},
+    callback: (action) => { },
   });
 }
 
@@ -373,7 +355,7 @@ main {
   justify-content: space-between;
 }
 
-main > div {
+main>div {
   flex-basis: 50%;
 }
 
@@ -399,20 +381,25 @@ main > div {
   font-size: 18px;
   margin-bottom: 10px;
 }
+
 .doc {
   margin-bottom: 10px;
 }
+
 .doc p {
   color: black;
   margin-bottom: 10px;
 }
+
 .doc .el-button {
   margin-top: 10px;
   margin-right: 10px;
 }
-.doc .el-button + .el-button {
+
+.doc .el-button+.el-button {
   margin-left: 0;
 }
+
 .conten {
   text-align: center;
 }
