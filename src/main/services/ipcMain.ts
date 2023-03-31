@@ -1,5 +1,5 @@
 import { ipcMain, dialog, BrowserWindow, app } from "electron";
-import config from "@config/index";
+import { IsUseSysTitle } from "../config/const";
 import Server from "../server";
 import { winURL, preloadURL, staticPaths } from "../config/StaticPath";
 import { updater } from "./HotUpdater";
@@ -15,7 +15,7 @@ export default {
     usePrintHandle();
     const allUpdater = new Update();
     ipcMain.handle("IsUseSysTitle", async () => {
-      return config.IsUseSysTitle;
+      return IsUseSysTitle;
     });
     ipcMain.handle("windows-mini", (event, args) => {
       BrowserWindow.fromWebContents(event.sender)?.minimize();
@@ -106,7 +106,7 @@ export default {
     });
     ipcMain.handle("open-win", (event, arg) => {
       const ChildWin = new BrowserWindow({
-        titleBarStyle: config.IsUseSysTitle ? "default" : "hidden",
+        titleBarStyle: IsUseSysTitle ? "default" : "hidden",
         ...Object.assign(otherWindowConfig, {}),
       });
       // 开发模式下自动开启devtools

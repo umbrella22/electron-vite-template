@@ -1,29 +1,24 @@
-import { defineStore } from 'pinia'
-import store from '../index'
+import { defineStore } from "pinia";
 
 interface StateType {
-  testData: string
+  testData: string;
 }
 
-const useStore = defineStore({
-  id: 'template',
+export const useTemplateStore = defineStore({
+  id: "template",
   state: (): StateType => ({
-    testData: localStorage.getItem('testData') || ''
+    testData: localStorage.getItem("testData") || "",
   }),
   getters: {
     getTest: (state): string => state.testData,
     getTest1(): string {
-      return this.testData
-    }
+      return this.testData;
+    },
   },
   actions: {
     TEST_ACTION(data: string) {
-      this.testData = data
-      localStorage.setItem('testData', data)
-    }
-  }
-})
-
-export default function useStoreTemplate() {
-  return useStore(store)
-}
+      this.testData = data;
+      localStorage.setItem("testData", data);
+    },
+  },
+});
