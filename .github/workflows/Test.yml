@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         node-version: [16.x]
 
     steps:
@@ -19,12 +19,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Test build
-      env:
-        DISPLAY: ":10.0"
+      # env:
+      #   ELECTRON_RUN_AS_NODE: “1”
       shell: bash
       run: |
         yarn --frozen-lockfile
-        yarn build
+        yarn add xvfb-maybe -D
+        ./node_modules/.bin/xvfb-maybe yarn build
 
 
 
