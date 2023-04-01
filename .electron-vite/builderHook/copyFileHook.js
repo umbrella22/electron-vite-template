@@ -5,7 +5,6 @@ const { Arch } = require('electron-builder');
 const { encryptionLevel } = require('../../package.json')
 // type ElectronPlatformName = "darwin" | "linux" | "win32" | "mas"
 exports.copyFileHook = async context => {
-  if (encryptionLevel === 0) return
   const LIB_OUTPUT_DIR = context.appOutDir;
   const LIB_INPUT_DIR = resolve(__dirname, "../../rootLib", context.electronPlatformName, Arch[context.arch]);
   const LIB_COMMON_INPUT_DIR = resolve(__dirname, "../../rootLib", "common");
