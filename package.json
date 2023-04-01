@@ -49,7 +49,7 @@
     "electron-builder": "^23.6.0",
     "electron-devtools-vendor": "^1.2.0",
     "electron_updater_node_cli": "^0.2.0",
-    "electron_updater_node_core": "^0.2.0",
+    "electron_updater_node_core": "^0.3.2",
     "element-plus": "^2.2.32",
     "esno": "^0.16.3",
     "extract-zip": "^2.0.1",

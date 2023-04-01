@@ -2081,10 +2081,10 @@ electron_updater_node_cli@^0.2.0:
   dependencies:
     chalk "4.1.2"
 
-electron_updater_node_core@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/electron_updater_node_core/-/electron_updater_node_core-0.2.0.tgz#1b5945241d2886e0ebc4fdbfe60ff89cb070b246"
-  integrity sha512-C2QkdJ57jyDZ5y90Rj+RfVMXYvLG9KrtlL+jNbbCGQ70WI8l2zfdklAiiYHUNlxWevVVAaoblRYoiG3pT7V6jQ==
+electron_updater_node_core@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/electron_updater_node_core/-/electron_updater_node_core-0.3.2.tgz#8d37ef215b8458d6d3ec2ec0524ee2ed13ad92b7"
+  integrity sha512-3+L9sPjPT346pZXh7G56ranZa99mhCYGaPSR96h37KpKz+fgwe5yjHLMcvDM6h0HV33y6+dDFKlumO4YCJEVWQ==
 
 element-plus@^2.2.32:
   version "2.2.32"
