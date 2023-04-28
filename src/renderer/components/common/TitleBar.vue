@@ -2,10 +2,7 @@
   <div class="window-title" v-if="!IsUseSysTitle && isNotMac && !IsWeb">
     <!-- 软件logo预留位置 -->
     <div style="-webkit-app-region: drag" class="logo">
-      <img
-        src="@renderer/assets/icons/svg/electron-logo.svg"
-        class="icon-logo"
-      />
+      <img src="@renderer/assets/icons/svg/electron-logo.svg" class="icon-logo" />
     </div>
     <!-- 菜单栏位置 -->
     <div></div>
@@ -16,16 +13,8 @@
         <img src="@renderer/assets/icons/svg/mini.svg" class="icon-size" />
       </div>
       <div class="windows-icon-bg" @click="MixOrReduction">
-        <img
-          v-if="mix"
-          src="@renderer/assets/icons/svg/reduction.svg"
-          class="icon-size"
-        />
-        <img
-          v-else
-          src="@renderer/assets/icons/svg/mix.svg"
-          class="icon-size"
-        />
+        <img v-if="mix" src="@renderer/assets/icons/svg/reduction.svg" class="icon-size" />
+        <img v-else src="@renderer/assets/icons/svg/mix.svg" class="icon-size" />
       </div>
       <div class="windows-icon-bg close-icon" @click="Close">
         <img src="@renderer/assets/icons/svg/close.svg" class="icon-size" />
@@ -42,16 +31,16 @@ let { ipcRenderer, systemInfo } = window;
 const IsUseSysTitle = ref(false);
 const mix = ref(false);
 const isNotMac = ref(false);
-const IsWeb = ref(process.env.IS_WEB);
+const IsWeb = ref(Boolean(__ISWEB__));
 
 if (!ipcRenderer) {
   ipcRenderer = {} as any;
   ipcRenderer.on =
     ipcRenderer.invoke =
     ipcRenderer.removeAllListeners =
-      (...args: any): any => {
-        console.log("not electron");
-      };
+    (...args: any): any => {
+      console.log("not electron");
+    };
 } else {
   isNotMac.value = systemInfo.platform !== "darwin";
   ipcRenderer.invoke("IsUseSysTitle").then((res) => {
@@ -83,6 +72,7 @@ const Close = () => {
   position: fixed;
   top: 0;
   z-index: 99999;
+
   .icon-logo {
     width: 1em;
     height: 1em;
@@ -90,12 +80,15 @@ const Close = () => {
     fill: currentColor;
     overflow: hidden;
   }
+
   .title {
     text-align: center;
   }
+
   .logo {
     margin-left: 20px;
   }
+
   .controls-container {
     display: flex;
     flex-grow: 0;
@@ -107,12 +100,14 @@ const Close = () => {
     height: 100%;
     width: 138px;
     margin-left: auto;
+
     .windows-icon-bg {
       display: inline-block;
       -webkit-app-region: no-drag;
       height: 100%;
       width: 33.34%;
       color: rgba(129, 129, 129, 0.6);
+
       .icon-size {
         width: 12px;
         height: 15px;
@@ -121,10 +116,12 @@ const Close = () => {
         overflow: hidden;
       }
     }
+
     .windows-icon-bg:hover {
       background-color: rgba(182, 182, 182, 0.2);
       color: #333;
     }
+
     .close-icon:hover {
       background-color: rgba(232, 17, 35, 0.9);
       color: #fff;

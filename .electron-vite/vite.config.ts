@@ -2,15 +2,14 @@ import { join } from "path";
 import { defineConfig } from "vite";
 import vuePlugin from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import userConfig from "../config";
+import { getConfig } from "./utils";
 
 const IsWeb = process.env.BUILD_TARGET === "web";
 
 function resolve(dir: string) {
   return join(__dirname, "..", dir);
 }
-userConfig.build.env.is_web = IsWeb;
-userConfig.dev.env.is_web = IsWeb;
+const config = getConfig();
 
 const root = resolve("src/renderer");
 
@@ -18,10 +17,8 @@ export default defineConfig({
   mode: process.env.NODE_ENV,
   root,
   define: {
-    "process.env":
-      process.env.NODE_ENV === "production"
-        ? userConfig.build.env
-        : userConfig.dev.env,
+    __CONFIG__: config,
+    __ISWEB__: Number(IsWeb),
   },
   resolve: {
     alias: {
