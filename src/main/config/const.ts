@@ -6,3 +6,4 @@ export const hotPublishUrl: string =
 export const hotPublishConfigName: string = "update-config";
 export const openDevTools: boolean = false;
 export const DisableF12: boolean = true;
+export const HotUpdateFolder: string = "hot-update";
