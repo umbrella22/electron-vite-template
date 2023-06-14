@@ -68,7 +68,7 @@ async function unionBuild() {
       },
     ],
     {
-      exitOnError: false,
+      exitOnError: true,
     }
   );
   tasksLister.run();
