@@ -13,6 +13,8 @@ import extract from 'extract-zip'
 import { version } from '../../../package.json'
 import { hotPublishConfig } from '../config/hotPublish'
 import axios from 'axios'
+import { webContentSend } from './ipcMain'
+import { IpcChannel } from '../../ipc'
 
 const streamPipeline = promisify(pipeline)
 const appPath = app.getAppPath()
@@ -46,7 +48,10 @@ async function download(url: string, filePath: string) {
     await streamPipeline(res.data, createWriteStream(filePath))
 }
 
-const updateInfo = {
+const updateInfo: {
+    status: "init" | "downloading" | "moving" | "finished" | "failed";
+    message: string;
+} = {
     status: 'init',
     message: ''
 }
@@ -58,14 +63,19 @@ const updateInfo = {
  * @date 2021-03-05
  */
 export const updater = async (windows?: BrowserWindow) => {
+    const statusCallback = (status: {
+        status: "init" | "downloading" | "moving" | "finished" | "failed" ;
+        message: string;
+    }) => {
+        if (windows) webContentSend(windows.webContents, IpcChannel.HotUpdateStatus, status)
+    }
     try {
         const res = await request({ url: `${hotPublishConfig.url}/${hotPublishConfig.configName}.json?time=${new Date().getTime()}`, })
         if (!gt(res.data.version, version)) return
-        
         await emptyDir(updatePath)
         const filePath = join(updatePath, res.data.name)
         updateInfo.status = 'downloading'
-        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        statusCallback(updateInfo);
         await download(`${hotPublishConfig.url}/${res.data.name}`, filePath);
         const buffer = await readFile(filePath)
         const sha256 = hash(buffer)
@@ -73,20 +83,19 @@ export const updater = async (windows?: BrowserWindow) => {
         const appPathTemp = join(updatePath, 'temp')
         await extract(filePath, { dir: appPathTemp })
         updateInfo.status = 'moving'
-        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        statusCallback(updateInfo);
         await remove(join(`${appPath}`, 'dist'));
         await remove(join(`${appPath}`, 'package.json'));
         await copy(appPathTemp, appPath)
         updateInfo.status = 'finished'
-        if (windows) windows.webContents.send('hot-update-status', updateInfo);
+        statusCallback(updateInfo);
         resolve('success')
 
-
-
     } catch (error) {
+        console.log(error)
         updateInfo.status = 'failed'
-        updateInfo.message = error
-        if (windows) windows.webContents.send('hot-update-status', updateInfo)
+        updateInfo.message = error.message ? error.message : error
+        statusCallback(updateInfo)
     }
 }
 

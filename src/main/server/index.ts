@@ -16,7 +16,7 @@ class SingleServer {
   }
   server: Server;
   statrServer() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: (value: string) => void, reject) => {
       try {
         this.server.listen(port);
         resolve("服务端已经启动");
@@ -38,7 +38,7 @@ class SingleServer {
     });
   }
   stopServer() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: (value: string) => void, reject) => {
       this.server.close((err) => {
         if (err) {
           switch ((err as any).code) {
@@ -49,7 +49,7 @@ class SingleServer {
               reject(err);
           }
         } else {
-          resolve(1);
+          resolve("服务端已关闭");
         }
       });
     });

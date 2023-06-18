@@ -1,4 +1,4 @@
-import { ipcMain, dialog, BrowserWindow, app } from "electron";
+import { ipcMain, dialog, BrowserWindow, app, WebContents } from "electron";
 import { IsUseSysTitle } from "../config/const";
 import Server from "../server";
 import { winURL, preloadURL, staticPaths } from "../config/StaticPath";
@@ -10,129 +10,158 @@ import { otherWindowConfig } from "../config/windowsConfig";
 import { usePrintHandle } from "./printHandle";
 import { UpdateStatus } from "electron_updater_node_core";
 
-export default {
-  Mainfunc() {
-    usePrintHandle();
-    const allUpdater = new Update();
-    ipcMain.handle("IsUseSysTitle", async () => {
-      return IsUseSysTitle;
-    });
-    ipcMain.handle("windows-mini", (event, args) => {
-      BrowserWindow.fromWebContents(event.sender)?.minimize();
-    });
-    ipcMain.handle("window-max", async (event, args) => {
-      if (BrowserWindow.fromWebContents(event.sender)?.isMaximized()) {
-        BrowserWindow.fromWebContents(event.sender)?.restore();
-        return { status: false };
-      } else {
-        BrowserWindow.fromWebContents(event.sender)?.maximize();
-        return { status: true };
+import { IpcMainHandle, IpcChannel, WebContentSend } from "../../ipc";
+import { ProgressInfo } from "electron-updater";
+
+
+const ALL_UPDATER = new Update();
+
+const ipcMainHandle: IpcMainHandle = {
+  [IpcChannel.IsUseSysTitle]: () => {
+    return IsUseSysTitle;
+  },
+
+  [IpcChannel.WindowMini]: (event) => {
+    BrowserWindow.fromWebContents(event.sender)?.minimize();
+  },
+  [IpcChannel.WindowMax]: (event) => {
+    if (BrowserWindow.fromWebContents(event.sender)?.isMaximized()) {
+      BrowserWindow.fromWebContents(event.sender)?.restore();
+      return { status: false };
+    } else {
+      BrowserWindow.fromWebContents(event.sender)?.maximize();
+      return { status: true };
+    }
+  },
+  [IpcChannel.WindowClose]: (event) => {
+    BrowserWindow.fromWebContents(event.sender)?.close();
+  },
+
+  [IpcChannel.CheckUpdate]: (event) => {
+    ALL_UPDATER.checkUpdate(BrowserWindow.fromWebContents(event.sender));
+  },
+  [IpcChannel.ConfirmUpdate]: () => {
+    ALL_UPDATER.quitAndInstall();
+  },
+  [IpcChannel.AppClose]: () => {
+    app.quit();
+  },
+  [IpcChannel.GetStaticPath]: () => {
+    return staticPaths;
+  },
+  [IpcChannel.OpenMessagebox]: async (event, arg) => {
+    return dialog.showMessageBox(
+      BrowserWindow.fromWebContents(event.sender),
+      {
+        type: arg.type || "info",
+        title: arg.title || "",
+        buttons: arg.buttons || [],
+        message: arg.message || "",
+        noLink: arg.noLink || true,
       }
-    });
-    ipcMain.handle("window-close", (event, args) => {
-      BrowserWindow.fromWebContents(event.sender)?.close();
-    });
-    ipcMain.handle("check-update", (event) => {
-      allUpdater.checkUpdate(BrowserWindow.fromWebContents(event.sender));
-    });
-    ipcMain.handle("confirm-update", () => {
-      allUpdater.quitAndInstall();
-    });
-    ipcMain.handle("app-close", (event, args) => {
-      app.quit();
-    });
-    ipcMain.handle("get-static-path", (event, args) => {
-      return staticPaths;
-    });
-    ipcMain.handle("open-messagebox", async (event, arg) => {
-      const res = await dialog.showMessageBox(
-        BrowserWindow.fromWebContents(event.sender),
-        {
-          type: arg.type || "info",
-          title: arg.title || "",
-          buttons: arg.buttons || [],
-          message: arg.message || "",
-          noLink: arg.noLink || true,
-        }
+    );
+  },
+
+  [IpcChannel.OpenErrorbox]: (_event, arg) => {
+    dialog.showErrorBox(arg.title, arg.message)
+  },
+  [IpcChannel.StartServer]: async () => {
+    try {
+      const serveStatus = await Server.StatrServer();
+      return serveStatus;
+    } catch (error) {
+      dialog.showErrorBox("错误", error);
+      return ""
+    }
+  },
+  [IpcChannel.StopServer]: async () => {
+    try {
+      const serveStatus = await Server.StopServer();
+      return serveStatus;
+    } catch (error) {
+      dialog.showErrorBox("错误", error);
+      return ""
+    }
+  },
+  [IpcChannel.HotUpdate]: (event) => {
+    updater(BrowserWindow.fromWebContents(event.sender))
+  },
+  [IpcChannel.HotUpdateTest]: async (event, arg) => {
+    console.log("hot-update-test");
+    try {
+      let updateInfo = await updaterTest(
+        BrowserWindow.fromWebContents(event.sender)
       );
-      return res;
-    });
-    ipcMain.handle("open-errorbox", (event, arg) => {
-      dialog.showErrorBox(arg.title, arg.message);
-    });
-    ipcMain.handle("start-server", async () => {
-      try {
-        const serveStatus = await Server.StatrServer();
-        console.log(serveStatus);
-        return serveStatus;
-      } catch (error) {
-        dialog.showErrorBox("错误", error);
-      }
-    });
-    ipcMain.handle("stop-server", async (event, arg) => {
-      try {
-        const serveStatus = await Server.StopServer();
-        return serveStatus;
-      } catch (error) {
-        dialog.showErrorBox("错误", error);
-      }
-    });
-    ipcMain.handle("hot-update", (event, arg) => {
-      updater(BrowserWindow.fromWebContents(event.sender));
-    });
-    ipcMain.handle("hot-update-test", async (event, arg) => {
-      console.log("hot-update-test");
-      try {
-        let updateInfo = await updaterTest(
-          BrowserWindow.fromWebContents(event.sender)
-        );
-        if (updateInfo === UpdateStatus.Success) {
-          app.quit();
-        } else if (updateInfo === UpdateStatus.HaveNothingUpdate) {
-          console.log("不需要更新");
-        } else if (updateInfo === UpdateStatus.Failed) {
-          console.error("更新出错");
-        }
-      } catch (error) {
-        // 更新出错
+      if (updateInfo === UpdateStatus.Success) {
+        app.quit();
+      } else if (updateInfo === UpdateStatus.HaveNothingUpdate) {
+        console.log("不需要更新");
+      } else if (updateInfo === UpdateStatus.Failed) {
         console.error("更新出错");
       }
+    } catch (error) {
+      // 更新出错
+      console.error("更新出错");
+    }
+  },
+  [IpcChannel.StartDownload]: (event, downloadUrl) => {
+    new DownloadFile(
+      BrowserWindow.fromWebContents(event.sender),
+      downloadUrl
+    ).start();
+  },
+  [IpcChannel.OpenWin]: (_event, arg) => {
+    const ChildWin = new BrowserWindow({
+      titleBarStyle: IsUseSysTitle ? "default" : "hidden",
+      ...Object.assign(otherWindowConfig, {}),
     });
-    ipcMain.handle("start-download", (event, downloadUrl) => {
-      new DownloadFile(
-        BrowserWindow.fromWebContents(event.sender),
-        downloadUrl
-      ).start();
-    });
-    ipcMain.handle("open-win", (event, arg) => {
-      const ChildWin = new BrowserWindow({
-        titleBarStyle: IsUseSysTitle ? "default" : "hidden",
-        ...Object.assign(otherWindowConfig, {}),
-      });
-      // 开发模式下自动开启devtools
-      if (process.env.NODE_ENV === "development") {
-        ChildWin.webContents.openDevTools({ mode: "undocked", activate: true });
+    // 开发模式下自动开启devtools
+    if (process.env.NODE_ENV === "development") {
+      ChildWin.webContents.openDevTools({ mode: "undocked", activate: true });
+    }
+    ChildWin.loadURL(winURL + `#${arg.url}`);
+    ChildWin.once("ready-to-show", () => {
+      ChildWin.show();
+      if (arg.IsPay) {
+        // 检查支付时候自动关闭小窗口
+        const testUrl = setInterval(() => {
+          const Url = ChildWin.webContents.getURL();
+          if (Url.includes(arg.PayUrl)) {
+            ChildWin.close();
+          }
+        }, 1200);
+        ChildWin.on("close", () => {
+          clearInterval(testUrl);
+        });
       }
-      ChildWin.loadURL(winURL + `#${arg.url}`);
-      ChildWin.once("ready-to-show", () => {
-        ChildWin.show();
-        if (arg.IsPay) {
-          // 检查支付时候自动关闭小窗口
-          const testUrl = setInterval(() => {
-            const Url = ChildWin.webContents.getURL();
-            if (Url.includes(arg.PayUrl)) {
-              ChildWin.close();
-            }
-          }, 1200);
-          ChildWin.on("close", () => {
-            clearInterval(testUrl);
-          });
-        }
-      });
-      // 渲染进程显示时触发
-      ChildWin.once("show", () => {
-        ChildWin.webContents.send("send-data-test", arg.sendData);
-      });
+    });
+    // 渲染进程显示时触发
+    ChildWin.once("show", () => {
+      ChildWin.webContents.send("send-data-test", arg.sendData);
     });
   },
-};
+  ...usePrintHandle(),
+}
+
+type VoidParametersWebContentSendKey = {
+  [K in keyof WebContentSend]: Parameters<WebContentSend[K]>[0] extends void ? K : never
+}[keyof WebContentSend]
+
+type NotVoidParametersWebContentSendKey = Exclude<keyof WebContentSend, VoidParametersWebContentSendKey>
+
+
+export function webContentSend<T extends VoidParametersWebContentSendKey>(win: WebContents, channel: T): void;
+export function webContentSend<T extends NotVoidParametersWebContentSendKey>(win: WebContents, channel: T, args: Parameters<WebContentSend[T]>[0]): void;
+
+export function webContentSend<T extends VoidParametersWebContentSendKey | NotVoidParametersWebContentSendKey>(win: WebContents, channel: T, args?: Parameters<WebContentSend[T]>[0]): void {
+  win.send(channel, args);
+}
+
+
+export function installIpcMain() {
+  Object.entries(ipcMainHandle).forEach(([ipcChannelName, ipcListener]) => {
+    ipcMain.handle(ipcChannelName, ipcListener)
+  })
+}
+
+

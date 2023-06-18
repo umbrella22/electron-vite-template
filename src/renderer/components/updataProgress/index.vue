@@ -8,21 +8,13 @@
       </div>
       <div class="content">{{ message }}</div>
       <div class="download-progress">
-        <el-progress
-          :percentage="percentage"
-          :color="colors"
-          :status="progressStaus"
-        ></el-progress>
+        <el-progress :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
       </div>
       <div class="progress-content" v-if="winOS">
         注：当提示您安全警告时，请点击“运行(R)”，或者点击“更多信息”，选择仍要运行
       </div>
       <div class="bom-box">
-        <el-button
-          type="text"
-          @click="openfile"
-          v-if="progressStaus == 'success'"
-        >
+        <el-button type="text" @click="openfile" v-if="progressStaus == 'success'">
           查看文件位置
         </el-button>
         <el-button @click="killSys">{{ killButton }}</el-button>
@@ -32,9 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from "vue";
+import { onUnmounted, ref, watch, Ref } from "vue";
+import { invoke, vueListen } from "../../utils/ipcRenderer";
+import { IpcChannel } from "../../../ipc";
 const { platform } = require("os");
-const { ipcRenderer, shell } = require("electron");
+const { shell } = require("electron");
 const props = defineProps({
   modelValue: Boolean,
 });
@@ -47,7 +41,7 @@ watch(
     visible.value = props.modelValue;
   }
 );
-const colors: Ref<string[]> | string = ref([
+const colors: Ref<{ color: string, percentage: number }[] | string> = ref([
   { color: "#f56c6c", percentage: 20 },
   { color: "#e6a23c", percentage: 40 },
   { color: "#6f7ad3", percentage: 60 },
@@ -60,17 +54,17 @@ const winOS = platform().includes("win32");
 const title = ref("强制更新");
 const message = ref("由于当前软件版本过低，为了保证您的使用，已激活强制更新");
 const killButton = ref("退出软件");
-ipcRenderer.on("download-progress", (event, arg) => {
+vueListen(IpcChannel.DownloadProgress, (event, arg) => {
   percentage.value = Number(arg);
 });
-ipcRenderer.on("download-error", (event, arg) => {
+vueListen(IpcChannel.DownloadError, (event, arg) => {
   if (arg) {
     progressStaus.value = "exception";
     percentage.value = 40;
     colors.value = "#d81e06";
   }
 });
-ipcRenderer.on("download-done", (event, age) => {
+vueListen(IpcChannel.DownloadDone, (event, age) => {
   filePath.value = age.filePath;
   progressStaus.value = "success";
   message.value = "更新下载完成！";
@@ -81,7 +75,7 @@ const openfile = () => {
   shell.showItemInFolder(filePath.value);
 };
 const killSys = () => {
-  ipcRenderer.invoke("app-close");
+  invoke(IpcChannel.AppClose);
 };
 // 当且仅当为开发模式才可以关闭
 const closeMask = () => {
@@ -89,11 +83,7 @@ const closeMask = () => {
     emits("update:modelValue", false);
   }
 };
-onUnmounted(() => {
-  ipcRenderer.removeAllListeners("download-done");
-  ipcRenderer.removeAllListeners("download-progress");
-  ipcRenderer.removeAllListeners("download-error");
-});
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .mask-box {
@@ -108,6 +98,7 @@ onUnmounted(() => {
   left: 0;
   overflow: auto;
   margin: 0;
+
   .title-box {
     position: relative;
     margin: 0 auto 50px;
@@ -120,32 +111,39 @@ onUnmounted(() => {
     display: flex;
     flex-flow: column;
     align-items: center;
+
     .title {
       display: flex;
       line-height: 25px;
       justify-content: center;
+
       .cuowu {
         color: #999999;
         width: 25px;
         height: 25px;
         margin-right: 16px;
       }
+
       .text {
         font-size: 30px;
       }
     }
+
     .content {
       padding: 20px 30px 0px 30px;
     }
+
     .bom-box {
       :deep(.el-button) {
         padding: 10px 35px;
       }
     }
+
     .download-progress {
       width: 100%;
       padding: 20px 50px;
     }
+
     .progress-content {
       color: red;
       padding: 10px;

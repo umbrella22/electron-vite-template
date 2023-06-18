@@ -1,4 +1,5 @@
 import { app, BrowserWindow, dialog } from "electron";
+
 import { join } from "path";
 import { arch, platform } from "os";
 import { stat, remove, appendFileSync } from "fs-extra";
@@ -6,6 +7,8 @@ import type { IncomingMessage } from "http";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
 import packageInfo from "../../../package.json";
+import { webContentSend } from "./ipcMain";
+import { IpcChannel } from "../../ipc";
 
 /**
  *
@@ -39,9 +42,9 @@ class Main {
     } else {
       this.downloadUrl = platform().includes("win32")
         ? this.baseUrl +
-          `electron_${this.version}_${this.Sysarch}.exe?${new Date().getTime()}`
+        `electron_${this.version}_${this.Sysarch}.exe?${new Date().getTime()}`
         : this.baseUrl +
-          `electron_${this.version}_mac.dmg?${new Date().getTime()}`;
+        `electron_${this.version}_mac.dmg?${new Date().getTime()}`;
     }
   }
 
@@ -59,22 +62,19 @@ class Main {
             appendFileSync(this.filePath, chunk, { encoding: "binary" });
 
             //发送进度
-            this.mainWindow.webContents.send(
-              "download-progress",
-              ((size / fullSize) * 100).toFixed(2)
-            );
+            webContentSend(this.mainWindow.webContents, IpcChannel.DownloadProgress, Number(((size / fullSize) * 100).toFixed(2)));
 
             //完成后反馈
             if (size === fullSize) {
               const data = {
                 filePath: this.filePath,
               };
-              this.mainWindow.webContents.send("download-done", data);
+              webContentSend(this.mainWindow.webContents, IpcChannel.DownloadDone, data);
               return;
             }
           }
         ).catch((err) => {
-          this.mainWindow.webContents.send("download-error", true);
+          webContentSend(this.mainWindow.webContents, IpcChannel.DownloadError, true);
           console.error(err);
           dialog.showErrorBox("下载出错", err.message);
         });

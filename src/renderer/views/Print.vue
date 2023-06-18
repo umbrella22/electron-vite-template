@@ -5,26 +5,17 @@
     </div>
     <div class="row">
       <select class="grip-right" v-model="selName">
-        <option
-          v-for="(item, index) in printers"
-          :key="index"
-          :value="item.name"
-        >{{ item.displayName }}</option>
+        <option v-for="(item, index) in printers" :key="index" :value="item.name">{{ item.displayName }}</option>
       </select>
       <button type="button" @click="print">{{ t('print.print') }}</button>
     </div>
     <div class="row">
-      <button
-        class="grip-right"
-        type="button"
-        @click="() => silent = !silent"
-      >{{ silent ? '' : t('print.notUse') }}{{ t('print.silentPrinting') }}</button>
-      <button
-        class="grip-right"
-        type="button"
-        @click="() => printBackground = !printBackground"
-      >{{ printBackground ? t('print.use') : t('print.unuse') }}{{ t('print.backgroundColor') }}</button>
-      <button type="button" @click="() => color = !color">{{ color ? t('print.colorful') : t('print.blackAndWhite') }}</button>
+      <button class="grip-right" type="button" @click="() => silent = !silent">{{ silent ? '' : t('print.notUse') }}{{
+        t('print.silentPrinting') }}</button>
+      <button class="grip-right" type="button" @click="() => printBackground = !printBackground">{{ printBackground ?
+        t('print.use') : t('print.unuse') }}{{ t('print.backgroundColor') }}</button>
+      <button type="button" @click="() => color = !color">{{ color ? t('print.colorful') : t('print.blackAndWhite')
+      }}</button>
     </div>
     <div class="line"></div>
     <div class="row">
@@ -70,17 +61,17 @@
     <div class="line"></div>
     <div class="row">
       <div style="width: 100px; height: 100px; background: red;" class="grip-right"></div>
-      <img
-        style="width: 100px; height: 100px; object-fit: cover;"
-        src="https://img2.baidu.com/it/u=2173864545,554093748&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=882"
-      />
+      <img style="width: 100px; height: 100px; object-fit: cover;"
+        src="https://img2.baidu.com/it/u=2173864545,554093748&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=882" />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, toRaw } from 'vue'
+import { ref, onMounted, toRaw, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-const { ipcRenderer } = require("electron")
+import { invoke } from "../utils/ipcRenderer";
+import { IpcChannel } from "../../ipc";
+import type { WebContentsPrintOptions } from 'electron';
 
 const selName = ref('')
 const printers = ref<Electron.PrinterInfo[]>([])
@@ -88,7 +79,7 @@ const silent = ref(false)
 const printBackground = ref(false)
 const color = ref(true)
 const marginTypes = ref(['default', 'none', 'printableArea', 'custom'])
-const margins = ref({
+const margins: Ref<WebContentsPrintOptions["margins"]> = ref({
   marginType: 'default',
   top: 0,
   bottom: 0,
@@ -101,7 +92,7 @@ const pageSizeObject = ref({ width: 210000, height: 297000 })
 const selPageSizeType = ref(0) // 0 string  1 Size
 onMounted(async () => {
   // 获取打印机列表
-  printers.value = await ipcRenderer.invoke('getPrinters')
+  printers.value = await invoke(IpcChannel.GetPrinters)
   if (printers.value.length) {
     const defaultItem = printers.value.find(v => v.isDefault)
     if (defaultItem) {
@@ -116,7 +107,7 @@ const { t } = useI18n()
 
 async function print() {
   if (selName.value) {
-    const printRes = await ipcRenderer.invoke('printHandlePrint', {
+    const printRes = await invoke(IpcChannel.PrintHandlePrint, {
       silent: silent.value,
       deviceName: selName.value,
       printBackground: printBackground.value,
@@ -134,9 +125,11 @@ async function print() {
   overflow: auto;
   user-select: none;
 }
+
 .tips {
   color: red;
 }
+
 .print {
   height: 100vh;
   padding: 10px;
@@ -164,6 +157,7 @@ input {
   border: 1px solid #000;
   border-radius: 4px;
 }
+
 input.small {
   width: 50px;
 }

@@ -88,9 +88,12 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { onUnmounted, Ref, ref } from "vue";
 import { i18n, setLanguage } from "@renderer/i18n";
 import { useI18n } from "vue-i18n";
+import { invoke, vueListen } from "../utils/ipcRenderer";
+import { IpcChannel } from "../../ipc";
 
 import { useTemplateStore } from "@renderer/store/modules/template";
 import TitleBar from "./common/TitleBar.vue";
+import { ProgressInfo } from "electron-updater";
 
 const storeTemplate = useTemplateStore();
 
@@ -126,16 +129,17 @@ let updateStatus = ref("");
 let elPageSize = ref(100);
 let elCPage = ref(1);
 
-ipcRenderer.invoke("get-static-path").then((res) => {
+invoke(IpcChannel.GetStaticPath).then((res) => {
   console.log("staticPath", res);
-});
+})
+
 
 function changeLanguage() {
   setLanguage(i18n.global.locale.value === "zh-cn" ? "en" : "zh-cn");
 }
 
 function printDemo() {
-  ipcRenderer.invoke("openPrintDemoWindow");
+  invoke(IpcChannel.OpenPrintDemoWindow);
 }
 
 function handleSizeChange(val: number) {
@@ -154,7 +158,7 @@ function openNewWin() {
   let data = {
     url: "/form/index",
   };
-  ipcRenderer.invoke("open-win", data);
+  invoke(IpcChannel.OpenWin, data);
 }
 function getMessage() {
   message().then((res) => {
@@ -164,15 +168,17 @@ function getMessage() {
   });
 }
 function StopServer() {
-  ipcRenderer.invoke("stop-server").then((res) => {
-    ElMessage({
-      type: "success",
-      message: "已关闭",
-    });
+  invoke(IpcChannel.StopServer).then((res) => {
+    if (res) {
+      ElMessage({
+        type: "success",
+        message: "已关闭",
+      });
+    }
   });
 }
 function StartServer() {
-  ipcRenderer.invoke("start-server").then((res) => {
+  invoke(IpcChannel.StartServer).then((res) => {
     if (res) {
       ElMessage({
         type: "success",
@@ -186,7 +192,7 @@ function open() { }
 function CheckUpdate(data) {
   switch (data) {
     case "one":
-      ipcRenderer.invoke("check-update");
+      invoke(IpcChannel.CheckUpdate);
       break;
     case "two":
       // TODO 测试链接
@@ -201,11 +207,11 @@ function CheckUpdate(data) {
       //   });
       break;
     case "three":
-      ipcRenderer.invoke("hot-update");
+      invoke(IpcChannel.HotUpdate);
       break;
     case "threetest":
       alert("更新后再次点击没有提示");
-      ipcRenderer.invoke("hot-update-test");
+      invoke(IpcChannel.HotUpdateTest);
       break;
     case "four":
       showForcedUpdate.value = true;
@@ -224,29 +230,31 @@ function openPreloadWindow() {
 function handleClose() {
   dialogVisible.value = false;
 }
-ipcRenderer.on("download-progress", (event, arg) => {
+vueListen(IpcChannel.DownloadProgress,(event, arg) => {
   console.log(arg);
-  percentage.value = Number(arg);
+  percentage.value = arg;
 });
-ipcRenderer.on("download-error", (event, arg) => {
+
+
+vueListen(IpcChannel.DownloadError, (event, arg) => {
   if (arg) {
     progressStaus = "exception";
     percentage.value = 40;
     colors.value = "#d81e06";
   }
 });
-ipcRenderer.on("download-paused", (event, arg) => {
+vueListen(IpcChannel.DownloadPaused, (event, arg) => {
   if (arg) {
     progressStaus = "warning";
     ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
       confirmButtonText: "重试",
       callback: (action) => {
-        ipcRenderer.invoke("start-download");
+        invoke(IpcChannel.StartDownload, "");
       },
     });
   }
 });
-ipcRenderer.on("download-done", (event, age) => {
+vueListen(IpcChannel.DownloadDone, (event, age) => {
   filePath.value = age.filePath;
   progressStaus = "success";
   ElMessageBox.alert("更新下载完成！", "提示", {
@@ -257,15 +265,15 @@ ipcRenderer.on("download-done", (event, age) => {
   });
 });
 // electron-updater的更新监听
-ipcRenderer.on("UpdateMsg", (event, age) => {
-  switch (age.state) {
+vueListen(IpcChannel.UpdateMsg, (event, args) => {
+  switch (args.state) {
     case -1:
       const msgdata = {
         title: "发生错误",
-        message: age.msg,
+        message: args.msg as string,
       };
       dialogVisible.value = false;
-      ipcRenderer.invoke("open-errorbox", msgdata);
+      invoke(IpcChannel.OpenErrorbox, msgdata);
       break;
     case 0:
       ElMessage("正在检查更新");
@@ -281,14 +289,14 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
       ElMessage({ type: "success", message: "无新版本" });
       break;
     case 3:
-      percentage = age.msg.percent.toFixed(1);
+      percentage.value = Number((args.msg as ProgressInfo).percent.toFixed(1));
       break;
     case 4:
       progressStaus = "success";
       ElMessageBox.alert("更新下载完成！", "提示", {
         confirmButtonText: "确定",
         callback: (action) => {
-          ipcRenderer.invoke("confirm-update");
+          invoke(IpcChannel.ConfirmUpdate);
         },
       });
       break;
@@ -296,7 +304,7 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
       break;
   }
 });
-ipcRenderer.on("hot-update-status", (event, msg) => {
+vueListen(IpcChannel.HotUpdateStatus, (event, msg) => {
   switch (msg.status) {
     case "downloading":
       ElMessage("正在下载");
@@ -308,26 +316,15 @@ ipcRenderer.on("hot-update-status", (event, msg) => {
       ElMessage.success("成功,请重启");
       break;
     case "failed":
-      ElMessage.error(msg.message.message);
+      ElMessage.error(msg.message);
       break;
-
     default:
       break;
   }
   console.log(msg);
-  updateStatus = msg.status;
+  updateStatus.value = msg.status;
 });
-onUnmounted(() => {
-  console.log("销毁了哦");
-  ipcRenderer.removeAllListeners("confirm-message");
-  ipcRenderer.removeAllListeners("download-done");
-  ipcRenderer.removeAllListeners("download-paused");
-  ipcRenderer.removeAllListeners("confirm-stop");
-  ipcRenderer.removeAllListeners("confirm-start");
-  ipcRenderer.removeAllListeners("confirm-download");
-  ipcRenderer.removeAllListeners("download-progress");
-  ipcRenderer.removeAllListeners("download-error");
-});
+
 </script>
 
 <style>

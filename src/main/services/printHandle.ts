@@ -1,16 +1,15 @@
-import { BrowserWindow, ipcMain, WebContentsPrintOptions } from "electron";
+import { BrowserWindow, WebContentsPrintOptions } from "electron";
 import { IsUseSysTitle } from "../config/const";
 import { otherWindowConfig } from "../config/windowsConfig";
 import { printURL } from "@main/config/StaticPath";
+import { IpcChannel, IpcMainHandle } from "../../ipc";
 
-export function usePrintHandle() {
-  ipcMain.handle("getPrinters", async (event) => {
-    return await event.sender.getPrintersAsync();
-  });
-
-  ipcMain.handle(
-    "printHandlePrint",
-    async (event, options: WebContentsPrintOptions) => {
+export function usePrintHandle(): Pick<IpcMainHandle, IpcChannel.GetPrinters | IpcChannel.PrintHandlePrint | IpcChannel.OpenPrintDemoWindow> {
+  return {
+    [IpcChannel.GetPrinters]: async (event) => {
+      return await event.sender.getPrintersAsync();
+    },
+    [IpcChannel.PrintHandlePrint]: async (event, options: WebContentsPrintOptions) => {
       return new Promise((resolve) => {
         event.sender.print(
           options,
@@ -19,12 +18,11 @@ export function usePrintHandle() {
           }
         );
       });
+    },
+    [IpcChannel.OpenPrintDemoWindow]: () => {
+      openPrintDemoWindow();
     }
-  );
-
-  ipcMain.handle("openPrintDemoWindow", () => {
-    openPrintDemoWindow();
-  });
+  }
 }
 
 let win: BrowserWindow;
@@ -37,6 +35,10 @@ export function openPrintDemoWindow() {
     titleBarStyle: IsUseSysTitle ? "default" : "hidden",
     ...Object.assign(otherWindowConfig, {}),
   });
+  // 开发模式下自动开启devtools
+  if (process.env.NODE_ENV === "development") {
+    win.webContents.openDevTools({ mode: "undocked", activate: true });
+  }
   win.loadURL(printURL);
   win.on("ready-to-show", () => {
     win.show();
