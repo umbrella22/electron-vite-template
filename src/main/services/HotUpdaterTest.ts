@@ -1,11 +1,13 @@
 import { app, BrowserWindow } from "electron";
-import {  UpdateInfo, UpdateJson, UpdateStatus, UpdateElectron } from "electron_updater_node_core"
+import { UpdateInfo, UpdateJson, UpdateStatus, UpdateElectron } from "electron_updater_node_core"
 import { dirname, join } from "path";
 import { version } from '../../../package.json'
 import { Readable } from "stream";
 import axios from 'axios'
 const request = axios.create()
 import updateConfig from "../../../updateConfig.json";
+import { webContentSend } from "./ipcMain";
+import { IpcChannel } from "../../ipc";
 /**
  * 增量更新
  *
@@ -14,9 +16,9 @@ import updateConfig from "../../../updateConfig.json";
  */
 export async function updater(windows?: BrowserWindow) {
   const statusCallback = (status: UpdateInfo) => {
-    if (windows) windows.webContents.send('hot-update-status', status);
+    if (windows) webContentSend(windows.webContents, IpcChannel.HotUpdateStatus, status)
   }
-  const downloadFn = async (url: string):Promise<Readable> =>  {
+  const downloadFn = async (url: string): Promise<Readable> => {
     const response = await request({
       method: 'get',
       url: url,
@@ -30,20 +32,21 @@ export async function updater(windows?: BrowserWindow) {
     const res = await request({ url: `${updateConfig.url}/${updateConfig.updateJsonName}.json?time=${new Date().getTime()}`, })
     const updateJson: UpdateJson = res.data;
     const updateElectron = new UpdateElectron(statusCallback, updateConfig.updaterName || "updater", version, app.getPath('exe'), tempDirectory, updateConfig.updateJsonName, updateJson, `${updateConfig.url}/${updateConfig.target + updateJson.version}`, downloadFn)
-    const needUpdateNumber =  await updateElectron.checkForUpdates();
+    const needUpdateNumber = await updateElectron.checkForUpdates();
     // have nothing to update
-    if(needUpdateNumber === 0 ) {
+    if (needUpdateNumber === 0) {
       console.log("have nothing to update");
-      return UpdateStatus.HaveNothingUpdate
+      return UpdateStatus.HaveNothingUpdate;
     } else {
-      const download =  await updateElectron.downloadUpdate();
-      if(download) {
-        if (updateElectron.install()) {
-          // return UpdateStatus.Success;
+      const download = await updateElectron.downloadUpdate();
+      if (download) {
+        const r = await updateElectron.install(false, true);
+        if (r) {
+          return UpdateStatus.Success;
         } else {
           throw new Error("update Fail")
         }
-      }else {
+      } else {
         throw new Error("download Fail")
       }
     }
@@ -51,8 +54,8 @@ export async function updater(windows?: BrowserWindow) {
     console.log(error);
     const updateInfo = new UpdateInfo();
     updateInfo.status = 'failed'
-    updateInfo.message = error
-    if (windows) windows.webContents.send('hot-update-status', updateInfo)
+    updateInfo.message = error;
+    statusCallback(updateInfo);
     return UpdateStatus.Failed
   }
 }

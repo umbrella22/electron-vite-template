@@ -1,4 +1,4 @@
-import setIpc from "./ipcMain";
+import { installIpcMain } from "./ipcMain";
 import { IsUseSysTitle, UseStartupChart } from "../config/const";
 import menuconfig from "../config/menu";
 import { app, BrowserWindow, Menu, dialog } from "electron";
@@ -27,7 +27,7 @@ class MainInit {
       });
     }
     // 启用协议
-    setIpc.Mainfunc();
+    installIpcMain();
   }
   // 主窗口函数
   createMainWindow() {

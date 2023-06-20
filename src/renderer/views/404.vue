@@ -20,11 +20,11 @@
 import img_404 from "@renderer/assets/404_images/404.png";
 import img_404_cloud from "@renderer/assets/404_images/404_cloud.png";
 import { useTemplateStore } from "@renderer/store/modules/template";
-const { ipcRenderer } = require("electron");
+import { vueListen } from "../utils/ipcRenderer";
+import { IpcChannel } from "../../ipc";
 const storeTemplate = useTemplateStore()
 console.log(storeTemplate.$state.testData)
-
-ipcRenderer.on("send-data-test", (event, data) => {
+vueListen(IpcChannel.SendDataTest, (event, data) => {
   console.log(event)
   console.log(data)
 })
@@ -242,4 +242,5 @@ ipcRenderer.on("send-data-test", (event, data) => {
       }
     }
   }
-}</style>
+}
+</style>

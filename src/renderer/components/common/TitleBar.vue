@@ -38,26 +38,26 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-const { ipcRenderer } = require("electron");
-
+import { invoke } from "../../utils/ipcRenderer";
+import { IpcChannel } from "../../../ipc";
 const IsUseSysTitle = ref(false);
 const mix = ref(false);
 const isNotMac = ref(process.platform !== "darwin");
 const IsWeb = ref(process.env.BUILD_TARGET);
-ipcRenderer.invoke("IsUseSysTitle").then((res) => {
+invoke(IpcChannel.IsUseSysTitle).then((res) => {
   IsUseSysTitle.value = res;
 });
 
 const Mini = () => {
-  ipcRenderer.invoke("windows-mini");
+  invoke(IpcChannel.WindowMini);
 };
 const MixOrReduction = () => {
-  ipcRenderer.invoke("window-max").then((res) => {
+  invoke(IpcChannel.WindowMax).then((res) => {
     mix.value = res.status;
   });
 };
 const Close = () => {
-  ipcRenderer.invoke("window-close");
+  invoke(IpcChannel.WindowClose);
 };
 </script>
 

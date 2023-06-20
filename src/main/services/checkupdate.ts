@@ -1,5 +1,7 @@
-import { autoUpdater } from 'electron-updater'
+import { ProgressInfo, autoUpdater } from 'electron-updater'
 import { BrowserWindow } from 'electron'
+import { webContentSend } from './ipcMain'
+import { IpcChannel } from '../../ipc'
 /**
  * -1 检查更新失败 0 正在检查更新 1 检测到新版本，准备下载 2 未检测到新版本 3 下载中 4 下载完成
  **/
@@ -21,19 +23,19 @@ class Update {
     })
 
     // 当开始检查更新的时候触发
-    autoUpdater.on('checking-for-update', (event, arg) => {
+    autoUpdater.on('checking-for-update', () => {
       console.log('开始检查更新')
       this.Message(this.mainWindow, 0)
     })
 
     // 发现可更新数据时
-    autoUpdater.on('update-available', (event, arg) => {
+    autoUpdater.on('update-available', () => {
       console.log('有更新')
       this.Message(this.mainWindow, 1)
     })
 
     // 没有可更新数据时
-    autoUpdater.on('update-not-available', (event, arg) => {
+    autoUpdater.on('update-not-available', () => {
       console.log('没有更新')
       this.Message(this.mainWindow, 2)
     })
@@ -52,12 +54,12 @@ class Update {
 
   }
   // 负责向渲染进程发送信息
-  Message(mainWindow: BrowserWindow, type: Number, data?: String) {
-    const senddata = {
+  Message(mainWindow: BrowserWindow, type: number, data: string | ProgressInfo = "") {
+    const senddata  = {
       state: type,
-      msg: data || ''
+      msg: data
     }
-    mainWindow.webContents.send('UpdateMsg', senddata)
+    webContentSend(mainWindow.webContents, IpcChannel.UpdateMsg, senddata)
   }
 
   // 执行自动更新检查
