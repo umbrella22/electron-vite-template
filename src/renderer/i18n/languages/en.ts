@@ -31,7 +31,8 @@ export const lang = {
         ForcedUpdate: "Forced Update Mode",
         printDemo: "Print demo",
         incrementalUpdateTest: "Incremental Update test",
-        openPreloadWindow: "preload.js test"
+        openPreloadWindow: "preload.js test",
+        browser: "Browser",
     },
     print: {
         print: 'Print',
@@ -48,6 +49,9 @@ export const lang = {
         bottom: 'Bottom ',
         right: 'Right ',
         left: 'Left ',
+    },
+    browser: {
+        searchBarPlaceholder: 'Search in Bing or enter a website address',
     },
     el: enLocale
 }

@@ -39,6 +39,7 @@ export const lang = {
     printDemo: "打印例子",
     incrementalUpdateTest: "增量更新测试",
     openPreloadWindow: "preload.js测试",
+    browser: "浏览器",
   },
   print: {
     print: "打印",
@@ -55,6 +56,9 @@ export const lang = {
     bottom: "下",
     right: "右",
     left: "左",
+  },
+  browser: {
+    searchBarPlaceholder: "在Bing中搜索，或输入一个网址",
   },
   el: zhLocale,
 };

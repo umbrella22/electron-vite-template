@@ -61,6 +61,9 @@
           <el-button type="primary" round @click="printDemo">{{
             t("buttons.printDemo")
           }}</el-button>
+          <el-button type="primary" round @click="browserDemo">{{
+            t("buttons.browser")
+          }}</el-button>
         </div>
         <div class="doc">
           <el-pagination :current-page="elCPage" :page-sizes="[100, 200, 300, 400]" :page-size="elPageSize"
@@ -140,6 +143,10 @@ function changeLanguage() {
 
 function printDemo() {
   invoke(IpcChannel.OpenPrintDemoWindow);
+}
+
+function browserDemo() {
+  invoke(IpcChannel.OpenBrowserDemoWindow);
 }
 
 function handleSizeChange(val: number) {
