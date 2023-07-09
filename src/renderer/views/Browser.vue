@@ -101,17 +101,14 @@ async function bvCloseHandle(item: TabItemData) {
   await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId);
   const findIndex = tabList.value.findIndex((v) => v === item);
   if (findIndex !== -1) {
-    if (activebvWebContentsId.value === item.bvWebContentsId) {
-      if (findIndex === 0) {
-        if (tabList.value.length > 1) {
-          activebvWebContentsId.value = tabList.value[1].bvWebContentsId;
-        }
-      } else {
-        activebvWebContentsId.value =
-          tabList.value[findIndex - 1].bvWebContentsId;
-      }
-    }
     tabList.value.splice(findIndex, 1);
+  }
+  if (activebvWebContentsId.value === item.bvWebContentsId) {
+    if (tabList.value.length > 1) {
+      bvSelectHandle(tabList.value[findIndex ? findIndex - 1 : 0]);
+    } else if (tabList.value.length === 1) {
+      bvSelectHandle(tabList.value[0]);
+    }
   }
 }
 
@@ -149,6 +146,7 @@ vueListen(
     if (status === 1) {
       if (findIndex !== -1) {
         tabList.value[findIndex].title = title;
+        tabList.value[findIndex].url = url;
         if (bvWebContentsId === activebvWebContentsId.value && !isFocused) {
           searchKey.value = url;
         }
@@ -257,18 +255,21 @@ function mousedownHandle(e: MouseEvent, item: TabItemData) {
   });
 }
 
-document.onmouseup = () => {
-  mouseupHandle();
+document.onmouseup = (e) => {
+  mouseupHandle(e);
 };
 
-function mouseupHandle() {
+function mouseupHandle(e: MouseEvent) {
   localStorage.removeItem("isNewTabContainer");
-  if (Date.now() - mousedownTime < 200) {
-    // 按下松开200ms间隔内判断为点击时间
-    bvSelectHandle(mousedownItem);
-  } else if (dragging) {
-    invoke(IpcChannel.BrowserTabMouseup);
+  if ((e.target as HTMLDivElement).className !== "close-btn") {
+    if (Date.now() - mousedownTime < 200) {
+      // 按下松开200ms间隔内判断为点击时间
+      bvSelectHandle(mousedownItem);
+    } else if (dragging) {
+      invoke(IpcChannel.BrowserTabMouseup);
+    }
   }
+
   dragging = false;
 }
 
