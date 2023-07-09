@@ -240,9 +240,9 @@ function openBrowserDemoWindow() {
     ...Object.assign(otherWindowConfig, {}),
   });
   // 开发模式下自动开启devtools
-  // if (process.env.NODE_ENV === "development") {
-  //   win.webContents.openDevTools({ mode: "undocked", activate: true });
-  // }
+  if (process.env.NODE_ENV === "development") {
+    win.webContents.openDevTools({ mode: "undocked", activate: true });
+  }
   win.loadURL(browserDemoURL);
   win.on("ready-to-show", () => {
     win.show();
@@ -270,15 +270,15 @@ function createDefaultBrowserView(
     width: true,
     height: true,
   });
+  bv.webContents.on('did-finish-load', () => {
+    console.log(bv.webContents.getURL())
+  })
   bv.webContents.loadURL(defaultUrl);
   bv.webContents.on("page-title-updated", (event, title) => {
     const parentBw = BrowserWindow.fromBrowserView(bv);
-    parentBw?.webContents?.send(IpcChannel.BrowserViewTabDataUpdate, {
-      bvWebContentsId: bv.webContents.id,
-      title,
-      url: bv.webContents.getURL(),
-      status: 1,
-    });
+    if (parentBw) {
+      freshTabData(parentBw, bv, 1)
+    }
   });
   bv.webContents.on("destroyed", () => {
     const findIndex = viewList.findIndex((v) => v === bv);
@@ -291,12 +291,7 @@ function createDefaultBrowserView(
     createDefaultBrowserView(parentBw, details.url);
     return { action: "deny" };
   });
-  win.webContents?.send(IpcChannel.BrowserViewTabDataUpdate, {
-    bvWebContentsId: bv.webContents.id,
-    title: defaultUrl,
-    url: defaultUrl,
-    status: 1,
-  });
+  freshTabData(win, bv, 1)
   viewList.push(bv);
   return bv;
 }
@@ -307,22 +302,21 @@ function addBrowserView(win: BrowserWindow, view: BrowserView) {
     win.show();
     win.setAlwaysOnTop(true);
   }
-  win.webContents.send(IpcChannel.BrowserViewTabDataUpdate, {
-    bvWebContentsId: view.webContents.id,
-    title: view.webContents.getTitle(),
-    url: view.webContents.getURL(),
-    status: 1,
-  });
+  freshTabData(win, view, 1)
 }
 
 function removeBrowserView(win: BrowserWindow, view: BrowserView) {
   if (BrowserWindow.fromBrowserView(view) === win) {
     win.removeBrowserView(view);
   }
+  freshTabData(win, view, -1)
+}
+
+function freshTabData(win: BrowserWindow, bv: BrowserView, status: -1 | 1) {
   win.webContents.send(IpcChannel.BrowserViewTabDataUpdate, {
-    bvWebContentsId: view.webContents.id,
-    title: view.webContents.getTitle(),
-    url: view.webContents.getURL(),
-    status: -1,
+    bvWebContentsId: bv.webContents.id,
+    title: bv.webContents.getTitle(),
+    url: bv.webContents.getURL(),
+    status: status,
   });
 }
