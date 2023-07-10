@@ -95,6 +95,11 @@ export const printURL = getUrl(
   join(__dirname, "..", "renderer", "index.html"),
   "#/Print"
 );
+export const browserDemoURL = getUrl(
+  "",
+  join(__dirname, "..", "renderer", "index.html"),
+  "#/Browser"
+);
 export const preloadPath = isDev
   ? join(app.getAppPath(), "..", "preload.js")
   : join(app.getAppPath(), "dist", "electron", "preload.js");
