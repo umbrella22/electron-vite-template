@@ -1,4 +1,4 @@
-import zhLocale from "element-plus/lib/locale/lang/zh-cn";
+import zhLocale from "element-plus/dist/locale/zh-cn.min";
 
 export const lang = {
   welcome: "欢迎进入本框架",

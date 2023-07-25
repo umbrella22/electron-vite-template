@@ -1,3 +1,9 @@
+# 2023 年 07 月 25 日
+
+- 升级依赖
+- 修复 vite 关闭了 keepNames 导致出现`__name is defind`的问题 #100
+- 修复造 node20 下出现`SyntaxError: Cannot use import statement outside a module` #102
+
 # 2023 年 03 月 02 日
 
 - 升级依赖
