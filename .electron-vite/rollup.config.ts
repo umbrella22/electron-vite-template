@@ -76,7 +76,7 @@ export default (env = "production", type = "main") => {
           },
         ],
       }),
-      process.env.NODE_ENV == "production"
+      config && config.NODE_ENV == "production"
         ? obfuscator({
             global: true,
           })
