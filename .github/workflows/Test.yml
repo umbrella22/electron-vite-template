@@ -12,20 +12,17 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Test build
-      # env:
-      #   ELECTRON_RUN_AS_NODE: “1”
-      shell: bash
-      run: |
-        yarn --frozen-lockfile
-        yarn add xvfb-maybe -D
-        ./node_modules/.bin/xvfb-maybe yarn build
-
-
-
+      - name: Test build
+        # env:
+        #   ELECTRON_RUN_AS_NODE: “1”
+        shell: bash
+        run: |
+          npm ci
+          npm install xvfb-maybe -D
+          ./node_modules/.bin/xvfb-maybe npm build
