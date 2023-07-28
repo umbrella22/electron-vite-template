@@ -25,4 +25,4 @@ jobs:
         run: |
           npm ci
           npm install xvfb-maybe -D
-          ./node_modules/.bin/xvfb-maybe npm build
+          ./node_modules/.bin/xvfb-maybe npm run build
