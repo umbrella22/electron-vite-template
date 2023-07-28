@@ -2,9 +2,8 @@ import { join } from "path";
 import { defineConfig } from "vite";
 import vuePlugin from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import viteIkarosTools from "./plugin/vite-ikaros-tools";
 import { getConfig } from "./utils";
-
-const IsWeb = process.env.BUILD_TARGET === "web";
 
 function resolve(dir: string) {
   return join(__dirname, "..", dir);
@@ -14,11 +13,11 @@ const config = getConfig();
 const root = resolve("src/renderer");
 
 export default defineConfig({
-  mode: process.env.NODE_ENV,
+  mode: config && config.NODE_ENV,
   root,
   define: {
     __CONFIG__: config,
-    __ISWEB__: Number(IsWeb),
+    __ISWEB__: Number(config && config.target),
   },
   resolve: {
     alias: {
@@ -28,13 +27,15 @@ export default defineConfig({
   },
   base: "./",
   build: {
-    outDir: IsWeb ? resolve("dist/web") : resolve("dist/electron/renderer"),
+    outDir:
+      config && config.target
+        ? resolve("dist/web")
+        : resolve("dist/electron/renderer"),
     emptyOutDir: true,
     target: "esnext",
-    minify: "esbuild",
     cssCodeSplit: false,
   },
   server: {},
-  plugins: [vueJsx(), vuePlugin()],
+  plugins: [vueJsx(), vuePlugin(), viteIkarosTools()],
   optimizeDeps: {},
 });
