@@ -26,13 +26,13 @@ $ git clone https://github.com/umbrella22/electron-vite-template.git
 # Go into the repository
 $ cd electron-vite-template
 # install dependencies
-$ yarn install
+$ npm install
 
 # serve with hot reload at localhost:9080
-$ yarn dev
+$ npm dev
 
 # build electron application for production
-$ yarn build
+$ npm build
 
 
 ```

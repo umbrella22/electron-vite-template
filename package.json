@@ -17,7 +17,8 @@
     "build:web": "cross-env BUILD_TARGET=web esno .electron-vite/build.ts",
     "pack:resources": "esno .electron-vite/hot-updater.ts",
     "pack:rustUpdater": "electron_updater_node_cli -p -c updateConfig.json",
-    "dep:upgrade": "yarn upgrade-interactive --latest"
+    "dep:upgrade": "yarn upgrade-interactive --latest",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "axios": "^1.4.0",
