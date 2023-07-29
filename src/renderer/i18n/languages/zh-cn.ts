@@ -40,6 +40,8 @@ export const lang = {
     incrementalUpdateTest: "增量更新测试",
     openPreloadWindow: "preload.js测试",
     browser: "浏览器",
+    showOnMyComputer: "在我的电脑显示",
+    hideOnMyComputer: "在我的电脑隐藏",
   },
   print: {
     print: "打印",

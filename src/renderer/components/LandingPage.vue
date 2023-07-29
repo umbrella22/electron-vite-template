@@ -64,6 +64,9 @@
           <el-button type="primary" round @click="browserDemo">{{
             t("buttons.browser")
           }}</el-button>
+          <el-button v-if="showInMyComputer !== 0" type="primary" round @click="setShowOnMyComputer">{{
+            t(showInMyComputer === 1 ? "buttons.hideOnMyComputer" : "buttons.showOnMyComputer")
+          }}</el-button>
         </div>
         <div class="doc">
           <el-pagination :current-page="elCPage" :page-sizes="[100, 200, 300, 400]" :page-size="elPageSize"
@@ -237,6 +240,21 @@ function openPreloadWindow() {
 function handleClose() {
   dialogVisible.value = false;
 }
+
+const showInMyComputer = ref(0) // 0-不显示 1-开启 -1-关闭
+if (process.platform === 'win32') {
+  invoke(IpcChannel.CheckShowOnMyComputer).then(bool => {
+    showInMyComputer.value = bool ? 1 : -1
+  })
+}
+function setShowOnMyComputer() {
+  invoke(IpcChannel.SetShowOnMyComputer, showInMyComputer.value === -1).then(success => {
+    if (success) {
+      showInMyComputer.value = showInMyComputer.value === -1 ? 1 : -1
+    }
+  })
+}
+
 vueListen(IpcChannel.DownloadProgress,(event, arg) => {
   console.log(arg);
   percentage.value = arg;
