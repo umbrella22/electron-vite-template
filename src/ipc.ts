@@ -203,6 +203,15 @@ export const enum IpcChannel {
    * 更新 tab 坐标
    */
   BrowserViewTabPositionXUpdate = "browser-view-tab-position-x-updated",
+
+  /**
+   * 设置在我的电脑显示
+   */
+  SetShowOnMyComputer = "set-show-on-my-computer",
+  /**
+   * 查询当前是否显示在我的电脑
+   */
+  CheckShowOnMyComputer = "check-show-on-my-computer",
 }
 
 type IpcMainEvent = {
@@ -305,6 +314,8 @@ type IpcMainEvent = {
       url: string;
     }
   >;
+  [IpcChannel.CheckShowOnMyComputer]: IpcMainEventListener<void, boolean>;
+  [IpcChannel.SetShowOnMyComputer]: IpcMainEventListener<boolean, boolean>;
 };
 type IpcRenderderEvent = {
   [IpcChannel.DownloadProgress]: IpcRendererEventListener<number>;
