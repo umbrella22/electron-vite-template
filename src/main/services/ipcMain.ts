@@ -146,11 +146,10 @@ const ipcMainHandle: IpcMainHandle = {
   },
   [IpcChannel.SetShowOnMyComputer]: async (event, bool) => {
     if (bool) {
-      showOnMyComputer()
+      return await showOnMyComputer()
     } else {
-      hideOnMyComputer()
+      return await hideOnMyComputer()
     }
-    return true
   },
   ...usePrintHandle(),
   ...useBrowserHandle(),
