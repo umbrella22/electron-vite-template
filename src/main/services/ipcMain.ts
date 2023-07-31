@@ -13,7 +13,7 @@ import { UpdateStatus } from "electron_updater_node_core";
 
 import { IpcMainHandle, IpcChannel, WebContentSend } from "../../ipc";
 import { ProgressInfo } from "electron-updater";
-
+import { showOnMyComputer, hideOnMyComputer, checkIsShowOnMyComputer } from "./regeditUtils"
 
 const ALL_UPDATER = new Update();
 
@@ -140,6 +140,16 @@ const ipcMainHandle: IpcMainHandle = {
     ChildWin.once("show", () => {
       ChildWin.webContents.send("send-data-test", arg.sendData);
     });
+  },
+  [IpcChannel.CheckShowOnMyComputer]: async () => {
+    return await checkIsShowOnMyComputer()
+  },
+  [IpcChannel.SetShowOnMyComputer]: async (event, bool) => {
+    if (bool) {
+      return await showOnMyComputer()
+    } else {
+      return await hideOnMyComputer()
+    }
   },
   ...usePrintHandle(),
   ...useBrowserHandle(),

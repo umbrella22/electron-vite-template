@@ -33,6 +33,8 @@ export const lang = {
         incrementalUpdateTest: "Incremental Update test",
         openPreloadWindow: "preload.js test",
         browser: "Browser",
+        showOnMyComputer: "Show on my computer",
+        hideOnMyComputer: "hide on my computer",
     },
     print: {
         print: 'Print',
