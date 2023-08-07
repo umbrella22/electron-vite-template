@@ -18,6 +18,7 @@
     "pack:resources": "esno .electron-vite/hot-updater.ts",
     "pack:rustUpdater": "electron_updater_node_cli -p -c updateConfig.json",
     "dep:upgrade": "yarn upgrade-interactive --latest",
+    "preinstall": "node .electron-vite/checkMirrorConfig.js",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
