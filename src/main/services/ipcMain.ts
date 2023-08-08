@@ -14,6 +14,7 @@ import { UpdateStatus } from "electron_updater_node_core";
 import { IpcMainHandle, IpcChannel, WebContentSend } from "../../ipc";
 import { ProgressInfo } from "electron-updater";
 import { showOnMyComputer, hideOnMyComputer, checkIsShowOnMyComputer } from "./regeditUtils"
+import { openDevTools } from "./windowManager";
 
 const ALL_UPDATER = new Update();
 
@@ -118,7 +119,7 @@ const ipcMainHandle: IpcMainHandle = {
     });
     // 开发模式下自动开启devtools
     if (process.env.NODE_ENV === "development") {
-      ChildWin.webContents.openDevTools({ mode: "undocked", activate: true });
+      openDevTools(ChildWin)
     }
     ChildWin.loadURL(winURL + `#${arg.url}`);
     ChildWin.once("ready-to-show", () => {

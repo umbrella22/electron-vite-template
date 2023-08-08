@@ -3,6 +3,7 @@ import { IpcChannel, IpcMainHandle } from "../../ipc";
 import { IsUseSysTitle } from "../config/const";
 import { otherWindowConfig } from "../config/windowsConfig";
 import { browserDemoURL } from "@main/config/StaticPath";
+import { openDevTools } from "./windowManager";
 
 export function useBrowserHandle(): Pick<
   IpcMainHandle,
@@ -241,7 +242,7 @@ function openBrowserDemoWindow() {
   });
   // 开发模式下自动开启devtools
   if (process.env.NODE_ENV === "development") {
-    win.webContents.openDevTools({ mode: "undocked", activate: true });
+    openDevTools(win)
   }
   win.loadURL(browserDemoURL);
   win.on("ready-to-show", () => {

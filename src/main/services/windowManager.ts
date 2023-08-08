@@ -46,10 +46,7 @@ class MainInit {
       this.mainWindow.show();
       // 开发模式下自动开启devtools
       if (process.env.NODE_ENV === "development") {
-        this.mainWindow.webContents.openDevTools({
-          mode: "undocked",
-          activate: true,
-        });
+        openDevTools(this.mainWindow)
       }
       if (UseStartupChart) this.loadWindow.destroy();
     });
@@ -195,3 +192,14 @@ class MainInit {
   }
 }
 export default MainInit;
+
+export function openDevTools(win: BrowserWindow) {
+  const devtools = new BrowserWindow()
+  win.webContents.setDevToolsWebContents(devtools.webContents)
+  win.webContents.openDevTools({
+    mode: "detach",
+  });
+  win.on('closed', () => {
+    devtools.close()
+  })
+}
