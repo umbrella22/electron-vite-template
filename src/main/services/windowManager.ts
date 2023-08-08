@@ -21,7 +21,16 @@ class MainInit {
           {
             label: "切换到开发者模式",
             accelerator: "CmdOrCtrl+I",
-            role: "toggledevtools",
+            click: () => {
+              const currentWin = BrowserWindow.getFocusedWindow();
+              if (currentWin && currentWin.title !== "DevTools") {
+                if (currentWin.webContents.devToolsWebContents) {
+                  currentWin.webContents.devToolsWebContents.close();
+                } else {
+                  openDevTools(currentWin);
+                }
+              }
+            },
           },
         ],
       });
@@ -46,7 +55,7 @@ class MainInit {
       this.mainWindow.show();
       // 开发模式下自动开启devtools
       if (process.env.NODE_ENV === "development") {
-        openDevTools(this.mainWindow)
+        openDevTools(this.mainWindow);
       }
       if (UseStartupChart) this.loadWindow.destroy();
     });
@@ -194,12 +203,15 @@ class MainInit {
 export default MainInit;
 
 export function openDevTools(win: BrowserWindow) {
-  const devtools = new BrowserWindow()
-  win.webContents.setDevToolsWebContents(devtools.webContents)
+  let devtools = new BrowserWindow();
+  win.webContents.setDevToolsWebContents(devtools.webContents);
   win.webContents.openDevTools({
     mode: "detach",
   });
-  win.on('closed', () => {
-    devtools.close()
-  })
+  win.on("closed", () => {
+    devtools?.close();
+  });
+  devtools.on("closed", () => {
+    devtools = null;
+  });
 }

@@ -3,7 +3,7 @@ import { dialog } from 'electron'
 import { type, arch, release } from 'os'
 import packageInfo from '../../../package.json'
 
-const menu = [
+const menu: Electron.MenuItemConstructorOptions[] = [
   {
     label: '设置',
     submenu: [{
