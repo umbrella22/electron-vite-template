@@ -3,6 +3,7 @@ import { IsUseSysTitle } from "../config/const";
 import { otherWindowConfig } from "../config/windowsConfig";
 import { printURL } from "@main/config/StaticPath";
 import { IpcChannel, IpcMainHandle } from "../../ipc";
+import { openDevTools } from "./windowManager";
 
 export function usePrintHandle(): Pick<IpcMainHandle, IpcChannel.GetPrinters | IpcChannel.PrintHandlePrint | IpcChannel.OpenPrintDemoWindow> {
   return {
@@ -37,7 +38,7 @@ export function openPrintDemoWindow() {
   });
   // 开发模式下自动开启devtools
   if (process.env.NODE_ENV === "development") {
-    win.webContents.openDevTools({ mode: "undocked", activate: true });
+    openDevTools(win)
   }
   win.loadURL(printURL);
   win.on("ready-to-show", () => {
