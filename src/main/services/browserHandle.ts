@@ -240,10 +240,10 @@ function openBrowserDemoWindow() {
     titleBarStyle: IsUseSysTitle ? "default" : "hidden",
     ...Object.assign(otherWindowConfig, {}),
   });
-  // 开发模式下自动开启devtools
-  if (process.env.NODE_ENV === "development") {
-    openDevTools(win)
-  }
+  // // 开发模式下自动开启devtools
+  // if (process.env.NODE_ENV === "development") {
+  //   openDevTools(win)
+  // }
   win.loadURL(browserDemoURL);
   win.on("ready-to-show", () => {
     win.show();
