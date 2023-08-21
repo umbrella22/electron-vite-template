@@ -3,8 +3,11 @@
 import { app, session } from 'electron'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
+import { initTray } from './services/trayManager'
+
 function onAppReady() {
   new InitWindow().initWindow()
+  initTray()
   DisableButton.Disablef12()
   if (process.env.NODE_ENV === 'development') {
     const { VUEJS3_DEVTOOLS } = require("electron-devtools-vendor");
