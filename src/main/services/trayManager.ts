@@ -1,10 +1,10 @@
-import { BrowserWindow, Menu, Tray, app, nativeImage } from "electron";
-import { trayURL, trayIconPath } from "../config/StaticPath";
+import { BrowserWindow, Menu, Tray, app, shell } from "electron";
+import { trayURL, trayIconPath, trayTransparentIconPath } from "../config/StaticPath";
 
 let tray: Tray
 
 export function initTray() {
-  tray = new Tray(nativeImage.createFromPath(trayIconPath));
+  tray = new Tray(trayIconPath);
 
   tray.setToolTip(app.name)
 
@@ -20,6 +20,18 @@ export function initTray() {
       { role: 'quit' }
     ]))
   }
+
+  tray.on('double-click', async () => {
+    let times = 3
+    while(times > 0) {
+      shell.beep()
+      tray.setImage(trayTransparentIconPath)
+      await sleep(500)
+      tray.setImage(trayIconPath)
+      await sleep(500)
+      times--
+    }
+  })
   
   return tray
 }
@@ -29,6 +41,7 @@ function createTrayWindow() {
     width: 300,
     height: 160,
     show: false,
+    opacity: 0,
     resizable: false,
     movable: false,
     frame: false,
@@ -39,29 +52,30 @@ function createTrayWindow() {
   })
   win.loadURL(trayURL)
   
-  win.on('blur', () => {
+  win.on('blur', async () => {
     let opacity = 1
-    const timer = setInterval(() => {
+    while(opacity > 0) {
+      await sleep(10)
       opacity -= 0.1
       win.setOpacity(opacity)
-      if (opacity <= 0) {
-        win.hide()
-        clearInterval(timer)
-      }
-    }, 10)
+    }
+    win.hide()
   })
 
-  win.on('show', () => {
+  win.on('show', async() => {
     let opacity = 0
-    const timer = setInterval(() => {
+    while(opacity < 1) {
+      await sleep(10)
       opacity += 0.2
       win.setOpacity(opacity)
-      if (opacity >= 1) {
-        clearInterval(timer)
-        win.focus()
-      }
-    }, 10)
+    }
+    win.focus()
   })
-
   return win
+}
+
+function sleep(ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
 }

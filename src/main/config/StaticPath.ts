@@ -110,6 +110,9 @@ export const trayURL = getUrl(
 export const trayIconPath = isDev
   ? join(app.getAppPath(), "..", "renderer", "trayIcon", "trayIcon.png")
   : join(app.getAppPath(), "dist", "electron", "renderer", "trayIcon", "trayIcon.png");
+export const trayTransparentIconPath = isDev
+  ? join(app.getAppPath(), "..", "renderer", "trayIcon", "transparent.png")
+  : join(app.getAppPath(), "dist", "electron", "renderer", "trayIcon", "transparent.png");
 export const lib = staticPath.__lib;
 export const common = staticPath.__common;
 export const updateFolder = staticPath.__updateFolder;
