@@ -103,7 +103,11 @@ export const browserDemoURL = getUrl(
 export const preloadPath = isDev
   ? join(app.getAppPath(), "..", "preload.js")
   : join(app.getAppPath(), "dist", "electron", "preload.js");
-export const iconPath = isDev
+export const trayURL = getUrl(
+    "/tray.html",
+    `${staticPath.__static}/tray.html`
+  );
+export const trayIconPath = isDev
   ? join(app.getAppPath(), "..", "renderer", "trayIcon", "trayIcon.png")
   : join(app.getAppPath(), "dist", "electron", "renderer", "trayIcon", "trayIcon.png");
 export const lib = staticPath.__lib;
