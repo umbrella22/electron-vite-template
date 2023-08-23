@@ -7,7 +7,7 @@
           class="tab-item"
           :style="{ left: item.positionX }"
           :class="{
-            active: activebvWebContentsId === item.bvWebContentsId,
+            active: activeBvWebContentsId === item.bvWebContentsId,
             dragging: item.positionX,
           }"
           @mousedown="mousedownHandle($event, item)"
@@ -54,11 +54,12 @@ interface TabItemData {
 const useTransition = ref(true);
 const moveToIndex = ref(-1);
 const tabList = ref<TabItemData[]>([]);
-const activebvWebContentsId = ref<number>();
+const activeBvWebContentsId = ref<number>();
 
 onMounted(async () => {
   const isNewTabContainer = localStorage.getItem("isNewTabContainer");
   if (isNewTabContainer) {
+    localStorage.removeItem("isNewTabContainer");
     // 作为拖出tab的容器
     const data = await invoke(IpcChannel.GetLastBrowserDemoTabData);
     if (data) {
@@ -78,19 +79,19 @@ onMounted(async () => {
 async function createDefaultBrowserView() {
   const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView);
   if (bvWebContentsId !== -1) {
-    activebvWebContentsId.value = bvWebContentsId;
+    activeBvWebContentsId.value = bvWebContentsId;
   }
 }
 
 // 点击切换tab
 async function bvSelectHandle(item: TabItemData) {
-  if (activebvWebContentsId.value !== item.bvWebContentsId) {
+  if (activeBvWebContentsId.value !== item.bvWebContentsId) {
     const success = await invoke(
       IpcChannel.SelectBrowserDemoTab,
       item.bvWebContentsId
     );
     if (success) {
-      activebvWebContentsId.value = item.bvWebContentsId;
+      activeBvWebContentsId.value = item.bvWebContentsId;
       searchKey.value = item.url;
     }
   }
@@ -103,7 +104,7 @@ async function bvCloseHandle(item: TabItemData) {
   if (findIndex !== -1) {
     tabList.value.splice(findIndex, 1);
   }
-  if (activebvWebContentsId.value === item.bvWebContentsId) {
+  if (activeBvWebContentsId.value === item.bvWebContentsId) {
     if (tabList.value.length > 1) {
       bvSelectHandle(tabList.value[findIndex ? findIndex - 1 : 0]);
     } else if (tabList.value.length === 1) {
@@ -124,7 +125,7 @@ async function searchHandle() {
   }
   await invoke(IpcChannel.BrowserDemoTabJumpToUrl, {
     url: url.href,
-    bvWebContentsId: activebvWebContentsId.value,
+    bvWebContentsId: activeBvWebContentsId.value,
   });
 }
 
@@ -147,7 +148,7 @@ vueListen(
       if (findIndex !== -1) {
         tabList.value[findIndex].title = title;
         tabList.value[findIndex].url = url;
-        if (bvWebContentsId === activebvWebContentsId.value && !isFocused) {
+        if (bvWebContentsId === activeBvWebContentsId.value && !isFocused) {
           searchKey.value = url;
         }
       } else {
@@ -159,7 +160,7 @@ vueListen(
         if (!isFocused) {
           searchKey.value = url;
         }
-        activebvWebContentsId.value = bvWebContentsId;
+        activeBvWebContentsId.value = bvWebContentsId;
       }
     } else {
       if (findIndex !== -1) {
