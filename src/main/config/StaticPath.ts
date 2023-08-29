@@ -11,7 +11,7 @@ class StaticPath {
       : join(app.getAppPath(), "..", "..");
     this.__updateFolder = join(basePath, `${HotUpdateFolder}`);
     if (isDev) {
-      this.__static = join(basePath, "public");
+      this.__static = join(basePath, "src", "renderer", "public");
       this.__lib = join(
         basePath,
         `rootLib`,
@@ -108,10 +108,10 @@ export const trayURL = getUrl(
     `${staticPath.__static}/tray.html`
   );
 export const trayIconPath = isDev
-  ? join(app.getAppPath(), "..", "renderer", "trayIcon", "trayIcon.png")
+  ? join(staticPath.__static, "trayIcon", "trayIcon.png")
   : join(app.getAppPath(), "dist", "electron", "renderer", "trayIcon", "trayIcon.png");
 export const trayTransparentIconPath = isDev
-  ? join(app.getAppPath(), "..", "renderer", "trayIcon", "transparent.png")
+  ? join(staticPath.__static, "trayIcon", "transparent.png")
   : join(app.getAppPath(), "dist", "electron", "renderer", "trayIcon", "transparent.png");
 export const lib = staticPath.__lib;
 export const common = staticPath.__common;

@@ -4,6 +4,7 @@ import { trayURL, trayIconPath, trayTransparentIconPath } from "../config/Static
 let tray: Tray
 
 export function initTray() {
+  console.log('trayIconPath', trayIconPath)
   tray = new Tray(trayIconPath);
 
   tray.setToolTip(app.name)
