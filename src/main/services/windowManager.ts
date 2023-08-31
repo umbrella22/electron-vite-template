@@ -21,16 +21,7 @@ class MainInit {
           {
             label: "切换到开发者模式",
             accelerator: "CmdOrCtrl+I",
-            click: () => {
-              const currentWin = BrowserWindow.getFocusedWindow();
-              if (currentWin && currentWin.title !== "DevTools") {
-                if (currentWin.webContents.devToolsWebContents) {
-                  currentWin.webContents.devToolsWebContents.close();
-                } else {
-                  openDevTools(currentWin);
-                }
-              }
-            },
+            click: () => openDevTools(BrowserWindow.getFocusedWindow()),
           },
         ],
       });
