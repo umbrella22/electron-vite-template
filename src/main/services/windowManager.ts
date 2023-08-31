@@ -204,6 +204,8 @@ export default MainInit;
 
 export function openDevTools(win: BrowserWindow) {
   let devtools = new BrowserWindow();
+  devtools.setMenu(null)
+  devtools.webContents.on('did-finish-load', () => devtools.setTitle(win.webContents.getTitle()))
   win.webContents.setDevToolsWebContents(devtools.webContents);
   win.webContents.openDevTools({
     mode: "detach",
