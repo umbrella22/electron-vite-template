@@ -21,16 +21,7 @@ class MainInit {
           {
             label: "切换到开发者模式",
             accelerator: "CmdOrCtrl+I",
-            click: () => {
-              const currentWin = BrowserWindow.getFocusedWindow();
-              if (currentWin && currentWin.title !== "DevTools") {
-                if (currentWin.webContents.devToolsWebContents) {
-                  currentWin.webContents.devToolsWebContents.close();
-                } else {
-                  openDevTools(currentWin);
-                }
-              }
-            },
+            click: () => openDevTools(BrowserWindow.getFocusedWindow()),
           },
         ],
       });
@@ -204,6 +195,8 @@ export default MainInit;
 
 export function openDevTools(win: BrowserWindow) {
   let devtools = new BrowserWindow();
+  devtools.setMenu(null)
+  devtools.webContents.on('did-finish-load', () => devtools.setTitle(win.webContents.getTitle()))
   win.webContents.setDevToolsWebContents(devtools.webContents);
   win.webContents.openDevTools({
     mode: "detach",
