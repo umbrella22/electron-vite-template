@@ -1,5 +1,3 @@
-import enLocale from "element-plus/dist/locale/en.min";
-
 export const lang = {
   welcome: "Welcome use the framework",
   buttonTips: "You can click buttons to experience",
@@ -30,5 +28,4 @@ export const lang = {
     changeLanguage: "切换语言",
     ForcedUpdate: "Forced Update Mode",
   },
-  el: enLocale,
 };

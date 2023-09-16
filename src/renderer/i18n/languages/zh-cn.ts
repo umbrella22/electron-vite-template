@@ -1,4 +1,3 @@
-import zhLocale from "element-plus/dist/locale/zh-cn";
 
 export const lang = {
   welcome: "欢迎进入本框架",
@@ -30,5 +29,4 @@ export const lang = {
     changeLanguage: "Change language",
     ForcedUpdate: "强制更新模式",
   },
-  el: zhLocale,
 };

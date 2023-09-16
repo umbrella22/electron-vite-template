@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">{{ $t("about.system") }}</div>
+    <div class="title">{{ i18nt.about.system }}</div>
     <div class="items">
       <div class="item" v-for="(item, index) in tips" :key="index">
         <div class="name" v-text="item.name" />
@@ -20,12 +20,12 @@ const { systemInfo } = window;
 
 let tips = ref(
   computed(() => [
-    { name: i18nt("about.language"), value: i18nt("about.languageValue") },
-    { name: i18nt("about.currentPagePath"), value: path },
-    { name: i18nt("about.currentPageName"), value: name },
-    { name: i18nt("about.systemPlatform"), value: systemInfo.platform },
-    { name: i18nt("about.systemVersion"), value: systemInfo.release },
-    { name: i18nt("about.systemArch"), value: systemInfo.arch + "位" },
+    { name: i18nt.value.about.language, value: i18nt.value.about.languageValue },
+    { name: i18nt.value.about.currentPagePath, value: path },
+    { name: i18nt.value.about.currentPageName, value: name },
+    { name: i18nt.value.about.systemPlatform, value: systemInfo.platform },
+    { name: i18nt.value.about.systemVersion, value: systemInfo.release },
+    { name: i18nt.value.about.systemArch, value: systemInfo.arch + "位" },
   ])
 );
 </script>

@@ -13,21 +13,6 @@ export default {
     ipcMain.handle('IsUseSysTitle', async () => {
       return config.IsUseSysTitle
     })
-    ipcMain.handle('windows-mini', (event, args) => {
-      BrowserWindow.fromWebContents(event.sender)?.minimize()
-    })
-    ipcMain.handle('window-max', async (event, args) => {
-      if (BrowserWindow.fromWebContents(event.sender)?.isMaximized()) {
-        BrowserWindow.fromWebContents(event.sender)?.restore()
-        return { status: false }
-      } else {
-        BrowserWindow.fromWebContents(event.sender)?.maximize()
-        return { status: true }
-      }
-    })
-    ipcMain.handle('window-close', (event, args) => {
-      BrowserWindow.fromWebContents(event.sender)?.close()
-    })
     ipcMain.handle('app-close', (event, args) => {
       app.quit()
     })

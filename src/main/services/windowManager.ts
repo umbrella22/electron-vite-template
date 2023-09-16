@@ -31,6 +31,9 @@ class MainInit {
   // 主窗口函数
   createMainWindow() {
     this.mainWindow = new BrowserWindow({
+      titleBarOverlay:{
+        color:"#fff"
+      },
       titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
       height: 800,
       useContentSize: true,

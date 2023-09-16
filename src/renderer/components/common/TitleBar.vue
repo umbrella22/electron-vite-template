@@ -8,18 +8,6 @@
     <div></div>
     <!-- 中间标题位置 -->
     <div style="-webkit-app-region: drag" class="title"></div>
-    <div class="controls-container">
-      <div class="windows-icon-bg" @click="Mini">
-        <img src="@renderer/assets/icons/svg/mini.svg" class="icon-size" />
-      </div>
-      <div class="windows-icon-bg" @click="MixOrReduction">
-        <img v-if="mix" src="@renderer/assets/icons/svg/reduction.svg" class="icon-size" />
-        <img v-else src="@renderer/assets/icons/svg/mix.svg" class="icon-size" />
-      </div>
-      <div class="windows-icon-bg close-icon" @click="Close">
-        <img src="@renderer/assets/icons/svg/close.svg" class="icon-size" />
-      </div>
-    </div>
   </div>
   <div v-else-if="!IsUseSysTitle && !isNotMac" class="window-title"></div>
 </template>
@@ -47,18 +35,6 @@ if (!ipcRenderer) {
     IsUseSysTitle.value = res;
   });
 }
-
-const Mini = () => {
-  ipcRenderer.invoke("windows-mini");
-};
-const MixOrReduction = () => {
-  ipcRenderer.invoke("window-max").then((res) => {
-    mix.value = res.status;
-  });
-};
-const Close = () => {
-  ipcRenderer.invoke("window-close");
-};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -83,10 +59,11 @@ const Close = () => {
 
   .title {
     text-align: center;
+    color: #9d9d9d;
   }
 
   .logo {
-    margin-left: 20px;
+    margin: 0 10px;
   }
 
   .controls-container {

@@ -4,79 +4,66 @@
     <main>
       <div class="left-side">
         <span class="title">
-          {{ $t("welcome") }}
+          {{ i18nt.welcome }}
         </span>
         <system-information></system-information>
       </div>
 
+      <!--  -->
       <div class="right-side">
         <div class="doc">
           <div class="title alt">
-            {{ $t("buttonTips") }}
+            {{ i18nt.buttonTips }}
           </div>
-          <el-button type="primary" round @click="open()">
-            {{ $t("buttons.console") }}
-          </el-button>
-          <el-button type="primary" round @click="CheckUpdate('one')">
-            {{ $t("buttons.checkUpdate") }}
-          </el-button>
+          <button class="btu" @click="open()">
+            {{ i18nt.buttons.console }}
+          </button>
+          <button class="btu" @click="CheckUpdate('one')">
+            {{ i18nt.buttons.checkUpdate }}
+          </button>
         </div>
         <div class="doc">
-          <el-button type="primary" round @click="CheckUpdate('two')">
-            {{ $t("buttons.checkUpdate2") }}
-          </el-button>
-          <el-button type="primary" round @click="CheckUpdate('three')">
-            {{ $t("buttons.checkUpdateInc") }}
-          </el-button>
-          <el-button type="primary" round @click="CheckUpdate('four')">
-            {{ $t("buttons.ForcedUpdate") }}
-          </el-button>
-          <el-button type="primary" round @click="StartServer">
-            {{ $t("buttons.startServer") }}
-          </el-button>
-          <el-button type="primary" round @click="StopServer">
-            {{ $t("buttons.stopServer") }}
-          </el-button>
-          <el-button type="primary" round @click="getMessage">
-            {{ $t("buttons.viewMessage") }}
-          </el-button>
-          <el-button type="primary" round @click="startCrash">
-            {{ $t("buttons.simulatedCrash") }}
-          </el-button>
+          <button class="btu" @click="CheckUpdate('two')">
+            {{ i18nt.buttons.checkUpdate2 }}
+          </button>
+          <button class="btu" @click="CheckUpdate('three')">
+            {{ i18nt.buttons.checkUpdateInc }}
+          </button>
+          <!-- <button class="btu" @click="CheckUpdate('four')">
+            {{ i18nt.buttons.ForcedUpdate }}
+          </button> -->
+          <button class="btu" @click="StartServer">
+            {{ i18nt.buttons.startServer }}
+          </button>
+          <button class="btu" @click="StopServer">
+            {{ i18nt.buttons.stopServer }}
+          </button>
+          <button class="btu" @click="getMessage">
+            {{ i18nt.buttons.viewMessage }}
+          </button>
+          <button class="btu" @click="startCrash">
+            {{ i18nt.buttons.simulatedCrash }}
+          </button>
         </div>
         <div class="doc">
-          <el-button type="primary" round @click="openNewWin">
-            {{ $t("buttons.openNewWindow") }}
-          </el-button>
-          <el-button type="primary" round @click="changeLanguage">{{
-              $t("buttons.changeLanguage")
-          }}</el-button>
-        </div>
-        <div class="doc">
-          <el-pagination :current-page="elCPage" :page-sizes="[100, 200, 300, 400]" :page-size="elPageSize"
-            layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange">
-          </el-pagination>
+          <button class="btu" @click="openNewWin">
+            {{ i18nt.buttons.openNewWindow }}
+          </button>
+          <button class="btu" @click="changeLanguage">{{
+            i18nt.buttons.changeLanguage
+          }}</button>
         </div>
       </div>
     </main>
-    <el-dialog title="进度" v-model="dialogVisible" :before-close="handleClose" center width="14%" top="45vh">
-      <div class="conten">
-        <el-progress type="dashboard" :percentage="percentage" :color="colors" :status="progressStaus"></el-progress>
-      </div>
-    </el-dialog>
-    <update-progress v-model="showForcedUpdate" />
   </div>
 </template>
 
 <script setup lang="ts">
 import SystemInformation from "./LandingPage/SystemInformation.vue";
-import UpdateProgress from "./updataProgress/index.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { onUnmounted, Ref, ref } from "vue";
-import { i18n, setLanguage } from "@renderer/i18n";
+import { onUnmounted, ref } from "vue";
+import { i18nt, setLanguage, globalLang } from "@renderer/i18n";
 import { useStoreTemplate } from "@store/template";
 
 let { ipcRenderer, shell, crash } = window;
@@ -121,15 +108,7 @@ const elPageSize = ref(100);
 const elCPage = ref(1);
 
 function changeLanguage() {
-  setLanguage(i18n.global.locale === "zh-cn" ? "en" : "zh-cn");
-}
-
-function handleSizeChange(val: number) {
-  elPageSize.value = val;
-}
-
-function handleCurrentChange(val: number) {
-  elCPage.value = val;
+  setLanguage(globalLang.value === "zh-cn" ? "en" : "zh-cn");
 }
 
 function startCrash() {
@@ -144,26 +123,26 @@ function openNewWin() {
 }
 function getMessage() {
   message().then((res) => {
-    ElMessageBox.alert(res.data, "提示", {
-      confirmButtonText: "确定",
-    });
+    // ElMessageBox.alert(res.data, "提示", {
+    //   confirmButtonText: "确定",
+    // });
   });
 }
 function StopServer() {
   ipcRenderer.invoke("stop-server").then((res) => {
-    ElMessage({
-      type: "success",
-      message: "已关闭",
-    });
+    // ElMessage({
+    //   type: "success",
+    //   message: "已关闭",
+    // });
   });
 }
 function StartServer() {
   ipcRenderer.invoke("start-server").then((res) => {
     if (res) {
-      ElMessage({
-        type: "success",
-        message: res,
-      });
+      // ElMessage({
+      //   type: "success",
+      //   message: res,
+      // });
     }
   });
 }
@@ -207,25 +186,25 @@ ipcRenderer.on("download-error", (event, arg) => {
 ipcRenderer.on("download-paused", (event, arg) => {
   if (arg) {
     progressStaus.value = "warning";
-    ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
-      confirmButtonText: "重试",
-      callback: (action) => {
-        ipcRenderer.invoke("start-download");
-      },
-    });
+    // ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
+    //   confirmButtonText: "重试",
+    //   callback: (action) => {
+    //     ipcRenderer.invoke("start-download");
+    //   },
+    // });
   }
 });
 ipcRenderer.on("download-done", (event, age) => {
   filePath.value = age.filePath;
   progressStaus.value = "success";
-  ElMessageBox.alert("更新下载完成！", "提示", {
-    confirmButtonText: "确定",
-    callback: (action) => {
-      shell.shell.openPath(filePath.value);
-    },
-  });
+  // ElMessageBox.alert("更新下载完成！", "提示", {
+  //   confirmButtonText: "确定",
+  //   callback: (action) => {
+  //     shell.shell.openPath(filePath.value);
+  //   },
+  // });
 });
-// electron-updater的更新监听
+// electron-updater upload 
 ipcRenderer.on("UpdateMsg", (event, age) => {
   switch (age.state) {
     case -1:
@@ -237,29 +216,21 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
       ipcRenderer.invoke("open-errorbox", msgdata);
       break;
     case 0:
-      ElMessage("正在检查更新");
+      console.log('check-update')
       break;
     case 1:
-      ElMessage({
-        type: "success",
-        message: "已检查到新版本，开始下载",
-      });
       dialogVisible.value = true;
+      console.log('has update download-ing')
       break;
     case 2:
-      ElMessage({ type: "success", message: "无新版本" });
+      console.log('not new version')
       break;
     case 3:
       percentage.value = age.msg.percent.toFixed(1);
       break;
     case 4:
       progressStaus.value = "success";
-      ElMessageBox.alert("更新下载完成！", "提示", {
-        confirmButtonText: "确定",
-        callback: (action) => {
-          ipcRenderer.invoke("confirm-update");
-        },
-      });
+      ipcRenderer.invoke("confirm-update");
       break;
     default:
       break;
@@ -268,16 +239,16 @@ ipcRenderer.on("UpdateMsg", (event, age) => {
 ipcRenderer.on("hot-update-status", (event, msg) => {
   switch (msg.status) {
     case "downloading":
-      ElMessage("正在下载");
+      console.log("正在下载")
       break;
     case "moving":
-      ElMessage("正在移动文件");
+      console.log("正在移动文件")
       break;
     case "finished":
-      ElMessage.success("成功,请重启");
+      console.log("成功,请重启")
       break;
     case "failed":
-      ElMessage.error(msg.message.message);
+      console.log("msg.message.message")
       break;
 
     default:
@@ -361,16 +332,42 @@ main>div {
   margin-bottom: 10px;
 }
 
-.doc .el-button {
-  margin-top: 10px;
-  margin-right: 10px;
+.doc {
+  button {
+    margin-top: 10px;
+    margin-right: 10px;
+
+  }
+
+  .btu {
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #fff;
+    background-color: #409eff;
+    border: 1px solid #409eff;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    transition: .1s;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+
+  .btu:focus,
+  .btu:hover {
+    background: #3a8ee6;
+    border-color: #3a8ee6;
+  }
 }
 
-.doc .el-button+.el-button {
+.doc .button+.button {
   margin-left: 0;
 }
 
 .conten {
   text-align: center;
-}
-</style>
+}</style>
