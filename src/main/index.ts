@@ -1,6 +1,7 @@
 'use strict'
 
 import { app, session } from 'electron'
+import { resolve } from 'path'
 import InitWindow from './services/windowManager'
 import DisableButton from './config/DisableButton'
 import { initTray } from './services/trayManager'
@@ -10,8 +11,7 @@ function onAppReady() {
   initTray()
   DisableButton.Disablef12()
   if (process.env.NODE_ENV === 'development') {
-    const { VUEJS3_DEVTOOLS } = require("electron-devtools-vendor");
-    session.defaultSession.loadExtension(VUEJS3_DEVTOOLS, {
+    session.defaultSession.loadExtension(resolve('./.electron-vite/devtools'), {
       allowFileAccess: true,
     });
     console.log('已安装: vue-devtools')
