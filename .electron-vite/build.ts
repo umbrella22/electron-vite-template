@@ -146,45 +146,47 @@ function unionBuild(archTag: Map<Platform, Map<Arch, Array<string>>>) {
     [
       {
         title: "building main process",
-        task: async () => {
+        task: async (ctx) => {
           try {
             const build = await rollup(mainOpt);
             await build.write(mainOpt.output as OutputOptions);
           } catch (error) {
             console.error(`\n${error}\n`);
             errorLog("failed to build main process");
-            process.exit(1);
+            ctx.skip = true;
           }
         },
       },
       {
         title: "building preload process",
-        task: async () => {
+        skip: (ctx): boolean => ctx.skip,
+        task: async (ctx) => {
           try {
             const build = await rollup(preloadOpt);
             await build.write(preloadOpt.output as OutputOptions);
           } catch (error) {
             console.error(`\n${error}\n`);
             errorLog("failed to build main process");
-            process.exit(1);
+            ctx.skip = true;
           }
         },
       },
       {
         title: "building renderer process",
-        task: async () => {
+        skip: (ctx): boolean => ctx.skip,
+        task: async (ctx) => {
           try {
             await viteBuild({ configFile: join(__dirname, "vite.config.ts") });
           } catch (error) {
             console.error(`\n${error}\n`);
             errorLog("failed to build renderer process");
-            process.exit(1);
+            ctx.skip = true;
           }
         },
-        options: { persistentOutput: true },
       },
       {
         title: "building package",
+        skip: (ctx): boolean => ctx.skip,
         task: async (_, tasks) => {
           try {
             await build({
@@ -197,14 +199,12 @@ function unionBuild(archTag: Map<Platform, Map<Arch, Array<string>>>) {
           } catch (error) {
             console.error(`\n${error}\n`);
             errorLog("failed to build electron process");
-            process.exit(1);
           }
         },
-        options: { persistentOutput: true },
       },
     ],
     {
-      exitOnError: false,
+      exitOnError: true,
     }
   );
   tasksLister.run();
