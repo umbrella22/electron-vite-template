@@ -7,8 +7,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "esno .electron-vite/dev-runner.ts",
-    "build": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts",
+    "build": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts -m prod && electron-builder -c build.json",
+    "build:win32": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts  && electron-builder -c build.json --win  --ia32",
+    "build:win64": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts  && electron-builder -c build.json --win  --x64",
+    "build:mac": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts  && electron-builder -c build.json --mac",
+    "build:dir": "cross-env BUILD_TARGET=clean esno .electron-vite/build.ts  && electron-builder -c build.json --dir",
     "build:clean": "cross-env BUILD_TARGET=onlyClean esno .electron-vite/build.ts",
+    "build:web": "cross-env BUILD_TARGET=web esno .electron-vite/build.ts",
     "pack:resources": "esno .electron-vite/hot-updater.ts",
     "dep:upgrade": "yarn upgrade-interactive --latest",
     "postinstall": "electron-builder install-app-deps"
