@@ -28,7 +28,7 @@ async function clean() {
     "!build/lib/electron-build.*",
     "!build/icons/icon.*",
   ]);
-  doneLog(`\nclear done`);
+  doneLog(`clear done`);
   if (process.env.BUILD_TARGET === "onlyClean") process.exit();
 }
 
@@ -46,7 +46,7 @@ async function unionBuild() {
             await build.write(mainOpt.output as OutputOptions);
           } catch (error) {
             console.error(`\n${error}\n`);
-            errorLog(`\n  failed to build main process`);
+            errorLog(`failed to build main process`);
           }
         },
       },
@@ -59,9 +59,8 @@ async function unionBuild() {
           } catch (error) {
             console.error(`\n${error}\n`);
             errorLog("failed to build main process");
-            process.exit(1);
           }
-        }
+        },
       },
       {
         title: "building renderer process",
@@ -73,7 +72,7 @@ async function unionBuild() {
             )}\n`;
           } catch (error) {
             console.error(`\n${error}\n`);
-            errorLog(`\n  failed to build renderer process`);
+            errorLog(`failed to build renderer process`);
           }
         },
         options: { persistentOutput: true },
@@ -84,7 +83,11 @@ async function unionBuild() {
     }
   );
   await tasksLister.run();
-  
+  if (tasksLister.errors.length) {
+    errorLog(`failed to build`);
+    errorLog(tasksLister.ctx.output);
+    process.exit(1);
+  }
 }
 
 async function web() {
