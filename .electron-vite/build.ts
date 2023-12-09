@@ -92,7 +92,7 @@ async function unionBuild() {
 
 async function web() {
   await deleteAsync(["dist/web/*", "!.gitkeep"]);
-  build({ configFile: join(__dirname, "vite.config.ts") }).then((res) => {
+  build({ configFile: join(__dirname, "vite.config.mts") }).then((res) => {
     doneLog(`web build success`);
     process.exit();
   });

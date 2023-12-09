@@ -1,49 +1,29 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "resolveJsonModule": true,
-        "baseUrl": ".",
-        "outDir": "./dist/electron/main",
-        "sourceMap": true,
-        "declaration": false,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "isolatedModules": true,
-        "target": "es2017",
-        "types": [
-            "vite/client"
-        ],
-        "paths": {
-            "@config/*": [
-                "config/*"
-            ],
-            "@renderer/*": [
-                "src/renderer/*"
-            ],
-            "@main/*": [
-                "src/main/*"
-            ],
-            "@store/*": [
-                "src/renderer/store/modules/*"
-            ]
-        },
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "lib": [
-            "es2018",
-            "dom"
-        ]
+  "compileOnSave": false,
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "outDir": "./dist/electron/main",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "target": "es2017",
+    "types": ["vite/client"],
+    "paths": {
+      "@config/*": ["config/*"],
+      "@renderer/*": ["src/renderer/*"],
+      "@main/*": ["src/main/*"],
+      "@store/*": ["src/renderer/store/modules/*"]
     },
-    "include": [
-        "src/**/*",
-        "customTypes/*"
-    ],
-    "exclude": [
-        "node_modules"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
+  },
+  "include": ["src/**/*", "customTypes/*"],
+  "exclude": ["node_modules"]
 }

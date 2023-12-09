@@ -2,7 +2,7 @@ import setIpc from './ipcMain'
 import config from '@config/index'
 import menuconfig from '../config/menu'
 import { app, BrowserWindow, Menu, dialog } from 'electron'
-import { winURL, loadingURL,getPreloadFile } from '../config/StaticPath'
+import { winURL, loadingURL, getPreloadFile } from '../config/StaticPath'
 import { join } from "path"
 
 setIpc.Mainfunc()
@@ -31,8 +31,8 @@ class MainInit {
   // 主窗口函数
   createMainWindow() {
     this.mainWindow = new BrowserWindow({
-      titleBarOverlay:{
-        color:"#fff"
+      titleBarOverlay: {
+        color: "#fff"
       },
       titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
       height: 800,
