@@ -3,7 +3,7 @@ import { join } from 'path'
 import config from '@config/index'
 import { app } from 'electron'
 
-const env = app.isPackaged ? 'production': 'development'
+const env = app.isPackaged ? 'production' : 'development'
 
 const filePath = {
   winURL: {
@@ -14,6 +14,10 @@ const filePath = {
     development: `http://localhost:${process.env.PORT}/loader.html`,
     production: `file://${join(app.getAppPath(), "dist", "electron", 'renderer', 'loader.html')}`
   },
+  __static: {
+    development: join(__dirname, "..", "..", "..", "src", 'renderer', "public").replace(/\\/g, '\\\\'),
+    production: join(app.getAppPath(), "dist", "electron", 'renderer').replace(/\\/g, '\\\\')
+  },
   getPreloadFile(fileName: string) {
     if (env !== 'development') {
       return join(app.getAppPath(), "dist", "electron", "main", `${fileName}.js`)
@@ -23,7 +27,7 @@ const filePath = {
   }
 }
 
-if (env !== 'development') process.env.__static = join(app.getAppPath(), "dist", "electron", 'renderer').replace(/\\/g, '\\\\');
+process.env.__static = filePath.__static[env]
 
 
 process.env.__lib = getAppRootPath(config.DllFolder)
