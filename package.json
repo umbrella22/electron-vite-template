@@ -50,7 +50,7 @@
     "fs-extra": "^11.2.0",
     "inquirer": "^9.2.12",
     "javascript-obfuscator": "^4.1.0",
-    "listr2": "^6.6.1",
+    "listr2": "^8.0.0",
     "minimist": "^1.2.8",
     "pinia": "^2.1.7",
     "portfinder": "^1.0.32",

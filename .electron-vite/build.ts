@@ -45,8 +45,8 @@ async function unionBuild() {
             const build = await rollup(mainOpt);
             await build.write(mainOpt.output as OutputOptions);
           } catch (error) {
-            console.error(`\n${error}\n`);
-            errorLog(`failed to build main process`);
+            errorLog(`failed to build main process\n`);
+            return Promise.reject(error);
           }
         },
       },
@@ -57,8 +57,8 @@ async function unionBuild() {
             const build = await rollup(preloadOpt);
             await build.write(preloadOpt.output as OutputOptions);
           } catch (error) {
-            console.error(`\n${error}\n`);
-            errorLog("failed to build main process");
+            errorLog(`failed to build main process\n`);
+            return Promise.reject(error);
           }
         },
       },
@@ -66,16 +66,15 @@ async function unionBuild() {
         title: "building renderer process",
         task: async (_, tasks) => {
           try {
-            await build({ configFile: join(__dirname, "vite.config.ts") });
+            await build({ configFile: join(__dirname, "vite.config.mts") });
             tasks.output = `take it away ${chalk.yellow(
               "`electron-builder`"
             )}\n`;
           } catch (error) {
-            console.error(`\n${error}\n`);
-            errorLog(`failed to build renderer process`);
+            errorLog(`failed to build renderer process\n`);
+            return Promise.reject(error);
           }
         },
-        options: { persistentOutput: true },
       },
     ],
     {
@@ -83,11 +82,6 @@ async function unionBuild() {
     }
   );
   await tasksLister.run();
-  if (tasksLister.errors.length) {
-    errorLog(`failed to build`);
-    errorLog(tasksLister.ctx.output);
-    process.exit(1);
-  }
 }
 
 async function web() {
