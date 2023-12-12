@@ -23,9 +23,7 @@ declare global {
       nodeVersion: string;
       electronVersion: string;
     };
-    shell: {
-      shell: typeof shell;
-    };
+    shell: typeof shell;
     crash: {
       start: () => void;
     };
