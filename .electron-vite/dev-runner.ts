@@ -4,7 +4,7 @@ import electron from "electron";
 import chalk from "chalk";
 import { join } from "path";
 import { watch } from "rollup";
-import Portfinder from "Portfinder";
+import Portfinder from "portfinder";
 import config from "../config";
 import { say } from "cfonts";
 import { spawn } from "child_process";
