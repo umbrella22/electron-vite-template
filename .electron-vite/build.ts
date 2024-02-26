@@ -3,7 +3,6 @@ process.env.NODE_ENV = "production";
 import { join } from "path";
 import { say } from "cfonts";
 import { deleteAsync } from "del";
-import { build } from "vite";
 import chalk from "chalk";
 import { rollup, OutputOptions } from "rollup";
 import { Listr } from "listr2";
@@ -66,6 +65,7 @@ async function unionBuild() {
         title: "building renderer process",
         task: async (_, tasks) => {
           try {
+            const { build } = await import("vite");
             await build({ configFile: join(__dirname, "vite.config.mts") });
             tasks.output = `take it away ${chalk.yellow(
               "`electron-builder`"
@@ -86,6 +86,7 @@ async function unionBuild() {
 
 async function web() {
   await deleteAsync(["dist/web/*", "!.gitkeep"]);
+  const { build } = await import("vite");
   build({ configFile: join(__dirname, "vite.config.mts") }).then((res) => {
     doneLog(`web build success`);
     process.exit();

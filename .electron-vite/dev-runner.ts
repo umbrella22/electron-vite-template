@@ -9,7 +9,6 @@ import config from "../config";
 import { say } from "cfonts";
 import { spawn } from "child_process";
 import type { ChildProcess } from "child_process";
-import { createServer } from "vite";
 import rollupOptions from "./rollup.config";
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
@@ -76,6 +75,7 @@ function startRenderer(): Promise<void> {
       if (err) {
         reject("PortError:" + err);
       } else {
+        const { createServer } = await import("vite");
         const server = await createServer({
           configFile: join(__dirname, "vite.config.mts"),
         });
@@ -83,13 +83,14 @@ function startRenderer(): Promise<void> {
         await server.listen(port);
         console.log(
           "\n\n" +
-          chalk.blue(
-            `${config.dev.chineseLog
-              ? "  正在准备主进程，请等待..."
-              : "  Preparing main process, please wait..."
-            }`
-          ) +
-          "\n\n"
+            chalk.blue(
+              `${
+                config.dev.chineseLog
+                  ? "  正在准备主进程，请等待..."
+                  : "  Preparing main process, please wait..."
+              }`
+            ) +
+            "\n\n"
         );
         resolve();
       }
@@ -131,20 +132,22 @@ function startMain(): Promise<void> {
 function startPreload(): Promise<void> {
   console.log(
     "\n\n" +
-    chalk.blue(
-      `${config.dev.chineseLog
-        ? "  正在准备预加载脚本，请等待..."
-        : "  Preparing preLoad File, please wait..."
-      }`
-    ) +
-    "\n\n"
+      chalk.blue(
+        `${
+          config.dev.chineseLog
+            ? "  正在准备预加载脚本，请等待..."
+            : "  Preparing preLoad File, please wait..."
+        }`
+      ) +
+      "\n\n"
   );
   return new Promise((resolve, reject) => {
     const PreloadWatcher = watch(preloadOpt);
     PreloadWatcher.on("change", (filename) => {
       // 预加载脚本日志部分
       logStats(
-        `${config.dev.chineseLog ? "预加载脚本文件变更" : "preLoad-FileChange"
+        `${
+          config.dev.chineseLog ? "预加载脚本文件变更" : "preLoad-FileChange"
         }`,
         filename
       );
@@ -206,13 +209,14 @@ function electronLog(data: any, color: string) {
     });
     console.log(
       chalk[color].bold(
-        `┏ ${config.dev.chineseLog ? "主程序日志" : "Electron"
+        `┏ ${
+          config.dev.chineseLog ? "主程序日志" : "Electron"
         } -------------------`
       ) +
-      "\n\n" +
-      log +
-      chalk[color].bold("┗ ----------------------------") +
-      "\n"
+        "\n\n" +
+        log +
+        chalk[color].bold("┗ ----------------------------") +
+        "\n"
     );
   }
 }
