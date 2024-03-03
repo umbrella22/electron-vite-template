@@ -11,7 +11,7 @@ import { gt } from 'semver'
 import { createHmac } from 'crypto'
 import extract from 'extract-zip'
 import { version } from '../../../package.json'
-import { hotPublishConfig } from '../config/hotPublish'
+import { hotPublishConfig } from '../config/hot-publish'
 import axios, { AxiosResponse } from 'axios'
 
 const streamPipeline = promisify(pipeline)
@@ -27,7 +27,7 @@ const request = axios.create()
  * @author umbrella22
  * @date 2021-03-05
  */
-function hash(data, type = 'sha256', key = 'Sky'): string {
+function hash(data: Buffer, type = 'sha256', key = 'Sky'): string {
     const hmac = createHmac(type, key)
     hmac.update(data)
     return hmac.digest('hex')

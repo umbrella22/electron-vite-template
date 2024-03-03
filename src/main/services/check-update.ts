@@ -57,7 +57,7 @@ class Update {
       state: type,
       msg: data || ''
     }
-    mainWindow.webContents.send('UpdateMsg', senddata)
+    mainWindow.webContents.send('update-msg', senddata)
   }
 
   // 执行自动更新检查

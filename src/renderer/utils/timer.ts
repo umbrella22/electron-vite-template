@@ -13,58 +13,57 @@
  */
 class Timer {
   /**
-     * 延时操作
-     * @returns {void}
-     * @date 2019-11-25
-     */
-  timeout(interval: number, args?: any) {
+   * 延时操作
+   * @returns {void}
+   * @date 2019-11-25
+   */
+  timeout(interval: number, args?: any): Promise<Timer> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(args)
-      }, interval)
-    })
+        resolve(args);
+      }, interval);
+    });
   }
 
   /**
-     * 等待代码片段执行完毕后再执行
-     * @returns {void}
-     * @date 2019-11-25
-     */
-  inTheEnd() {
-    return this.timeout(0)
+   * 等待代码片段执行完毕后再执行
+   * @returns {void}
+   * @date 2019-11-25
+   */
+  inTheEnd(): Promise<Timer> {
+    return this.timeout(0);
   }
 
   /**
-     * 循环定时, 执行回调后再继续下一轮循环
-     * @param {Number} interval 执行间隔
-     * @param {Function} [callback] 回调
-     * @returns {Object}
-     * @date 2019-11-25
-     */
-  interval(interval:number, callback:Function) {
-    this.timeout(interval)
-      .then(() => {
-        typeof callback === 'function' &&
-          callback() !== false &&
-          this.interval(interval, callback)
-      })
-    return { then: c => callback = c }
+   * 循环定时, 执行回调后再继续下一轮循环
+   * @param {Number} interval 执行间隔
+   * @param {Function} [callback] 回调
+   * @returns {Object}
+   * @date 2019-11-25
+   */
+  interval(interval: number, callback: Function) {
+    this.timeout(interval).then(() => {
+      typeof callback === "function" &&
+        callback() !== false &&
+        this.interval(interval, callback);
+    });
+    return { then: (c) => (callback = c) };
   }
 
   /**
-     * 计时，单位毫秒
-     * @returns {void}
-     * @date 2019-11-29
-     */
+   * 计时，单位毫秒
+   * @returns {void}
+   * @date 2019-11-29
+   */
   start() {
-    const startDate = new Date()
+    const startDate = new Date();
     return {
       stop() {
-        const stopDate = new Date()
-        return stopDate.getTime() - startDate.getTime()
-      }
-    }
+        const stopDate = new Date();
+        return stopDate.getTime() - startDate.getTime();
+      },
+    };
   }
 }
 
-export default new Timer()
+export default new Timer();

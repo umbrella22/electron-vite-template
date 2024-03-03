@@ -1,14 +1,13 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
-import Server from '../server'
-import { winURL } from '../config/StaticPath'
-import { updater } from './HotUpdater'
-import DownloadFile from './downloadFile'
-import Update from './checkupdate'
-import { join } from 'path'
+import { getPreloadFile, winURL } from '../config/static-path'
+import { updater } from './hot-updater'
+import DownloadFile from './download-file'
+import Update from './check-update'
 import config from '@config/index'
 
-export default {
-  Mainfunc() {
+
+export const useMainDefaultIpc = () => {
+  const defaultIpc = () => {
     const allUpdater = new Update()
     ipcMain.handle('IsUseSysTitle', async () => {
       return config.IsUseSysTitle
@@ -39,27 +38,16 @@ export default {
       )
     })
     ipcMain.handle('start-server', async () => {
-      try {
-        const serveStatus = await Server.StatrServer()
-        console.log(serveStatus)
-        return serveStatus
-      } catch (error) {
-        dialog.showErrorBox(
-          '错误',
-          error
-        )
-      }
+      dialog.showErrorBox(
+        'error',
+        'API is obsolete'
+      )
     })
     ipcMain.handle('stop-server', async (event, arg) => {
-      try {
-        const serveStatus = await Server.StopServer()
-        return serveStatus
-      } catch (error) {
-        dialog.showErrorBox(
-          '错误',
-          error
-        )
-      }
+      dialog.showErrorBox(
+        'error',
+        'API is obsolete'
+      )
     })
     ipcMain.handle('hot-update', (event, arg) => {
       updater(BrowserWindow.fromWebContents(event.sender))
@@ -84,9 +72,7 @@ export default {
           devTools: process.env.NODE_ENV === 'development',
           // 在macos中启用橡皮动画
           scrollBounce: process.platform === 'darwin',
-          preload: process.env.NODE_ENV === 'development'
-            ? join(app.getAppPath(), 'preload.js')
-            : join(app.getAppPath(), 'dist', 'electron', 'main', 'preload.js')
+          preload: getPreloadFile('preload')
         }
       })
       // 开发模式下自动开启devtools
@@ -114,5 +100,8 @@ export default {
         ChildWin.webContents.send('send-data', arg.sendData)
       })
     })
+  }
+  return {
+    defaultIpc
   }
 }

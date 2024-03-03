@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import SystemInformation from "./LandingPage/SystemInformation.vue";
+import SystemInformation from "./components/system-info-mation.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
 import { onUnmounted, ref } from "vue";
@@ -205,7 +205,7 @@ ipcRenderer.on("download-done", (event, age) => {
   // });
 });
 // electron-updater upload 
-ipcRenderer.on("UpdateMsg", (event, age) => {
+ipcRenderer.on("update-msg", (event, age) => {
   switch (age.state) {
     case -1:
       const msgdata = {

@@ -14,7 +14,6 @@
     "importHelpers": true,
     "isolatedModules": true,
     "target": "es2017",
-    "types": ["vite/client"],
     "paths": {
       "@config/*": ["config/*"],
       "@renderer/*": ["src/renderer/*"],
