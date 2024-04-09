@@ -78,6 +78,7 @@ async function unionBuild() {
       },
     ],
     {
+      concurrent: true,
       exitOnError: true,
     }
   );
