@@ -1,6 +1,6 @@
 # electron-vite-template
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template/tree/strict)
+[Open in Visual Studio Code](https://open.vscode.dev/umbrella22/electron-vite-template/)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
 [![vue](https://img.shields.io/badge/vue-3.2.23-brightgreen.svg)](https://github.com/vuejs/vue-next)
 [![vite](https://img.shields.io/badge/vite-3.3.7-brightgreen.svg)](https://github.com/vitejs/vite)
@@ -53,7 +53,6 @@ $ npm run build
 - [electron](http://www.electronjs.org/docs)
 - electron-updater
 - typescript
-- [element-plus](https://element-plus.gitee.io/#/en-US/component/installation)
 
 # Note
 
