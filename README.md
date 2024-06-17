@@ -12,7 +12,7 @@
 
 You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
 
-To run a project, you need to have **node version 16** or higher and **use yarn as your dependency management tool**
+To run a project, you need to have **node version 18** or higher and **use npm as your dependency management tool**
 
 [For Chinese Developers](/README_ZH.md)
 
