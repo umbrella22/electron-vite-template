@@ -14,6 +14,8 @@ You can choose to clone the project or fork repository, or download the zip file
 
 To run a project, you need to have **node version 18** or higher and **use npm as your dependency management tool**
 
+[Document (Chinese only)](https://umbrella22.github.io/electron-vue-template-doc/)
+
 [For Chinese Developers](/README_ZH.md)
 
 [![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml)
