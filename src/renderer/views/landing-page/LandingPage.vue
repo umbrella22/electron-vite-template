@@ -49,9 +49,9 @@
           <button class="btu" @click="openNewWin">
             {{ i18nt.buttons.openNewWindow }}
           </button>
-          <button class="btu" @click="changeLanguage">{{
-            i18nt.buttons.changeLanguage
-          }}</button>
+          <button class="btu" @click="changeLanguage">
+            {{ i18nt.buttons.changeLanguage }}
+          </button>
         </div>
       </div>
     </main>
@@ -66,18 +66,17 @@ import { onUnmounted, ref } from "vue";
 import { i18nt, setLanguage, globalLang } from "@renderer/i18n";
 import { useStoreTemplate } from "@store/template";
 
-let { ipcRenderer, shell, crash } = window;
+const { ipcRendererChannel, shell, crash } = window;
 
-
-if (!ipcRenderer) {
-  ipcRenderer = {} as any;
-  ipcRenderer.on =
-    ipcRenderer.invoke =
-    ipcRenderer.removeAllListeners =
-    (...args: any): any => {
-      console.log("not electron");
-    };
-}
+// if (!ipcRenderer) {
+//   ipcRenderer = {} as any;
+//   ipcRenderer.on =
+//     ipcRenderer.invoke =
+//     ipcRenderer.removeAllListeners =
+//     (...args: any): any => {
+//       console.log("not electron");
+//     };
+// }
 
 const percentage = ref(0);
 const colors = ref([
@@ -119,7 +118,8 @@ function openNewWin() {
   const data = {
     url: "/form/index",
   };
-  ipcRenderer.invoke("open-win", data);
+  ipcRendererChannel.OpenWin.invoke(data);
+  // ipcRenderer.invoke("open-win", data);
 }
 function getMessage() {
   message().then((res) => {
@@ -129,7 +129,7 @@ function getMessage() {
   });
 }
 function StopServer() {
-  ipcRenderer.invoke("stop-server").then((res) => {
+  ipcRendererChannel.StopServer.invoke().then((res) => {
     // ElMessage({
     //   type: "success",
     //   message: "已关闭",
@@ -137,7 +137,7 @@ function StopServer() {
   });
 }
 function StartServer() {
-  ipcRenderer.invoke("start-server").then((res) => {
+  ipcRendererChannel.StartServer.invoke().then((res) => {
     if (res) {
       // ElMessage({
       //   type: "success",
@@ -147,20 +147,20 @@ function StartServer() {
   });
 }
 // 获取electron方法
-function open() { }
+function open() {}
 function CheckUpdate(data) {
   switch (data) {
     case "one":
-      ipcRenderer.invoke("check-update");
+      ipcRendererChannel.CheckUpdate.invoke();
       console.log("启动检查");
       break;
     case "two":
-      ipcRenderer.invoke("start-download").then(() => {
+      ipcRendererChannel.StartDownload.invoke("https://xxx").then(() => {
         dialogVisible.value = true;
       });
       break;
     case "three":
-      ipcRenderer.invoke("hot-update");
+      ipcRendererChannel.HotUpdate.invoke();
       break;
     case "four":
       showForcedUpdate.value = true;
@@ -173,17 +173,18 @@ function CheckUpdate(data) {
 function handleClose() {
   dialogVisible.value = false;
 }
-ipcRenderer.on("download-progress", (event, arg) => {
+
+ipcRendererChannel.DownloadProgress.on((event, arg) => {
   percentage.value = Number(arg);
 });
-ipcRenderer.on("download-error", (event, arg) => {
+ipcRendererChannel.DownloadError.on((event, arg) => {
   if (arg) {
     progressStaus.value = "exception";
     percentage.value = 40;
     colors.value = "#d81e06";
   }
 });
-ipcRenderer.on("download-paused", (event, arg) => {
+ipcRendererChannel.DownloadPaused.on((event, arg) => {
   if (arg) {
     progressStaus.value = "warning";
     // ElMessageBox.alert("下载由于未知原因被中断！", "提示", {
@@ -194,7 +195,7 @@ ipcRenderer.on("download-paused", (event, arg) => {
     // });
   }
 });
-ipcRenderer.on("download-done", (event, age) => {
+ipcRendererChannel.DownloadDone.on((event, age) => {
   filePath.value = age.filePath;
   progressStaus.value = "success";
   // ElMessageBox.alert("更新下载完成！", "提示", {
@@ -204,51 +205,53 @@ ipcRenderer.on("download-done", (event, age) => {
   //   },
   // });
 });
-// electron-updater upload 
-ipcRenderer.on("update-msg", (event, age) => {
+// electron-updater upload
+ipcRendererChannel.UpdateMsg.on((event, age) => {
   switch (age.state) {
     case -1:
       const msgdata = {
         title: "发生错误",
-        message: age.msg,
+        message: age.msg as string,
       };
       dialogVisible.value = false;
-      ipcRenderer.invoke("open-errorbox", msgdata);
+      ipcRendererChannel.OpenErrorbox.invoke(msgdata);
       break;
     case 0:
-      console.log('check-update')
+      console.log("check-update");
       break;
     case 1:
       dialogVisible.value = true;
-      console.log('has update download-ing')
+      console.log("has update download-ing");
       break;
     case 2:
-      console.log('not new version')
+      console.log("not new version");
       break;
     case 3:
-      percentage.value = age.msg.percent.toFixed(1);
+      percentage.value = Number(
+        (age.msg as { percent: number }).percent.toFixed(1)
+      );
       break;
     case 4:
       progressStaus.value = "success";
-      ipcRenderer.invoke("confirm-update");
+      ipcRendererChannel.ConfirmUpdate.invoke();
       break;
     default:
       break;
   }
 });
-ipcRenderer.on("hot-update-status", (event, msg) => {
+ipcRendererChannel.UpdateProcessStatus.on((event, msg) => {
   switch (msg.status) {
     case "downloading":
-      console.log("正在下载")
+      console.log("正在下载");
       break;
     case "moving":
-      console.log("正在移动文件")
+      console.log("正在移动文件");
       break;
     case "finished":
-      console.log("成功,请重启")
+      console.log("成功,请重启");
       break;
     case "failed":
-      console.log("msg.message.message")
+      console.log("msg.message.message");
       break;
 
     default:
@@ -257,17 +260,17 @@ ipcRenderer.on("hot-update-status", (event, msg) => {
   console.log(msg);
   updateStatus.value = msg.status;
 });
-onUnmounted(() => {
-  console.log("销毁了哦");
-  ipcRenderer.removeAllListeners("confirm-message");
-  ipcRenderer.removeAllListeners("download-done");
-  ipcRenderer.removeAllListeners("download-paused");
-  ipcRenderer.removeAllListeners("confirm-stop");
-  ipcRenderer.removeAllListeners("confirm-start");
-  ipcRenderer.removeAllListeners("confirm-download");
-  ipcRenderer.removeAllListeners("download-progress");
-  ipcRenderer.removeAllListeners("download-error");
-});
+// onUnmounted(() => {
+//   console.log("销毁了哦");
+//   ipcRenderer.removeAllListeners("confirm-message");
+//   ipcRenderer.removeAllListeners("download-done");
+//   ipcRenderer.removeAllListeners("download-paused");
+//   ipcRenderer.removeAllListeners("confirm-stop");
+//   ipcRenderer.removeAllListeners("confirm-start");
+//   ipcRenderer.removeAllListeners("confirm-download");
+//   ipcRenderer.removeAllListeners("download-progress");
+//   ipcRenderer.removeAllListeners("download-error");
+// });
 </script>
 
 <style scoped lang="scss">
@@ -296,7 +299,7 @@ main {
   justify-content: space-between;
 }
 
-main>div {
+main > div {
   flex-basis: 50%;
 }
 
@@ -336,7 +339,6 @@ main>div {
   button {
     margin-top: 10px;
     margin-right: 10px;
-
   }
 
   .btu {
@@ -350,7 +352,7 @@ main>div {
     text-align: center;
     box-sizing: border-box;
     outline: none;
-    transition: .1s;
+    transition: 0.1s;
     font-weight: 500;
     padding: 12px 20px;
     font-size: 14px;
@@ -364,10 +366,11 @@ main>div {
   }
 }
 
-.doc .button+.button {
+.doc .button + .button {
   margin-left: 0;
 }
 
 .conten {
   text-align: center;
-}</style>
+}
+</style>
