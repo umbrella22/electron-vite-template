@@ -1,4 +1,17 @@
 import { ipcRenderer, shell } from "electron";
+import type { IIpcRendererInvoke, IIpcRendererOn } from "../src/ipc/index";
+type IpcRendererInvoke = {
+  [key in keyof IIpcRendererInvoke]: {
+    invoke: IIpcRendererInvoke[key];
+  };
+};
+type IpcRendererOn = {
+  [key in keyof IIpcRendererOn]: {
+    on: (listener: IIpcRendererOn[key]) => void;
+    once: (listener: IIpcRendererOn[key]) => void;
+    removeAllListeners: () => void;
+  };
+};
 
 interface AnyObject {
   [key: string]: any;
@@ -15,7 +28,7 @@ declare global {
     performance: {
       memory: memoryInfo;
     };
-    ipcRenderer: typeof ipcRenderer;
+    ipcRendererChannel: IpcRendererInvoke & IpcRendererOn;
     systemInfo: {
       platform: string;
       release: string;
