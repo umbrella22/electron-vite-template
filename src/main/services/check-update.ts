@@ -55,7 +55,7 @@ class Update {
       state: type,
       msg: data || "",
     };
-    webContentSend(mainWindow.webContents, "UpdateMsg", senddata);
+    webContentSend.UpdateMsg(mainWindow.webContents, senddata);
   }
 
   // 执行自动更新检查
