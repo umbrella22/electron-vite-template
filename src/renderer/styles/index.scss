@@ -1,7 +1,11 @@
 @import './transition.scss';
-@import './custom-title.scss';
 
-html, body, #app { width: 100%; height: 100%; }
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+}
 
 body {
   -moz-osx-font-smoothing: grayscale;

@@ -31,7 +31,7 @@ ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
 });
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .window-title {
   width: 100%;
   height: 30px;

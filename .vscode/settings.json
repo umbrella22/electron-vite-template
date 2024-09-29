@@ -1,6 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "npm.packageManager": "npm",
   "eslint.validate": [
     "javascript",
     "javascriptreact",

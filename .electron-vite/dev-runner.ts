@@ -68,33 +68,26 @@ function removeJunk(chunk: string) {
   return chunk;
 }
 
-function startRenderer(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    Portfinder.basePort = config.dev.port || 9080;
-    Portfinder.getPort(async (err, port) => {
-      if (err) {
-        reject("PortError:" + err);
-      } else {
-        const { createServer } = await import("vite");
-        const server = await createServer({
-          configFile: join(__dirname, "vite.config.mts"),
-        });
-        process.env.PORT = String(port);
-        await server.listen(port);
-        console.log(
-          "\n\n" +
-          chalk.blue(
-            `${config.dev.chineseLog
-              ? "  正在准备主进程，请等待..."
-              : "  Preparing main process, please wait..."
-            }`
-          ) +
-          "\n\n"
-        );
-        resolve();
-      }
-    });
+async function startRenderer(): Promise<void> {
+  Portfinder.basePort = config.dev.port || 9988;
+  const port = await Portfinder.getPortPromise();
+  const { createServer } = await import("vite");
+  const server = await createServer({
+    configFile: join(__dirname, "vite.config.mts"),
   });
+  process.env.PORT = String(port);
+  await server.listen(port);
+  console.log(
+    "\n\n" +
+      chalk.blue(
+        `${
+          config.dev.chineseLog
+            ? "  正在准备主进程，请等待..."
+            : "  Preparing main process, please wait..."
+        }`
+      ) +
+      "\n\n"
+  );
 }
 
 function startMain(): Promise<void> {
@@ -131,20 +124,22 @@ function startMain(): Promise<void> {
 function startPreload(): Promise<void> {
   console.log(
     "\n\n" +
-    chalk.blue(
-      `${config.dev.chineseLog
-        ? "  正在准备预加载脚本，请等待..."
-        : "  Preparing preLoad File, please wait..."
-      }`
-    ) +
-    "\n\n"
+      chalk.blue(
+        `${
+          config.dev.chineseLog
+            ? "  正在准备预加载脚本，请等待..."
+            : "  Preparing preLoad File, please wait..."
+        }`
+      ) +
+      "\n\n"
   );
   return new Promise((resolve, reject) => {
     const PreloadWatcher = watch(preloadOpt);
     PreloadWatcher.on("change", (filename) => {
       // 预加载脚本日志部分
       logStats(
-        `${config.dev.chineseLog ? "预加载脚本文件变更" : "preLoad-FileChange"
+        `${
+          config.dev.chineseLog ? "预加载脚本文件变更" : "preLoad-FileChange"
         }`,
         filename
       );
@@ -206,13 +201,14 @@ function electronLog(data: any, color: string) {
     });
     console.log(
       chalk[color].bold(
-        `┏ ${config.dev.chineseLog ? "主程序日志" : "Electron"
+        `┏ ${
+          config.dev.chineseLog ? "主程序日志" : "Electron"
         } -------------------`
       ) +
-      "\n\n" +
-      log +
-      chalk[color].bold("┗ ----------------------------") +
-      "\n"
+        "\n\n" +
+        log +
+        chalk[color].bold("┗ ----------------------------") +
+        "\n"
     );
   }
 }
