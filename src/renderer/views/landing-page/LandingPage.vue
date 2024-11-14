@@ -62,7 +62,7 @@
 import SystemInformation from "./components/system-info-mation.vue";
 import { message } from "@renderer/api/login";
 import logo from "@renderer/assets/logo.png";
-import { onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import { i18nt, setLanguage, globalLang } from "@renderer/i18n";
 import { useStoreTemplate } from "@store/template";
 

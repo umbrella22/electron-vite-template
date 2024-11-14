@@ -6,6 +6,7 @@ const argv = minimist(process.argv.slice(2));
 const rootResolve = (...pathSegments) => join(__dirname, "..", ...pathSegments);
 
 export const getEnv = () => argv["m"];
+export const getArgv = () => argv;
 
 const getEnvPath = () => {
   if (

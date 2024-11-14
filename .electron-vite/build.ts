@@ -8,15 +8,17 @@ import { rollup, OutputOptions } from "rollup";
 import { Listr } from "listr2";
 import rollupOptions from "./rollup.config";
 import { errorLog, doneLog } from "./log";
+import { getArgv } from "./utils";
 
+const { clean = false, target = "client" } = getArgv();
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
 const isCI = process.env.CI || false;
 
-if (process.env.BUILD_TARGET === "web") web();
+if (target === "web") web();
 else unionBuild();
 
-async function clean() {
+async function cleanBuid() {
   await deleteAsync([
     "dist/electron/main/*",
     "dist/electron/renderer/*",
@@ -28,12 +30,12 @@ async function clean() {
     "!build/icons/icon.*",
   ]);
   doneLog(`clear done`);
-  if (process.env.BUILD_TARGET === "onlyClean") process.exit();
+  if (clean) process.exit();
 }
 
 async function unionBuild() {
   greeting();
-  await clean();
+  await cleanBuid();
 
   const tasksLister = new Listr(
     [

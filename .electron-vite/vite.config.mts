@@ -26,13 +26,13 @@ export default defineConfig({
     },
   },
   // fix scss 2.0.0 warning
-  css: {
-    // preprocessorOptions: {
-    //   scss: {
-    //     api: "modern-compiler",
-    //   },
-    // },
-  },
+  // css: {
+  //   preprocessorOptions: {
+  //     scss: {
+  //       api: "modern-compiler",
+  //     },
+  //   },
+  // },
   base: "./",
   build: {
     outDir:

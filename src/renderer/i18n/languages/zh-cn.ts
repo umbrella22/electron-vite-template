@@ -1,4 +1,3 @@
-
 export const lang = {
   welcome: "欢迎进入本框架",
   buttonTips: "您可以点击的按钮测试功能",
@@ -15,6 +14,7 @@ export const lang = {
     systemPlatform: "系统平台：",
     systemVersion: "系统版本：",
     systemArch: "系统位数：",
+    currentEnvironment: "当前环境：",
   },
   buttons: {
     console: "控制台打印",
