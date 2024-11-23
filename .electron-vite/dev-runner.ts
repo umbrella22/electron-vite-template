@@ -1,5 +1,6 @@
 process.env.NODE_ENV = "development";
 
+import readline from "node:readline";
 import electron from "electron";
 import chalk from "chalk";
 import { join } from "path";
@@ -10,63 +11,49 @@ import { say } from "cfonts";
 import { spawn } from "child_process";
 import type { ChildProcess } from "child_process";
 import rollupOptions from "./rollup.config";
+import { electronLog, getArgv, logStats, removeJunk } from "./utils";
+
+const { controlledRestart = false } = getArgv();
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
 
 let electronProcess: ChildProcess | null = null;
 let manualRestart = false;
+let readlineInterface: readline.Interface | null = null;
 
-function logStats(proc: string, data: any) {
-  let log = "";
-
-  log += chalk.yellow.bold(
-    `┏ ${proc} ${config.dev.chineseLog ? "编译过程" : "Process"} ${new Array(
-      19 - proc.length + 1
-    ).join("-")}`
-  );
-  log += "\n\n";
-
-  if (typeof data === "object") {
-    data
-      .toString({
-        colors: true,
-        chunks: false,
-      })
-      .split(/\r?\n/)
-      .forEach((line) => {
-        log += "  " + line + "\n";
-      });
-  } else {
-    log += `  ${data}\n`;
-  }
-
-  log += "\n" + chalk.yellow.bold(`┗ ${new Array(28 + 1).join("-")}`) + "\n";
-  console.log(log);
+interface Shortcut {
+  key: string;
+  description: string;
+  action: () => void;
 }
 
-function removeJunk(chunk: string) {
-  if (config.dev.removeElectronJunk) {
-    // Example: 2018-08-10 22:48:42.866 Electron[90311:4883863] *** WARNING: Textured window <AtomNSWindow: 0x7fb75f68a770>
-    if (
-      /\d+-\d+-\d+ \d+:\d+:\d+\.\d+ Electron(?: Helper)?\[\d+:\d+] /.test(chunk)
-    ) {
-      return false;
-    }
-
-    // Example: [90789:0810/225804.894349:ERROR:CONSOLE(105)] "Uncaught (in promise) Error: Could not instantiate: ProductRegistryImpl.Registry", source: chrome-devtools://devtools/bundled/inspector.js (105)
-    if (/\[\d+:\d+\/|\d+\.\d+:ERROR:CONSOLE\(\d+\)\]/.test(chunk)) {
-      return false;
-    }
-
-    // Example: ALSA lib confmisc.c:767:(parse_card) cannot find card '0'
-    if (/ALSA lib [a-z]+\.c:\d+:\([a-z_]+\)/.test(chunk)) {
-      return false;
-    }
-  }
-
-  return chunk;
-}
+const shortcutList: Shortcut[] = [
+  {
+    key: "r",
+    description: config.dev.chineseLog ? "重启主进程" : "Restart Main Process",
+    action() {
+      restartElectron();
+    },
+  },
+  {
+    key: "q",
+    description: config.dev.chineseLog ? "退出" : "Exit",
+    action() {
+      electronProcess?.kill();
+      readlineInterface?.close();
+      process.exit();
+    },
+  },
+  {
+    key: "h",
+    description: config.dev.chineseLog ? "显示帮助" : "Show Help",
+    action() {
+      process.stdout.write("\x1B[2J\x1B[3J");
+      showHelp();
+    },
+  },
+];
 
 async function startRenderer(): Promise<void> {
   Portfinder.basePort = config.dev.port || 9988;
@@ -102,20 +89,24 @@ function startMain(): Promise<void> {
     });
     MainWatcher.on("event", (event) => {
       if (event.code === "END") {
-        if (electronProcess) {
-          manualRestart = true;
-          electronProcess.pid && process.kill(electronProcess.pid);
-          electronProcess = null;
-          startElectron();
-
-          setTimeout(() => {
-            manualRestart = false;
-          }, 5000);
+        if (electronProcess && !controlledRestart) {
+          restartElectron();
         }
 
         resolve();
       } else if (event.code === "ERROR") {
         reject(event.error);
+      }
+      if (controlledRestart) {
+        process.stdout.write("\x1B[2J\x1B[3J");
+        logStats(
+          "cli tips",
+          `${
+            config.dev.chineseLog
+              ? "受控重启已启用,请手动输入r + 回车重启"
+              : "Controlled restart is enabled, please manually enter r + Enter to restart"
+          }`
+        );
       }
     });
   });
@@ -146,15 +137,8 @@ function startPreload(): Promise<void> {
     });
     PreloadWatcher.on("event", (event) => {
       if (event.code === "END") {
-        if (electronProcess) {
-          manualRestart = true;
-          electronProcess.pid && process.kill(electronProcess.pid);
-          electronProcess = null;
-          startElectron();
-
-          setTimeout(() => {
-            manualRestart = false;
-          }, 5000);
+        if (electronProcess && !controlledRestart) {
+          restartElectron();
         }
 
         resolve();
@@ -192,25 +176,60 @@ function startElectron() {
   });
 }
 
-function electronLog(data: any, color: string) {
-  if (data) {
-    let log = "";
-    data = data.toString().split(/\r?\n/);
-    data.forEach((line) => {
-      log += `  ${line}\n`;
-    });
+function restartElectron() {
+  manualRestart = true;
+  electronProcess?.pid && process.kill(electronProcess.pid);
+  electronProcess = null;
+  electronProcess = null;
+  startElectron();
+  setTimeout(() => {
+    manualRestart = false;
+  }, 5000);
+}
+
+function onInputAction(input: string) {
+  if (!controlledRestart && input === "r") {
     console.log(
-      chalk[color].bold(
-        `┏ ${
-          config.dev.chineseLog ? "主程序日志" : "Electron"
-        } -------------------`
-      ) +
-        "\n\n" +
-        log +
-        chalk[color].bold("┗ ----------------------------") +
-        "\n"
+      chalk.yellow.bold(
+        config.dev.chineseLog
+          ? "受控重启被禁用，请在启动时使用 --controlledRestart 选项启用"
+          : "Controlled restart is disabled, please use the --controlledRestart option to enable when starting"
+      )
     );
+    return;
   }
+  const shortcut = shortcutList.find((shortcut) => shortcut.key === input);
+  if (shortcut) {
+    shortcut.action();
+  }
+}
+
+function initReadline() {
+  readlineInterface = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  readlineInterface.on("line", onInputAction);
+}
+
+function showHelp() {
+  console.log(
+    chalk.green.bold(
+      `${config.dev.chineseLog ? "可用快捷键：\n" : "Available shortcuts:\n"}`
+    )
+  );
+  shortcutList.forEach((shortcut) => {
+    if (config.dev.chineseLog) {
+      console.log(
+        `输入 ${chalk.green.bold(shortcut.key)} + 回车 ${shortcut.description}`
+      );
+      return;
+    }
+    console.log(
+      `Enter ${chalk.green.bold(shortcut.key)} + Enter ${shortcut.description}`
+    );
+  });
+  console.log("\n");
 }
 
 function greeting() {
@@ -243,6 +262,7 @@ async function init() {
     await startMain();
     await startPreload();
     startElectron();
+    initReadline();
   } catch (error) {
     console.error(error);
     process.exit(1);
