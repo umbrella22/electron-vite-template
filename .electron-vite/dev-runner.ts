@@ -13,7 +13,7 @@ import type { ChildProcess } from "child_process";
 import rollupOptions from "./rollup.config";
 import { electronLog, getArgv, logStats, removeJunk } from "./utils";
 
-const { controlledRestart = false } = getArgv();
+const { target = "client", controlledRestart = false } = getArgv();
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
@@ -55,34 +55,26 @@ const shortcutList: Shortcut[] = [
   },
 ];
 
-function startRenderer(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    Portfinder.basePort = config.dev.port || 9080;
-    Portfinder.getPort(async (err, port) => {
-      if (err) {
-        reject("PortError:" + err);
-      } else {
-        const { createServer } = await import("vite");
-        const server = await createServer({
-          configFile: join(__dirname, "vite.config.mts"),
-        });
-        process.env.PORT = String(port);
-        await server.listen(port);
-        console.log(
-          "\n\n" +
-            chalk.blue(
-              `${
-                config.dev.chineseLog
-                  ? "  正在准备主进程，请等待..."
-                  : "  Preparing main process, please wait..."
-              }`
-            ) +
-            "\n\n"
-        );
-        resolve();
-      }
-    });
+async function startRenderer(): Promise<void> {
+  Portfinder.basePort = config.dev.port || 9080;
+  const port = await Portfinder.getPortPromise();
+  const { createServer } = await import("vite");
+  const server = await createServer({
+    configFile: join(__dirname, "vite.config.mts"),
   });
+  process.env.PORT = String(port);
+  await server.listen(port);
+  console.log(
+    "\n\n" +
+      chalk.blue(
+        `${
+          config.dev.chineseLog
+            ? "  正在准备主进程，请等待..."
+            : "  Preparing main process, please wait..."
+        }`
+      ) +
+      "\n\n"
+  );
 }
 
 function startMain(): Promise<void> {
@@ -152,6 +144,17 @@ function startPreload(): Promise<void> {
         resolve();
       } else if (event.code === "ERROR") {
         reject(event.error);
+      }
+      if (controlledRestart) {
+        process.stdout.write("\x1B[2J\x1B[3J");
+        logStats(
+          "cli tips",
+          `${
+            config.dev.chineseLog
+              ? "受控重启已启用,请手动输入r + 回车重启"
+              : "Controlled restart is enabled, please manually enter r + Enter to restart"
+          }`
+        );
       }
     });
   });
@@ -263,8 +266,11 @@ function greeting() {
 }
 
 async function init() {
+  if (target === "web") {
+    await startRenderer();
+    return;
+  }
   greeting();
-
   try {
     await startRenderer();
     await startMain();

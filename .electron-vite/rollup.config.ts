@@ -79,7 +79,6 @@ export default (env = "production", type = "main") => {
     ],
     external: [
       ...builtinModules,
-      "axios",
       "electron",
       "express",
       "ffi-napi",
