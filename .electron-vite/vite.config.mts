@@ -25,14 +25,7 @@ export default defineConfig({
       "@store": join(root, "/store/modules"),
     },
   },
-  // fix scss 2.0.0 warning
-  // css: {
-  //   preprocessorOptions: {
-  //     scss: {
-  //       api: "modern-compiler",
-  //     },
-  //   },
-  // },
+
   base: "./",
   build: {
     outDir:
