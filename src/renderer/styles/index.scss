@@ -9,7 +9,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -69,7 +70,7 @@ a:hover {
 
 //main-container全局样式
 .app-main {
-  min-height: 100%
+  min-height: 100%;
 }
 
 .app-container {

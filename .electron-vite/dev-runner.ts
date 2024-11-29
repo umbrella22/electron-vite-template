@@ -13,7 +13,7 @@ import type { ChildProcess } from "child_process";
 import rollupOptions from "./rollup.config";
 import { electronLog, getArgv, logStats, removeJunk } from "./utils";
 
-const { controlledRestart = false, target = "client" } = getArgv();
+const { target = "client", controlledRestart = false } = getArgv();
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
@@ -56,7 +56,7 @@ const shortcutList: Shortcut[] = [
 ];
 
 async function startRenderer(): Promise<void> {
-  Portfinder.basePort = config.dev.port || 9988;
+  Portfinder.basePort = config.dev.port || 9080;
   const port = await Portfinder.getPortPromise();
   const { createServer } = await import("vite");
   const server = await createServer({
@@ -144,6 +144,17 @@ function startPreload(): Promise<void> {
         resolve();
       } else if (event.code === "ERROR") {
         reject(event.error);
+      }
+      if (controlledRestart) {
+        process.stdout.write("\x1B[2J\x1B[3J");
+        logStats(
+          "cli tips",
+          `${
+            config.dev.chineseLog
+              ? "受控重启已启用,请手动输入r + 回车重启"
+              : "Controlled restart is enabled, please manually enter r + Enter to restart"
+          }`
+        );
       }
     });
   });
@@ -260,7 +271,6 @@ async function init() {
     return;
   }
   greeting();
-
   try {
     await startRenderer();
     await startMain();

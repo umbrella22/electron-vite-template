@@ -13,12 +13,14 @@ import { getArgv } from "./utils";
 const { clean = false, target = "client" } = getArgv();
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
+
+const { clean = false, target = "client" } = getArgv();
 const isCI = process.env.CI || false;
 
 if (target === "web") web();
 else unionBuild();
 
-async function cleanBuid() {
+async function cleanBuild() {
   await deleteAsync([
     "dist/electron/main/*",
     "dist/electron/renderer/*",
@@ -35,7 +37,7 @@ async function cleanBuid() {
 
 async function unionBuild() {
   greeting();
-  await cleanBuid();
+  await cleanBuild();
 
   const tasksLister = new Listr(
     [
