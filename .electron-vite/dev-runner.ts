@@ -13,7 +13,7 @@ import type { ChildProcess } from "child_process";
 import rollupOptions from "./rollup.config";
 import { electronLog, getArgv, logStats, removeJunk } from "./utils";
 
-const { controlledRestart = false } = getArgv();
+const { controlledRestart = false, target = "client" } = getArgv();
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
@@ -255,6 +255,10 @@ function greeting() {
 }
 
 async function init() {
+  if (target === "web") {
+    await startRenderer();
+    return;
+  }
   greeting();
 
   try {
