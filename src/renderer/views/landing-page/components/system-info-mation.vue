@@ -20,12 +20,19 @@ const { systemInfo } = window;
 
 let tips = ref(
   computed(() => [
-    { name: i18nt.value.about.language, value: i18nt.value.about.languageValue },
+    {
+      name: i18nt.value.about.language,
+      value: i18nt.value.about.languageValue,
+    },
     { name: i18nt.value.about.currentPagePath, value: path },
     { name: i18nt.value.about.currentPageName, value: name },
     { name: i18nt.value.about.systemPlatform, value: systemInfo.platform },
     { name: i18nt.value.about.systemVersion, value: systemInfo.release },
-    { name: i18nt.value.about.systemArch, value: systemInfo.arch + "位" },
+    { name: i18nt.value.about.systemArch, value: systemInfo.arch },
+    {
+      name: i18nt.value.about.currentEnvironment,
+      value: __CONFIG__.NODE_ENV,
+    },
   ])
 );
 </script>

@@ -25,6 +25,7 @@ export default defineConfig({
       "@store": join(root, "/store/modules"),
     },
   },
+
   base: "./",
   build: {
     outDir:

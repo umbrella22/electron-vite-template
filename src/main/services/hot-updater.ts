@@ -9,7 +9,7 @@ import { pipeline } from "stream";
 import { app, BrowserWindow } from "electron";
 import { gt } from "semver";
 import { createHmac } from "crypto";
-import extract from "extract-zip";
+import AdmZip from "adm-zip";
 import { version } from "../../../package.json";
 import { hotPublishConfig } from "../config/hot-publish";
 import axios, { AxiosResponse } from "axios";
@@ -53,9 +53,9 @@ const updateInfo = {
 
 interface Res extends AxiosResponse<any> {
   data: {
-    version?: string;
-    name?: string;
-    hash?: string;
+    version: string;
+    name: string;
+    hash: string;
   };
 }
 
@@ -83,7 +83,8 @@ export const updater = async (windows?: BrowserWindow): Promise<void> => {
       const sha256 = hash(buffer);
       if (sha256 !== res.data.hash) throw new Error("sha256 error");
       const appPathTemp = join(updatePath, "temp");
-      await extract(filePath, { dir: appPathTemp });
+      const zip = new AdmZip(filePath);
+      zip.extractAllTo(appPathTemp, true, true);
       updateInfo.status = "moving";
       if (windows)
         webContentSend.HotUpdateStatus(windows.webContents, updateInfo);

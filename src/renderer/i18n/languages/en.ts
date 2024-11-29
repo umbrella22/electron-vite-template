@@ -14,6 +14,7 @@ export const lang = {
     systemPlatform: "system platform:",
     systemVersion: "system version:",
     systemArch: "system arch:",
+    currentEnvironment: "current environment:",
   },
   buttons: {
     console: "Console",

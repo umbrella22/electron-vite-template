@@ -10,6 +10,7 @@ import rollupOptions from "./rollup.config";
 import { errorLog, doneLog } from "./log";
 import { getArgv } from "./utils";
 
+const { clean = false, target = "client" } = getArgv();
 const mainOpt = rollupOptions(process.env.NODE_ENV, "main");
 const preloadOpt = rollupOptions(process.env.NODE_ENV, "preload");
 
