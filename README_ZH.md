@@ -10,7 +10,7 @@
 
 [国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
 
-### 请确保您的 node 版本大于等于 16.
+### 请确保您的 node 版本大于等于 20，并使用 `npm` 作为包管理工具
 
 #### 如何安装
 
