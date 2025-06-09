@@ -5,7 +5,7 @@ import electron from "electron";
 import chalk from "chalk";
 import { join } from "path";
 import { watch } from "rollup";
-import Portfinder from "portfinder";
+import { detect } from "detect-port";
 import config from "../config";
 import { say } from "cfonts";
 import { spawn } from "child_process";
@@ -56,8 +56,7 @@ const shortcutList: Shortcut[] = [
 ];
 
 async function startRenderer(): Promise<void> {
-  Portfinder.basePort = config.dev.port || 9080;
-  const port = await Portfinder.getPortPromise();
+  const port = await detect(config.dev.port || 9080);
   const { createServer } = await import("vite");
   const server = await createServer({
     configFile: join(__dirname, "vite.config.mts"),

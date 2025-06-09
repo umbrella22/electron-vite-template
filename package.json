@@ -47,7 +47,7 @@
     "listr2": "^8.3.3",
     "minimist": "^1.2.8",
     "pinia": "^3.0.3",
-    "portfinder": "^1.0.32",
+    "detect-port": "^2.1.0",
     "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-obfuscator": "^1.1.0",
     "sass": "^1.89.1",
