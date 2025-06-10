@@ -101,6 +101,9 @@ export class IpcChannelMainClass {
      */
     sendData?: unknown;
   }> = null;
+  SetStoreValue: IpcMainEventListener<{key: string; value: string}> = null;
+  GetStoreValue: IpcMainEventListener<{key: string}, unknown> = null;
+  DeleteStoreValue: IpcMainEventListener<{key: string}> = null;
 }
 
 /**

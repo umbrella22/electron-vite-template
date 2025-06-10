@@ -53,6 +53,29 @@
             {{ i18nt.buttons.changeLanguage }}
           </button>
         </div>
+        <div class="doc" style="margin-top: 50px">
+          <div>
+            <label style="margin-right: 10px" class="title alt">{{ i18nt.store.input.labels }}</label>
+            <input style="padding: 5px; border-radius: 5px" :placeholder="i18nt.store.input.placeholder" v-model="storeInputValue"/>
+          </div>
+
+
+          <button class="btu" @click="setStoreValue">
+            {{ i18nt.store.saveButton }}
+          </button>
+
+          <button class="btu" @click="getStoreValue">
+            {{ i18nt.store.getButton }}
+          </button>
+
+          <button class="btu" @click="deleteStoreValue">
+            {{ i18nt.store.clearButton }}
+          </button>
+
+          <div class="title alt" style="margin-top: 20px" v-if="storeShowValue">
+            {{ storeShowValue }}
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -173,6 +196,24 @@ function CheckUpdate(data) {
 function handleClose() {
   dialogVisible.value = false;
 }
+
+const storeInputValue = ref('')
+const storeShowValue = ref('')
+
+const setStoreValue = () => {
+  ipcRendererChannel.SetStoreValue.invoke({key: 'token', value: storeInputValue.value});
+}
+
+const getStoreValue = () => {
+  ipcRendererChannel.GetStoreValue.invoke({key: 'token'}).then((res) => {
+    storeShowValue.value = res
+  });
+}
+
+const deleteStoreValue = () => {
+  ipcRendererChannel.DeleteStoreValue.invoke({key: 'token'});
+}
+
 
 ipcRendererChannel.DownloadProgress.on((event, arg) => {
   percentage.value = Number(arg);
