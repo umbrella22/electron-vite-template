@@ -1,11 +1,10 @@
 # Electron-Vite-template
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/umbrella22/electron-vite-template/tree/strict)
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
-[![vue](https://img.shields.io/badge/vue-3.4.21-brightgreen.svg)](https://github.com/vuejs/vue-next)
-[![vite](https://img.shields.io/badge/vite-5.2.7-brightgreen.svg)](https://github.com/vitejs/vite)
+[![vue](https://img.shields.io/badge/vue-3.5.16-brightgreen.svg)](https://github.com/vuejs/vue-next)
+[![vite](https://img.shields.io/badge/vite-6.3.5-brightgreen.svg)](https://github.com/vitejs/vite)
 [![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
-[![electron](https://img.shields.io/badge/electron-29.1.6-brightgreen.svg)](https://github.com/electron/electron)
+[![electron](https://img.shields.io/badge/electron-34.5.8-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
 [国内访问地址](https://gitee.com/Zh-Sky/electron-vite-template)
