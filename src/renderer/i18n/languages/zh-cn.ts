@@ -29,4 +29,13 @@ export const lang = {
     changeLanguage: "Change language",
     ForcedUpdate: "强制更新模式",
   },
+  store: {
+    input: {
+      labels: "缓存属性",
+      placeholder: "你想保存的属性值"
+    },
+    saveButton: "保存缓存",
+    getButton: "获取缓存",
+    clearButton: "清除缓存",
+  }
 };

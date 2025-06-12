@@ -29,4 +29,13 @@ export const lang = {
     changeLanguage: "切换语言",
     ForcedUpdate: "Forced Update Mode",
   },
+  store: {
+    input: {
+      labels: "Store Input",
+      placeholder: "Any Value you want to save"
+    },
+    saveButton: "Save",
+    getButton: "Get",
+    clearButton: "Clear"
+  }
 };
