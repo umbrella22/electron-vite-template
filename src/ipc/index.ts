@@ -8,7 +8,7 @@ import {
   IpcChannelRendererClass,
   IpcMainEventListener,
   IpcRendererEventListener,
-} from "./channel";
+} from './channel'
 
 /**
  * 获取事件名及参数
@@ -16,33 +16,33 @@ import {
  */
 type GetChannelType<
   T extends IpcChannelMainClass | IpcChannelRendererClass,
-  K extends keyof IpcMainEventListener | keyof IpcRendererEventListener
+  K extends keyof IpcMainEventListener | keyof IpcRendererEventListener,
 > = {
-  [Key in keyof T]: K extends keyof T[Key] ? T[Key][K] : never;
-};
+  [Key in keyof T]: K extends keyof T[Key] ? T[Key][K] : never
+}
 
 /**
  * 主进程监听事件
  */
 export interface IIpcMainHandle
-  extends GetChannelType<IpcChannelMainClass, "ipcMainHandle"> {}
+  extends GetChannelType<IpcChannelMainClass, 'ipcMainHandle'> {}
 
 /**
  * 渲染进程给主进程发送消息
  */
 export interface IIpcRendererInvoke
-  extends GetChannelType<IpcChannelMainClass, "ipcRendererInvoke"> {}
+  extends GetChannelType<IpcChannelMainClass, 'ipcRendererInvoke'> {}
 
 /**
  * 渲染进程监听事件
  */
 export interface IIpcRendererOn
-  extends GetChannelType<IpcChannelRendererClass, "ipcRendererOn"> {}
+  extends GetChannelType<IpcChannelRendererClass, 'ipcRendererOn'> {}
 
 /**
  * 给渲染进程发消息
  */
 export interface IWebContentSend
-  extends GetChannelType<IpcChannelRendererClass, "webContentSend"> {}
+  extends GetChannelType<IpcChannelRendererClass, 'webContentSend'> {}
 
-export * from "./channel";
+export * from './channel'

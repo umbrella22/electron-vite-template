@@ -4,7 +4,7 @@
  * IpcChannelMainClass 和 IpcChannelRendererClass 是主进程和渲染进程的IPC通道事件监听
  */
 
-import type { ProgressInfo } from "electron-updater";
+import type { ProgressInfo } from 'electron-updater'
 
 /**
  * 主进程的IPC通道事件监听
@@ -14,17 +14,17 @@ export interface IpcMainEventListener<Send = void, Receive = void> {
    * 主进程监听事件
    */
   ipcMainHandle: Send extends void
-  ? (event: Electron.IpcMainInvokeEvent) => Receive | Promise<Receive>
-  : (
-    event: Electron.IpcMainInvokeEvent,
-    args: Send
-  ) => Receive | Promise<Receive>;
+    ? (event: Electron.IpcMainInvokeEvent) => Receive | Promise<Receive>
+    : (
+        event: Electron.IpcMainInvokeEvent,
+        args: Send,
+      ) => Receive | Promise<Receive>
   /**
    * 渲染进程给主进程发送消息
    */
   ipcRendererInvoke: Send extends void
-  ? () => Promise<Receive>
-  : (args: Send) => Promise<Receive>;
+    ? () => Promise<Receive>
+    : (args: Send) => Promise<Receive>
 }
 
 /**
@@ -35,14 +35,14 @@ export interface IpcRendererEventListener<Send = void> {
    * 渲染进程监听事件
    */
   ipcRendererOn: Send extends void
-  ? (event: Electron.IpcRendererEvent) => void
-  : (event: Electron.IpcRendererEvent, args: Send) => void;
+    ? (event: Electron.IpcRendererEvent) => void
+    : (event: Electron.IpcRendererEvent, args: Send) => void
   /**
    * 主进程给渲染进程发送消息
    */
   webContentSend: Send extends void
-  ? (webContents: Electron.WebContents) => void
-  : (webContents: Electron.WebContents, args: Send) => void;
+    ? (webContents: Electron.WebContents) => void
+    : (webContents: Electron.WebContents, args: Send) => void
 }
 
 /**
@@ -51,22 +51,22 @@ export interface IpcRendererEventListener<Send = void> {
  * 具体实现在 src/main/services/ipc-main-handle.ts
  */
 export class IpcChannelMainClass {
-  IsUseSysTitle: IpcMainEventListener<void, boolean> = null;
+  IsUseSysTitle: IpcMainEventListener<void, boolean> = null
   /**
    * 退出应用
    */
-  AppClose: IpcMainEventListener = null;
-  CheckUpdate: IpcMainEventListener = null;
-  ConfirmUpdate: IpcMainEventListener = null;
+  AppClose: IpcMainEventListener = null
+  CheckUpdate: IpcMainEventListener = null
+  ConfirmUpdate: IpcMainEventListener = null
   OpenMessagebox: IpcMainEventListener<
     Electron.MessageBoxOptions,
     Electron.MessageBoxReturnValue
-  > = null;
-  StartDownload: IpcMainEventListener<string> = null;
-  OpenErrorbox: IpcMainEventListener<{ title: string; message: string }> = null;
-  StartServer: IpcMainEventListener<void, string> = null;
-  StopServer: IpcMainEventListener<void, string> = null;
-  HotUpdate: IpcMainEventListener = null;
+  > = null
+  StartDownload: IpcMainEventListener<string> = null
+  OpenErrorbox: IpcMainEventListener<{ title: string; message: string }> = null
+  StartServer: IpcMainEventListener<void, string> = null
+  StopServer: IpcMainEventListener<void, string> = null
+  HotUpdate: IpcMainEventListener = null
 
   /**
    *
@@ -78,29 +78,29 @@ export class IpcChannelMainClass {
      *
      * @type {string}
      */
-    url: string;
+    url: string
 
     /**
      * 是否是支付页
      *
      * @type {boolean}
      */
-    IsPay?: boolean;
+    IsPay?: boolean
 
     /**
      * 支付参数
      *
      * @type {string}
      */
-    PayUrl?: string;
+    PayUrl?: string
 
     /**
      * 发送的新页面数据
      *
      * @type {unknown}
      */
-    sendData?: unknown;
-  }> = null;
+    sendData?: unknown
+  }> = null
 }
 
 /**
@@ -112,47 +112,47 @@ export class IpcChannelMainClass {
  */
 export class IpcChannelRendererClass {
   // ipcRenderer
-  DownloadProgress: IpcRendererEventListener<number> = null;
-  DownloadError: IpcRendererEventListener<Boolean> = null;
-  DownloadPaused: IpcRendererEventListener<Boolean> = null;
+  DownloadProgress: IpcRendererEventListener<number> = null
+  DownloadError: IpcRendererEventListener<Boolean> = null
+  DownloadPaused: IpcRendererEventListener<Boolean> = null
   DownloadDone: IpcRendererEventListener<{
     /**
      * 下载的文件路径
      *
      * @type {string}
      */
-    filePath: string;
-  }> = null;
+    filePath: string
+  }> = null
   UpdateMsg: IpcRendererEventListener<{
-    state: number;
-    msg: string | ProgressInfo;
-  }> = null;
+    state: number
+    msg: string | ProgressInfo
+  }> = null
   UpdateProcessStatus: IpcRendererEventListener<{
     status:
-    | "init"
-    | "downloading"
-    | "moving"
-    | "finished"
-    | "failed"
-    | "download";
-    message: string;
-  }> = null;
+      | 'init'
+      | 'downloading'
+      | 'moving'
+      | 'finished'
+      | 'failed'
+      | 'download'
+    message: string
+  }> = null
 
-  SendDataTest: IpcRendererEventListener<unknown> = null;
+  SendDataTest: IpcRendererEventListener<unknown> = null
   BrowserViewTabDataUpdate: IpcRendererEventListener<{
-    bvWebContentsId: number;
-    title: string;
-    url: string;
-    status: 1 | -1; // 1 添加/更新 -1 删除
-  }> = null;
+    bvWebContentsId: number
+    title: string
+    url: string
+    status: 1 | -1 // 1 添加/更新 -1 删除
+  }> = null
   BrowserViewTabPositionXUpdate: IpcRendererEventListener<{
-    dragTabOffsetX: number;
-    positionX: number;
-    bvWebContentsId: number;
-  }> = null;
-  BrowserTabMouseup: IpcRendererEventListener;
+    dragTabOffsetX: number
+    positionX: number
+    bvWebContentsId: number
+  }> = null
+  BrowserTabMouseup: IpcRendererEventListener
   HotUpdateStatus: IpcRendererEventListener<{
-    status: string;
-    message: string;
-  }> = null;
+    status: string
+    message: string
+  }> = null
 }

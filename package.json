@@ -23,6 +23,7 @@
     "semver": "^7.7.2"
   },
   "devDependencies": {
+    "@ikaros-cli/prettier-config": "^0.1.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
@@ -54,7 +55,7 @@
     "tslib": "^2.8.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5",
+    "vite": "npm:rolldown-vite@latest",
     "vue": "^3.5.16",
     "vue-router": "^4.5.1"
   },

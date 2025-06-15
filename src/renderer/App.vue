@@ -1,19 +1,19 @@
 <template>
-	<title-bar />
-	<div class="main">
-		<router-view v-slot="{ Component }">
-			<component :is="Component" />
-		</router-view>
-	</div>
+  <title-bar />
+  <div class="main">
+    <router-view v-slot="{ Component }">
+      <component :is="Component" />
+    </router-view>
+  </div>
 </template>
 
 <script setup lang="ts">
-import TitleBar from "@renderer/components/title-bar/title-bar.vue";
+import TitleBar from '@renderer/components/title-bar/title-bar.vue'
 </script>
 
 <style scoped>
 .main {
-	padding-top: 30px;
-	box-sizing: border-box;
+  padding-top: 30px;
+  box-sizing: border-box;
 }
 </style>
