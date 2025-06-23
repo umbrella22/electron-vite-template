@@ -1,17 +1,17 @@
-import { ResolvedConfig } from "vite";
+import { ResolvedConfig } from 'vite'
 
 export default () => {
-  let command = "";
+  let command = ''
   return {
-    name: "ikaros-tools",
+    name: 'ikaros-tools',
     configResolved(resolvedConfig: ResolvedConfig) {
-      command = resolvedConfig.command;
+      command = resolvedConfig.command
     },
     buildStart: () => {
-      if (command.includes("serve")) {
+      if (command.includes('serve')) {
         globalThis.__name = (target: string, value: Record<string, any>) =>
-          Object.defineProperty(target, "name", { value, configurable: true });
+          Object.defineProperty(target, 'name', { value, configurable: true })
       }
     },
-  };
-};
+  }
+}

@@ -1,4 +1,4 @@
 interface ColorInfo {
-    color?: string,
-    percentage?: number
+  color?: string
+  percentage?: number
 }

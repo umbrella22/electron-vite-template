@@ -1,4 +1,4 @@
-import { IWebContentSend } from "src/ipc";
+import { IWebContentSend } from 'src/ipc'
 
 /**
  * 主进程给渲染进程发消息
@@ -10,8 +10,8 @@ export const webContentSend: IWebContentSend = new Proxy(
   {
     get(target, channel: keyof IWebContentSend) {
       return (webContents: Electron.WebContents, args: unknown) => {
-        webContents.send(channel, args);
-      };
+        webContents.send(channel, args)
+      }
     },
-  }
-) as IWebContentSend;
+  },
+) as IWebContentSend

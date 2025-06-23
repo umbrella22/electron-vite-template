@@ -20,9 +20,9 @@ class Timer {
   timeout(interval: number, args?: any): Promise<Timer> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(args);
-      }, interval);
-    });
+        resolve(args)
+      }, interval)
+    })
   }
 
   /**
@@ -31,7 +31,7 @@ class Timer {
    * @date 2019-11-25
    */
   inTheEnd(): Promise<Timer> {
-    return this.timeout(0);
+    return this.timeout(0)
   }
 
   /**
@@ -43,11 +43,11 @@ class Timer {
    */
   interval(interval: number, callback: Function) {
     this.timeout(interval).then(() => {
-      typeof callback === "function" &&
+      typeof callback === 'function' &&
         callback() !== false &&
-        this.interval(interval, callback);
-    });
-    return { then: (c) => (callback = c) };
+        this.interval(interval, callback)
+    })
+    return { then: (c) => (callback = c) }
   }
 
   /**
@@ -56,14 +56,14 @@ class Timer {
    * @date 2019-11-29
    */
   start() {
-    const startDate = new Date();
+    const startDate = new Date()
     return {
       stop() {
-        const stopDate = new Date();
-        return stopDate.getTime() - startDate.getTime();
+        const stopDate = new Date()
+        return stopDate.getTime() - startDate.getTime()
       },
-    };
+    }
   }
 }
 
-export default new Timer();
+export default new Timer()

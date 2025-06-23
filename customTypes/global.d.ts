@@ -1,5 +1,5 @@
-import { ipcRenderer, shell } from "electron";
-import type { IIpcRendererInvoke, IIpcRendererOn } from "../src/ipc/index";
+import { ipcRenderer, shell } from 'electron'
+import type { IIpcRendererInvoke, IIpcRendererOn } from '../src/ipc/index'
 
 /**
  * 渲染进程给主进程发送消息
@@ -9,11 +9,11 @@ type IpcRendererInvoke = {
     /**
      * 渲染进程给主进程发送消息
      * @param args 参数
-     * @returns 
+     * @returns
      */
-    invoke: IIpcRendererInvoke[key];
-  };
-};
+    invoke: IIpcRendererInvoke[key]
+  }
+}
 
 /**
  * 渲染进程监听事件
@@ -23,53 +23,53 @@ type IpcRendererOn = {
     /**
      * 渲染进程监听事件
      * @param listener 监听事件
-     * @returns 
+     * @returns
      */
-    on: (listener: IIpcRendererOn[key]) => void;
+    on: (listener: IIpcRendererOn[key]) => void
     /**
      * 渲染进程监听一次事件
-     * @param listener 
-     * @returns 
+     * @param listener
+     * @returns
      */
-    once: (listener: IIpcRendererOn[key]) => void;
+    once: (listener: IIpcRendererOn[key]) => void
     /**
      * 渲染进程移除所有监听
-     * @returns 
+     * @returns
      */
-    removeAllListeners: () => void;
-  };
-};
+    removeAllListeners: () => void
+  }
+}
 
 interface AnyObject {
-  [key: string]: any;
+  [key: string]: any
 }
 
 interface memoryInfo {
-  jsHeapSizeLimit: number;
-  totalJSHeapSize: number;
-  usedJSHeapSize: number;
+  jsHeapSizeLimit: number
+  totalJSHeapSize: number
+  usedJSHeapSize: number
 }
 
 declare global {
   interface Window {
     performance: {
-      memory: memoryInfo;
-    };
+      memory: memoryInfo
+    }
     /**
      * 渲染进程的IPC通道
      * 但是只能是给主进程发消息(invoke)和监听主进程的消息(on/once)
      */
-    ipcRendererChannel: IpcRendererInvoke & IpcRendererOn;
+    ipcRendererChannel: IpcRendererInvoke & IpcRendererOn
     systemInfo: {
-      platform: string;
-      release: string;
-      arch: string;
-      nodeVersion: string;
-      electronVersion: string;
-    };
-    shell: typeof shell;
+      platform: string
+      release: string
+      arch: string
+      nodeVersion: string
+      electronVersion: string
+    }
+    shell: typeof shell
     crash: {
-      start: () => void;
-    };
+      start: () => void
+    }
   }
 }

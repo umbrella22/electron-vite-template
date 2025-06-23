@@ -10,4 +10,4 @@ router.beforeEach((to, from, next) => {
   }, 0)
 })
 
-router.afterEach(() => { })
+router.afterEach(() => {})

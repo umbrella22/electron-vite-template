@@ -11,12 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { i18nt } from "@renderer/i18n";
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { i18nt } from '@renderer/i18n'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const { path, name } = useRoute();
-const { systemInfo } = window;
+const { path, name } = useRoute()
+const { systemInfo } = window
 
 let tips = ref(
   computed(() => [
@@ -33,8 +33,8 @@ let tips = ref(
       name: i18nt.value.about.currentEnvironment,
       value: __CONFIG__.NODE_ENV,
     },
-  ])
-);
+  ]),
+)
 </script>
 
 <style scoped lang="scss">

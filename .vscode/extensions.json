@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "vue.volar",
+    "stylelint.vscode-stylelint",
+    "dbaeumer.vscode-eslint",
+    "DavidAnson.vscode-markdownlint",
+    "streetsidesoftware.code-spell-checker",
+    "lokalise.i18n-ally"
+  ],
+  "unwantedRecommendations": ["HookyQR.beautify", "octref.vetur"]
+}

@@ -1,5 +1,6 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.enable": true,
   "editor.formatOnSave": true,
   "npm.packageManager": "npm",
   "eslint.validate": [
