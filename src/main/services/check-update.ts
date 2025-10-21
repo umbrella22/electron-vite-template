@@ -9,7 +9,6 @@ class Update {
   constructor() {
     // 设置url
     autoUpdater.setFeedURL('http://127.0.0.1:25565/')
-
     // 当更新发生错误的时候触发。
     autoUpdater.on('error', (err) => {
       console.log('更新出现错误', err.message)
@@ -55,7 +54,7 @@ class Update {
       state: type,
       msg: data || '',
     }
-    webContentSend.UpdateMsg(mainWindow.webContents, senddata)
+    webContentSend.updateMsg(mainWindow.webContents, senddata)
   }
 
   // 执行自动更新检查
@@ -70,18 +69,5 @@ class Update {
     autoUpdater.quitAndInstall()
   }
 }
-const updateInstance = new Update()
-export const hotUpdateIpcHandlers = [
-  {
-    channel: 'CheckUpdate',
-    handler: (event: Electron.IpcMainInvokeEvent) => {
-      updateInstance.checkUpdate(BrowserWindow.fromWebContents(event.sender))
-    },
-  },
-  {
-    channel: 'ConfirmUpdate',
-    handler: () => {
-      updateInstance.quitAndInstall()
-    },
-  },
-]
+
+export default Update

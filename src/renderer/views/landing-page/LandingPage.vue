@@ -43,6 +43,9 @@
             {{ i18nt.buttons.changeLanguage }}
           </button>
         </div>
+        <div class="doc">
+          <testComp />
+        </div>
       </div>
     </main>
   </div>
@@ -50,23 +53,13 @@
 
 <script setup lang="ts">
 import SystemInformation from './components/system-info-mation.vue'
-import { message } from '@renderer/api/login'
 import logo from '@renderer/assets/logo.png'
 import { ref } from 'vue'
 import { i18nt, setLanguage, globalLang } from '@renderer/i18n'
-import { useStoreTemplate } from '@store/template'
+import { useStoreTemplate } from '@renderer/store/modules/template'
+import testComp from '@renderer/components/test-comp.vue'
 
-const { ipcRendererChannel, shell, crash } = window
-
-// if (!ipcRenderer) {
-//   ipcRenderer = {} as any;
-//   ipcRenderer.on =
-//     ipcRenderer.invoke =
-//     ipcRenderer.removeAllListeners =
-//     (...args: any): any => {
-//       console.log("not electron");
-//     };
-// }
+const { ipcRendererChannel, crash } = window
 
 const percentage = ref(0)
 const colors = ref([
@@ -77,7 +70,7 @@ const colors = ref([
   { color: '#5cb87a', percentage: 100 },
 ] as string | ColorInfo[])
 const dialogVisible = ref(false)
-const progressStaus = ref(null)
+const progressStaus = ref<string | null>(null)
 const filePath = ref('')
 const updateStatus = ref('')
 const showForcedUpdate = ref(false)
@@ -93,9 +86,6 @@ setTimeout(() => {
   console.log(`storeTemplate`, storeTemplate.getTest1)
 }, 1000)
 
-const elPageSize = ref(100)
-const elCPage = ref(1)
-
 function changeLanguage() {
   setLanguage(globalLang.value === 'zh-cn' ? 'en' : 'zh-cn')
 }
@@ -109,18 +99,19 @@ function openNewWin() {
     url: '/form/index',
   }
   ipcRendererChannel.OpenWin.invoke(data)
-  // ipcRenderer.invoke("open-win", data);
 }
 function getMessage() {
-  message().then((res) => {
-    // ElMessageBox.alert(res.data, "提示", {
-    //   confirmButtonText: "确定",
-    // });
-  })
+  console.log('API is obsolete')
+}
+function StopServer() {
+  ipcRendererChannel.StopServer.invoke()
+}
+function StartServer() {
+  ipcRendererChannel.StartServer.invoke()
 }
 // 获取electron方法
 function open() {}
-function CheckUpdate(data) {
+function CheckUpdate(data: string) {
   switch (data) {
     case 'one':
       ipcRendererChannel.CheckUpdate.invoke()
@@ -178,7 +169,7 @@ ipcRendererChannel.DownloadDone.on((event, age) => {
   // });
 })
 // electron-updater upload
-ipcRendererChannel.UpdateMsg.on((event, age) => {
+ipcRendererChannel.updateMsg.on((event, age) => {
   switch (age.state) {
     case -1:
       const msgdata = {
@@ -232,17 +223,6 @@ ipcRendererChannel.UpdateProcessStatus.on((event, msg) => {
   console.log(msg)
   updateStatus.value = msg.status
 })
-// onUnmounted(() => {
-//   console.log("销毁了哦");
-//   ipcRenderer.removeAllListeners("confirm-message");
-//   ipcRenderer.removeAllListeners("download-done");
-//   ipcRenderer.removeAllListeners("download-paused");
-//   ipcRenderer.removeAllListeners("confirm-stop");
-//   ipcRenderer.removeAllListeners("confirm-start");
-//   ipcRenderer.removeAllListeners("confirm-download");
-//   ipcRenderer.removeAllListeners("download-progress");
-//   ipcRenderer.removeAllListeners("download-error");
-// });
 </script>
 
 <style scoped lang="scss">

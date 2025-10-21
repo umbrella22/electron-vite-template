@@ -5,22 +5,16 @@ import InitWindow from './services/window-manager'
 import { useDisableButton } from './hooks/disable-button-hook'
 import { useProcessException } from '@main/hooks/exception-hook'
 import { useMenu } from '@main/hooks/menu-hook'
-import { registerIpcHandlers } from './services/ipc-main'
-import { ipcMainHandlers } from './services/ipc-main-handle'
-import { downloadIpcHandlers } from './services/download-file'
-import { hotUpdateIpcHandlers } from './services/check-update'
-import { hotUpdaterIpcHandlers } from './services/hot-updater'
+import { useMainDefaultIpc } from './services/ipc-main'
 
 function onAppReady() {
   const { disableF12 } = useDisableButton()
   const { renderProcessGone } = useProcessException()
+  const { defaultIpc } = useMainDefaultIpc()
   const { creactMenu } = useMenu()
   disableF12()
   renderProcessGone()
-  registerIpcHandlers(ipcMainHandlers)
-  registerIpcHandlers(downloadIpcHandlers)
-  registerIpcHandlers(hotUpdateIpcHandlers)
-  registerIpcHandlers(hotUpdaterIpcHandlers)
+  defaultIpc()
   creactMenu()
   new InitWindow().initWindow()
   if (process.env.NODE_ENV === 'development') {

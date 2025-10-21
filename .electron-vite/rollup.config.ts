@@ -68,10 +68,17 @@ export default (env = 'production', type = 'main') => {
       }),
       alias({
         entries: [
-          { find: '@main', replacement: path.join(__dirname, '../src/main') },
+          {
+            find: '@main',
+            replacement: path.join(__dirname, '..', 'src', 'main'),
+          },
           {
             find: '@config',
             replacement: path.join(__dirname, '..', 'config'),
+          },
+          {
+            find: '@ipcManager',
+            replacement: path.join(__dirname, '..', 'src', 'ipc'),
           },
         ],
       }),

@@ -107,9 +107,4 @@ class Main {
   }
 }
 
-export const downloadIpcHandlers = {
-  channel: 'StartDownload',
-  handler: (event: Electron.IpcMainInvokeEvent, downloadUrl: string) => {
-    new Main(BrowserWindow.fromWebContents(event.sender), downloadUrl).start()
-  },
-}
+export default Main
