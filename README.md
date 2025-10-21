@@ -1,17 +1,16 @@
 # electron-vite-template
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
-[![vue](https://img.shields.io/badge/vue-3.5.16-brightgreen.svg)](https://github.com/vuejs/vue-next)
-[![vite](https://img.shields.io/badge/vite-6.3.5-brightgreen.svg)](https://github.com/vitejs/vite)
-[![element-ui](https://img.shields.io/badge/element-plus-brightgreen.svg)](https://www.npmjs.org/package/element-plus)
-[![electron](https://img.shields.io/badge/electron-34.5.8-brightgreen.svg)](https://github.com/electron/electron)
+[![vue](https://img.shields.io/badge/vue-3.5.22-brightgreen.svg)](https://github.com/vuejs/vue-next)
+[![vite](https://img.shields.io/badge/vite-7.1.11-brightgreen.svg)](https://github.com/vitejs/vite)
+[![electron](https://img.shields.io/badge/electron-38.3.0-brightgreen.svg)](https://github.com/electron/electron)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
 
 # Installation
 
 You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
 
-To run a project, you need to have **node version 20** or higher and **use npm as your dependency management tool**
+To run a project, you need to have **node version 22** or higher and **use npm as your dependency management tool**
 
 [Document (Chinese only)](https://umbrella22.github.io/electron-vue-template-doc/)
 
