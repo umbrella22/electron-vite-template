@@ -55,8 +55,7 @@ const shortcutList: Shortcut[] = [
   },
 ]
 
-async function startRenderer(): Promise<void> {
-  const port = await detect(config.dev.port || 9080)
+async function startRenderer(port: number): Promise<void> {
   const { createServer } = await import('vite')
   const server = await createServer({
     configFile: join(__dirname, 'vite.config.mts'),
@@ -265,13 +264,14 @@ function greeting() {
 }
 
 async function init() {
+  const port = await detect(config.dev.port || 9080)
   if (target === 'web') {
-    await startRenderer()
+    await startRenderer(port)
     return
   }
   greeting()
   try {
-    await Promise.all([startRenderer(), startMain(), startPreload()])
+    await Promise.all([startRenderer(port), startMain(), startPreload()])
     startElectron()
     initReadline()
   } catch (error) {
