@@ -271,9 +271,7 @@ async function init() {
   }
   greeting()
   try {
-    await startRenderer()
-    await startMain()
-    await startPreload()
+    await Promise.all([startRenderer(), startMain(), startPreload()])
     startElectron()
     initReadline()
   } catch (error) {
