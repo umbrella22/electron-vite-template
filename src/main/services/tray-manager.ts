@@ -1,11 +1,15 @@
-import { BrowserWindow, Menu, Tray, app, shell } from "electron";
-import { trayURL, trayIconPath, trayTransparentIconPath } from "../config/StaticPath";
+import { BrowserWindow, Menu, Tray, app, shell } from 'electron'
+import {
+  trayURL,
+  trayIconPath,
+  trayTransparentIconPath,
+} from '@main/config/static-path'
 
 let tray: Tray
 
 export function initTray() {
   console.log('trayIconPath', trayIconPath)
-  tray = new Tray(trayIconPath);
+  tray = new Tray(trayIconPath)
 
   tray.setToolTip(app.name)
 
@@ -16,15 +20,14 @@ export function initTray() {
       trayWin.show()
     })
   } else {
-    tray.setContextMenu(Menu.buildFromTemplate([
-      { role: 'about' },
-      { role: 'quit' }
-    ]))
+    tray.setContextMenu(
+      Menu.buildFromTemplate([{ role: 'about' }, { role: 'quit' }]),
+    )
   }
 
   tray.on('double-click', async () => {
     let times = 3
-    while(times > 0) {
+    while (times > 0) {
       shell.beep()
       tray.setImage(trayTransparentIconPath)
       await sleep(500)
@@ -33,7 +36,7 @@ export function initTray() {
       times--
     }
   })
-  
+
   return tray
 }
 
@@ -49,13 +52,13 @@ function createTrayWindow() {
     hiddenInMissionControl: true,
     skipTaskbar: true,
     visualEffectState: 'active',
-    vibrancy: 'menu'
+    vibrancy: 'menu',
   })
   win.loadURL(trayURL)
-  
+
   win.on('blur', async () => {
     let opacity = 1
-    while(opacity > 0) {
+    while (opacity > 0) {
       await sleep(10)
       opacity -= 0.1
       win.setOpacity(opacity)
@@ -63,9 +66,9 @@ function createTrayWindow() {
     win.hide()
   })
 
-  win.on('show', async() => {
+  win.on('show', async () => {
     let opacity = 0
-    while(opacity < 1) {
+    while (opacity < 1) {
       await sleep(10)
       opacity += 0.2
       win.setOpacity(opacity)
@@ -76,7 +79,7 @@ function createTrayWindow() {
 }
 
 function sleep(ms: number) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, ms)
   })
 }

@@ -1,11 +1,13 @@
 import { dialog, BrowserWindow, app } from 'electron'
-import { getPreloadFile, winURL } from '../config/static-path'
+import { winURL, staticPaths } from '../config/static-path'
 import { updater } from '../services/hot-updater'
 import DownloadFile from '../services/download-file'
 import Update from '../services/check-update'
 import config from '@config/index'
 import { IIpcMainHandle } from '@ipcManager/index'
 import { webContentSend } from './web-content-send'
+import { IsUseSysTitle } from '@main/config/const'
+import { otherWindowConfig } from '@main/config/windows-config'
 
 export class IpcMainHandleClass implements IIpcMainHandle {
   private allUpdater: Update
@@ -38,28 +40,18 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     if (!windows) return
     updater(windows)
   }
+  GetStaticPath: (
+    event: Electron.IpcMainInvokeEvent,
+  ) => string | Promise<string> = async () => {
+    return staticPaths
+  }
   OpenWin: (
     event: Electron.IpcMainInvokeEvent,
     args: { url: string; IsPay?: boolean; PayUrl?: string; sendData?: unknown },
   ) => void | Promise<void> = (event, arg) => {
     const childWin = new BrowserWindow({
-      titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      height: 595,
-      useContentSize: true,
-      width: 1140,
-      autoHideMenuBar: true,
-      minWidth: 842,
-      frame: config.IsUseSysTitle,
-      show: false,
-      webPreferences: {
-        sandbox: false,
-        webSecurity: false,
-        // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin',
-        preload: getPreloadFile('main-preload'),
-      },
+      titleBarStyle: IsUseSysTitle ? 'default' : 'hidden',
+      ...Object.assign(otherWindowConfig, {}),
     })
     // 开发模式下自动开启devtools
     if (process.env.NODE_ENV === 'development') {

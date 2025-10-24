@@ -1,12 +1,20 @@
 import {
   IpcChannelMainClass,
   IpcChannelRendererClass,
+  IpcChannelBrowserClass,
+  IpcChannelPrintClass,
   IpcMainEventListener,
   IpcRendererEventListener,
 } from './channel'
 
+type IpcType =
+  | IpcChannelMainClass
+  | IpcChannelRendererClass
+  | IpcChannelBrowserClass
+  | IpcChannelPrintClass
+
 type GetChannelType<
-  T extends IpcChannelMainClass | IpcChannelRendererClass,
+  T extends IpcType,
   K extends keyof IpcMainEventListener | keyof IpcRendererEventListener,
 > = {
   [Key in keyof T]: K extends keyof T[Key] ? T[Key][K] : never
@@ -14,8 +22,14 @@ type GetChannelType<
 
 export interface IIpcMainHandle
   extends GetChannelType<IpcChannelMainClass, 'ipcMainHandle'> {}
+export interface IIpcBrowserHandle
+  extends GetChannelType<IpcChannelBrowserClass, 'ipcMainHandle'> {}
+export interface IIpcPrintHandle
+  extends GetChannelType<IpcChannelPrintClass, 'ipcMainHandle'> {}
 export interface IIpcRendererInvoke
-  extends GetChannelType<IpcChannelMainClass, 'ipcRendererInvoke'> {}
+  extends GetChannelType<IpcChannelMainClass, 'ipcRendererInvoke'>,
+    GetChannelType<IpcChannelBrowserClass, 'ipcRendererInvoke'>,
+    GetChannelType<IpcChannelPrintClass, 'ipcRendererInvoke'> {}
 export interface IIpcRendererOn
   extends GetChannelType<IpcChannelRendererClass, 'ipcRendererOn'> {}
 export interface IWebContentSend

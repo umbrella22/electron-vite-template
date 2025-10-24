@@ -37,49 +37,48 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { vueListen, invoke } from "../utils/ipcRenderer";
-import { IpcChannel } from "../../ipc";
-import { useI18n } from "vue-i18n";
+import { ref, onMounted } from 'vue'
+import { vueListen, invoke, IpcChannel } from '../utils/ipcRenderer'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 interface TabItemData {
-  bvWebContentsId: number;
-  title: string;
-  url: string;
-  positionX?: string;
+  bvWebContentsId: number
+  title: string
+  url: string
+  positionX?: string
 }
 
-const useTransition = ref(true);
-const moveToIndex = ref(-1);
-const tabList = ref<TabItemData[]>([]);
-const activeBvWebContentsId = ref<number>();
+const useTransition = ref(true)
+const moveToIndex = ref(-1)
+const tabList = ref<TabItemData[]>([])
+const activeBvWebContentsId = ref<number>()
 
 onMounted(async () => {
-  const isNewTabContainer = localStorage.getItem("isNewTabContainer");
+  const isNewTabContainer = localStorage.getItem('isNewTabContainer')
   if (isNewTabContainer) {
-    localStorage.removeItem("isNewTabContainer");
+    localStorage.removeItem('isNewTabContainer')
     // 作为拖出tab的容器
-    const data = await invoke(IpcChannel.GetLastBrowserDemoTabData);
+    const data = await invoke(IpcChannel.GetLastBrowserDemoTabData)
     if (data) {
       tabList.value.push({
-        positionX: data.positionX === -1 ? "" : data.positionX + "px",
+        positionX: data.positionX === -1 ? '' : data.positionX + 'px',
         bvWebContentsId: data.bvWebContentsId,
         title: data.title,
         url: data.url,
-      });
+      })
     }
   } else {
     // 打开默认状态
-    createDefaultBrowserView();
+    createDefaultBrowserView()
   }
-});
+})
 
 async function createDefaultBrowserView() {
-  const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView);
+  const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView)
   if (bvWebContentsId !== -1) {
-    activeBvWebContentsId.value = bvWebContentsId;
+    activeBvWebContentsId.value = bvWebContentsId
   }
 }
 
@@ -88,53 +87,53 @@ async function bvSelectHandle(item: TabItemData) {
   if (activeBvWebContentsId.value !== item.bvWebContentsId) {
     const success = await invoke(
       IpcChannel.SelectBrowserDemoTab,
-      item.bvWebContentsId
-    );
+      item.bvWebContentsId,
+    )
     if (success) {
-      activeBvWebContentsId.value = item.bvWebContentsId;
-      searchKey.value = item.url;
+      activeBvWebContentsId.value = item.bvWebContentsId
+      searchKey.value = item.url
     }
   }
 }
 
 // 关闭tab
 async function bvCloseHandle(item: TabItemData) {
-  await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId);
-  const findIndex = tabList.value.findIndex((v) => v === item);
+  await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId)
+  const findIndex = tabList.value.findIndex((v) => v === item)
   if (findIndex !== -1) {
-    tabList.value.splice(findIndex, 1);
+    tabList.value.splice(findIndex, 1)
   }
   if (activeBvWebContentsId.value === item.bvWebContentsId) {
     if (tabList.value.length > 1) {
-      bvSelectHandle(tabList.value[findIndex ? findIndex - 1 : 0]);
+      bvSelectHandle(tabList.value[findIndex ? findIndex - 1 : 0])
     } else if (tabList.value.length === 1) {
-      bvSelectHandle(tabList.value[0]);
+      bvSelectHandle(tabList.value[0])
     }
   }
 }
 
 // 搜索
-const searchKey = ref("");
+const searchKey = ref('')
 async function searchHandle() {
-  let url: URL;
+  let url: URL
   try {
-    url = new URL(searchKey.value);
+    url = new URL(searchKey.value)
   } catch {
-    const query = encodeURIComponent(searchKey.value);
-    url = new URL(`https://www.bing.com/search?q=${query}`);
+    const query = encodeURIComponent(searchKey.value)
+    url = new URL(`https://www.bing.com/search?q=${query}`)
   }
   await invoke(IpcChannel.BrowserDemoTabJumpToUrl, {
     url: url.href,
     bvWebContentsId: activeBvWebContentsId.value,
-  });
+  })
 }
 
-let isFocused = false;
+let isFocused = false
 function focusHandle() {
-  isFocused = true;
+  isFocused = true
 }
 function blurHandle() {
-  isFocused = false;
+  isFocused = false
 }
 
 // 监听tab信息更新
@@ -142,136 +141,136 @@ vueListen(
   IpcChannel.BrowserViewTabDataUpdate,
   (event, { bvWebContentsId, title, url, status }) => {
     const findIndex = tabList.value.findIndex(
-      (tab) => tab.bvWebContentsId === bvWebContentsId
-    );
+      (tab) => tab.bvWebContentsId === bvWebContentsId,
+    )
     if (status === 1) {
       if (findIndex !== -1) {
-        tabList.value[findIndex].title = title;
-        tabList.value[findIndex].url = url;
+        tabList.value[findIndex].title = title
+        tabList.value[findIndex].url = url
         if (bvWebContentsId === activeBvWebContentsId.value && !isFocused) {
-          searchKey.value = url;
+          searchKey.value = url
         }
       } else {
         tabList.value.push({
           bvWebContentsId,
           title,
           url,
-        });
+        })
         if (!isFocused) {
-          searchKey.value = url;
+          searchKey.value = url
         }
-        activeBvWebContentsId.value = bvWebContentsId;
+        activeBvWebContentsId.value = bvWebContentsId
       }
     } else {
       if (findIndex !== -1) {
-        tabList.value.splice(findIndex, 1);
+        tabList.value.splice(findIndex, 1)
       }
-      resetPosition();
+      resetPosition()
     }
-  }
-);
+  },
+)
 
 // 监听拖拽tab位置更新
-let lastDragBvWebContentsId: number;
+let lastDragBvWebContentsId: number
 vueListen(
   IpcChannel.BrowserViewTabPositionXUpdate,
   (event, { positionX, bvWebContentsId, dragTabOffsetX }) => {
-    lastDragBvWebContentsId = bvWebContentsId;
+    lastDragBvWebContentsId = bvWebContentsId
     const findIndex = tabList.value.findIndex(
-      (v) => v.bvWebContentsId === bvWebContentsId
-    );
+      (v) => v.bvWebContentsId === bvWebContentsId,
+    )
     if (findIndex !== -1) {
-      const totalWidth = document.body.clientWidth - 40; // 添加按钮的占位
-      const eachWidth = Math.min(200, totalWidth / tabList.value.length);
+      const totalWidth = document.body.clientWidth - 40 // 添加按钮的占位
+      const eachWidth = Math.min(200, totalWidth / tabList.value.length)
 
-      let floorIndex = Math.floor(positionX / eachWidth);
+      let floorIndex = Math.floor(positionX / eachWidth)
 
       if (floorIndex > findIndex) {
-        floorIndex += 1;
+        floorIndex += 1
       }
       if (floorIndex > tabList.value.length) {
-        floorIndex = tabList.value.length;
+        floorIndex = tabList.value.length
       }
 
       if (moveToIndex.value === -1) {
-        useTransition.value = false;
+        useTransition.value = false
         setTimeout(() => {
-          useTransition.value = true;
-        }, 100);
+          useTransition.value = true
+        }, 100)
       }
-      moveToIndex.value = floorIndex;
-      tabList.value[findIndex].positionX = positionX - dragTabOffsetX + "px";
+      moveToIndex.value = floorIndex
+      tabList.value[findIndex].positionX = positionX - dragTabOffsetX + 'px'
       tabList.value.map((v, i) => {
         if (i !== findIndex) {
-          v.positionX = "";
+          v.positionX = ''
         }
-      });
+      })
     }
-  }
-);
+  },
+)
 
 // 鼠标松开
 vueListen(IpcChannel.BrowserTabMouseup, (event) => {
-  resetPosition();
-});
+  resetPosition()
+})
 
 // 重置拖拽效果
 function resetPosition() {
-  useTransition.value = false;
+  useTransition.value = false
   setTimeout(() => {
-    useTransition.value = true;
-  }, 100);
+    useTransition.value = true
+  }, 100)
   tabList.value.map((v) => {
-    v.positionX = "";
-  });
+    v.positionX = ''
+  })
   if (lastDragBvWebContentsId && moveToIndex.value !== -1) {
     const findIndex = tabList.value.findIndex(
-      (v) => v.bvWebContentsId === lastDragBvWebContentsId
-    );
+      (v) => v.bvWebContentsId === lastDragBvWebContentsId,
+    )
     if (findIndex !== -1) {
       tabList.value.splice(
         moveToIndex.value,
         0,
-        tabList.value.splice(findIndex, 1)[0]
-      );
+        tabList.value.splice(findIndex, 1)[0],
+      )
     }
   }
-  moveToIndex.value = -1;
+  moveToIndex.value = -1
 }
 
 // 拖拽逻辑 start
-let dragging = false;
-let startPosition = { x: 0, y: 0 };
-let mousedownTime: number;
-let mousedownItem: TabItemData;
+let dragging = false
+let startPosition = { x: 0, y: 0 }
+let mousedownTime: number
+let mousedownItem: TabItemData
 function mousedownHandle(e: MouseEvent, item: TabItemData) {
-  localStorage.setItem("isNewTabContainer", "true");
-  e.preventDefault();
-  mousedownItem = item;
-  mousedownTime = Date.now();
-  dragging = true;
-  startPosition = { x: e.x, y: e.y };
+  localStorage.setItem('isNewTabContainer', 'true')
+  e.preventDefault()
+  mousedownItem = item
+  mousedownTime = Date.now()
+  dragging = true
+  startPosition = { x: e.x, y: e.y }
   invoke(IpcChannel.BrowserTabMousedown, {
     offsetX: e.offsetX,
-  });
+  })
 }
 
 document.onmouseup = (e) => {
-  mouseupHandle(e);
-};
+  mouseupHandle(e)
+}
 
 function mouseupHandle(e: MouseEvent) {
-  localStorage.removeItem("isNewTabContainer");
-  if ((e.target as HTMLDivElement).className !== "close-btn") {
+  localStorage.removeItem('isNewTabContainer')
+  if ((e.target as HTMLDivElement).className !== 'close-btn') {
     if (Date.now() - mousedownTime < 200) {
       // 按下松开200ms间隔内判断为点击时间
-      bvSelectHandle(mousedownItem);
+      bvSelectHandle(mousedownItem)
     } else if (dragging) {
-      invoke(IpcChannel.BrowserTabMouseup);
+      invoke(IpcChannel.BrowserTabMouseup)
     }
   }
 
-  dragging = false;
+  dragging = false
 }
 
 document.onmousemove = (e) => {
@@ -282,9 +281,9 @@ document.onmousemove = (e) => {
       startX: startPosition.x, // 按下鼠标时在窗口的x坐标
       startY: startPosition.y, // 按下鼠标时在窗口的y坐标
       bvWebContentsId: mousedownItem.bvWebContentsId,
-    });
+    })
   }
-};
+}
 
 // 拖拽逻辑 end
 </script>

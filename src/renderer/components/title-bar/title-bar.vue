@@ -17,21 +17,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const { ipcRendererChannel, systemInfo } = window
-
+import { invoke, IpcChannel } from '@renderer/utils/ipcRenderer'
 const IsUseSysTitle = ref(false)
-const mix = ref(false)
-const isNotMac = ref(false)
-const IsWeb = ref(Boolean(__ISWEB__))
-
-isNotMac.value = systemInfo.platform !== 'darwin'
-
-ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
+const isNotMac = ref(process.platform !== 'darwin')
+const IsWeb = ref(process.env.BUILD_TARGET)
+invoke(IpcChannel.IsUseSysTitle).then((res) => {
   IsUseSysTitle.value = res
 })
 </script>
 
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .window-title {
   width: 100%;
   height: 30px;
@@ -42,7 +37,6 @@ ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
   position: fixed;
   top: 0;
   z-index: 99999;
-
   .icon-logo {
     width: 1em;
     height: 1em;
@@ -50,16 +44,12 @@ ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
     fill: currentColor;
     overflow: hidden;
   }
-
   .title {
     text-align: center;
-    color: #9d9d9d;
   }
-
   .logo {
-    margin: 0 10px;
+    margin-left: 20px;
   }
-
   .controls-container {
     display: flex;
     flex-grow: 0;
@@ -71,14 +61,12 @@ ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
     height: 100%;
     width: 138px;
     margin-left: auto;
-
     .windows-icon-bg {
       display: inline-block;
       -webkit-app-region: no-drag;
       height: 100%;
       width: 33.34%;
       color: rgba(129, 129, 129, 0.6);
-
       .icon-size {
         width: 12px;
         height: 15px;
@@ -87,12 +75,10 @@ ipcRendererChannel.IsUseSysTitle.invoke().then((res) => {
         overflow: hidden;
       }
     }
-
     .windows-icon-bg:hover {
       background-color: rgba(182, 182, 182, 0.2);
       color: #333;
     }
-
     .close-icon:hover {
       background-color: rgba(232, 17, 35, 0.9);
       color: #fff;

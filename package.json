@@ -21,7 +21,9 @@
   "dependencies": {
     "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2",
-    "semver": "^7.7.2"
+    "regedit": "^5.1.4",
+    "semver": "^7.7.2",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@ikaros-cli/prettier-config": "^0.4.1",
@@ -41,8 +43,11 @@
     "del": "7.1.0",
     "dotenv": "16.5.0",
     "electron": "^38.4.0",
+    "electron_updater_node_cli": "^0.3.3",
+    "electron_updater_node_core": "^0.3.3",
     "electron-builder": "^26.1.0",
     "electron-devtools-vendor": "^3.0.0",
+    "element-plus": "^2.11.5",
     "fs-extra": "^11.3.0",
     "inquirer": "^12.10.0",
     "javascript-obfuscator": "^4.1.1",
@@ -58,6 +63,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
     "vue": "^3.5.22",
+    "vue-i18n": "^11.1.12",
     "vue-router": "^4.6.3"
   },
   "keywords": [
