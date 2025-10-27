@@ -6,7 +6,7 @@ const methodToChannelMap: Record<string, string> = {
   DownloadError: IpcChannel.DownloadError,
   DownloadPaused: IpcChannel.DownloadPaused,
   DownloadDone: IpcChannel.DownloadDone,
-  updateMsg: IpcChannel.updateMsg,
+  UpdateMsg: IpcChannel.UpdateMsg,
   UpdateProcessStatus: IpcChannel.UpdateProcessStatus,
   SendDataTest: IpcChannel.SendDataTest,
   BrowserViewTabDataUpdate: IpcChannel.BrowserViewTabDataUpdate,

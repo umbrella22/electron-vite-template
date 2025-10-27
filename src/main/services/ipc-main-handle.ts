@@ -125,4 +125,26 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     if (!windows) return
     windows.show()
   }
+
+  // TODO: 实现热更新测试功能
+  HotUpdateTest: (event: Electron.IpcMainInvokeEvent) => void | Promise<void> =
+    () => {
+      console.log('HotUpdateTest - Not implemented yet')
+    }
+
+  // TODO: 实现"我的电脑"显示检查功能
+  CheckShowOnMyComputer: (
+    event: Electron.IpcMainInvokeEvent,
+  ) => boolean | Promise<boolean> = async () => {
+    console.log('CheckShowOnMyComputer - Not implemented yet')
+    return false
+  }
+
+  // TODO: 实现"我的电脑"显示设置功能
+  SetShowOnMyComputer: (
+    event: Electron.IpcMainInvokeEvent,
+    show: boolean,
+  ) => void | Promise<void> = (_event, show) => {
+    console.log('SetShowOnMyComputer - Not implemented yet', show)
+  }
 }

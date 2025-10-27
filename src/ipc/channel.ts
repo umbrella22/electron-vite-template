@@ -21,62 +21,6 @@ export interface IpcRendererEventListener<Send = void> {
     : (webContents: Electron.WebContents, args: Send) => void
 }
 
-/**
- * IPC 通道名称枚举
- * 自动从类定义中提取所有方法名作为通道名
- */
-export const IpcChannel = {
-  // Main 通道
-  IsUseSysTitle: 'is-use-sys-title',
-  AppClose: 'app-close',
-  CheckUpdate: 'check-update',
-  ConfirmUpdate: 'confirm-update',
-  OpenMessagebox: 'open-messagebox',
-  StartDownload: 'start-download',
-  OpenErrorbox: 'open-errorbox',
-  StartServer: 'start-server',
-  StopServer: 'stop-server',
-  HotUpdate: 'hot-update',
-  HotUpdateTest: 'hot-update-test',
-  WinReady: 'win-ready',
-  OpenWin: 'open-win',
-  GetStaticPath: 'get-static-path',
-  CheckShowOnMyComputer: 'check-show-on-my-computer',
-  SetShowOnMyComputer: 'set-show-on-my-computer',
-
-  // Renderer 通道
-  DownloadProgress: 'download-progress',
-  DownloadError: 'download-error',
-  DownloadPaused: 'download-paused',
-  DownloadDone: 'download-done',
-  updateMsg: 'update-msg',
-  UpdateMsg: 'update-msg',
-  UpdateProcessStatus: 'update-process-status',
-  SendDataTest: 'send-data-test',
-  BrowserViewTabDataUpdate: 'browser-view-tab-data-update',
-  BrowserViewTabPositionXUpdate: 'browser-view-tab-position-x-update',
-  BrowserTabMouseup: 'browser-tab-mouseup',
-  HotUpdateStatus: 'hot-update-status',
-
-  // Browser 通道
-  OpenBrowserDemoWindow: 'open-browser-demo-window',
-  GetLastBrowserDemoTabData: 'get-last-browser-demo-tab-data',
-  AddDefaultBrowserView: 'add-default-browser-view',
-  SelectBrowserDemoTab: 'select-browser-demo-tab',
-  DestroyBrowserDemoTab: 'destroy-browser-demo-tab',
-  BrowserDemoTabJumpToUrl: 'browser-demo-tab-jump-to-url',
-  BrowserTabMousedown: 'browser-tab-mousedown',
-  BrowserTabMousemove: 'browser-tab-mousemove',
-
-  // Print 通道
-  GetPrinters: 'get-printers',
-  PrintHandlePrint: 'print-handle-print',
-  OpenPrintDemoWindow: 'open-print-demo-window',
-} as const
-
-export type IpcChannelType = typeof IpcChannel
-export type IpcChannelKeys = keyof IpcChannelType
-
 export class IpcChannelMainClass {
   IsUseSysTitle: IpcMainEventListener<void, boolean> = null
   GetStaticPath: IpcMainEventListener<void, string> = null
@@ -98,6 +42,18 @@ export class IpcChannelMainClass {
    * 窗口准备就绪
    */
   WinReady: IpcMainEventListener = null
+  /**
+   * 热更新测试（仅用于测试）
+   */
+  HotUpdateTest: IpcMainEventListener = null
+  /**
+   * 检查是否在"我的电脑"中显示
+   */
+  CheckShowOnMyComputer: IpcMainEventListener<void, boolean> = null
+  /**
+   * 设置是否在"我的电脑"中显示
+   */
+  SetShowOnMyComputer: IpcMainEventListener<boolean> = null
   /**
    *
    * 打开窗口
@@ -145,7 +101,7 @@ export class IpcChannelRendererClass {
      */
     filePath: string
   }> = null
-  updateMsg: IpcRendererEventListener<{
+  UpdateMsg: IpcRendererEventListener<{
     state: number
     msg: string | ProgressInfo
   }> = null
