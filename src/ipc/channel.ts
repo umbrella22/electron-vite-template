@@ -27,51 +27,51 @@ export interface IpcRendererEventListener<Send = void> {
  */
 export const IpcChannel = {
   // Main 通道
-  IsUseSysTitle: 'IsUseSysTitle',
-  AppClose: 'AppClose',
-  CheckUpdate: 'CheckUpdate',
-  ConfirmUpdate: 'ConfirmUpdate',
-  OpenMessagebox: 'OpenMessagebox',
-  StartDownload: 'StartDownload',
-  OpenErrorbox: 'OpenErrorbox',
-  StartServer: 'StartServer',
-  StopServer: 'StopServer',
-  HotUpdate: 'HotUpdate',
-  HotUpdateTest: 'HotUpdateTest',
-  WinReady: 'WinReady',
-  OpenWin: 'OpenWin',
-  GetStaticPath: 'GetStaticPath',
-  CheckShowOnMyComputer: 'CheckShowOnMyComputer',
-  SetShowOnMyComputer: 'SetShowOnMyComputer',
+  IsUseSysTitle: 'is-use-sys-title',
+  AppClose: 'app-close',
+  CheckUpdate: 'check-update',
+  ConfirmUpdate: 'confirm-update',
+  OpenMessagebox: 'open-messagebox',
+  StartDownload: 'start-download',
+  OpenErrorbox: 'open-errorbox',
+  StartServer: 'start-server',
+  StopServer: 'stop-server',
+  HotUpdate: 'hot-update',
+  HotUpdateTest: 'hot-update-test',
+  WinReady: 'win-ready',
+  OpenWin: 'open-win',
+  GetStaticPath: 'get-static-path',
+  CheckShowOnMyComputer: 'check-show-on-my-computer',
+  SetShowOnMyComputer: 'set-show-on-my-computer',
 
   // Renderer 通道
-  DownloadProgress: 'DownloadProgress',
-  DownloadError: 'DownloadError',
-  DownloadPaused: 'DownloadPaused',
-  DownloadDone: 'DownloadDone',
-  updateMsg: 'updateMsg',
-  UpdateMsg: 'UpdateMsg',
-  UpdateProcessStatus: 'UpdateProcessStatus',
-  SendDataTest: 'SendDataTest',
-  BrowserViewTabDataUpdate: 'BrowserViewTabDataUpdate',
-  BrowserViewTabPositionXUpdate: 'BrowserViewTabPositionXUpdate',
-  BrowserTabMouseup: 'BrowserTabMouseup',
-  HotUpdateStatus: 'HotUpdateStatus',
+  DownloadProgress: 'download-progress',
+  DownloadError: 'download-error',
+  DownloadPaused: 'download-paused',
+  DownloadDone: 'download-done',
+  updateMsg: 'update-msg',
+  UpdateMsg: 'update-msg',
+  UpdateProcessStatus: 'update-process-status',
+  SendDataTest: 'send-data-test',
+  BrowserViewTabDataUpdate: 'browser-view-tab-data-update',
+  BrowserViewTabPositionXUpdate: 'browser-view-tab-position-x-update',
+  BrowserTabMouseup: 'browser-tab-mouseup',
+  HotUpdateStatus: 'hot-update-status',
 
   // Browser 通道
-  OpenBrowserDemoWindow: 'OpenBrowserDemoWindow',
-  GetLastBrowserDemoTabData: 'GetLastBrowserDemoTabData',
-  AddDefaultBrowserView: 'AddDefaultBrowserView',
-  SelectBrowserDemoTab: 'SelectBrowserDemoTab',
-  DestroyBrowserDemoTab: 'DestroyBrowserDemoTab',
-  BrowserDemoTabJumpToUrl: 'BrowserDemoTabJumpToUrl',
-  BrowserTabMousedown: 'BrowserTabMousedown',
-  BrowserTabMousemove: 'BrowserTabMousemove',
+  OpenBrowserDemoWindow: 'open-browser-demo-window',
+  GetLastBrowserDemoTabData: 'get-last-browser-demo-tab-data',
+  AddDefaultBrowserView: 'add-default-browser-view',
+  SelectBrowserDemoTab: 'select-browser-demo-tab',
+  DestroyBrowserDemoTab: 'destroy-browser-demo-tab',
+  BrowserDemoTabJumpToUrl: 'browser-demo-tab-jump-to-url',
+  BrowserTabMousedown: 'browser-tab-mousedown',
+  BrowserTabMousemove: 'browser-tab-mousemove',
 
   // Print 通道
-  GetPrinters: 'GetPrinters',
-  PrintHandlePrint: 'PrintHandlePrint',
-  OpenPrintDemoWindow: 'OpenPrintDemoWindow',
+  GetPrinters: 'get-printers',
+  PrintHandlePrint: 'print-handle-print',
+  OpenPrintDemoWindow: 'open-print-demo-window',
 } as const
 
 export type IpcChannelType = typeof IpcChannel
@@ -79,6 +79,7 @@ export type IpcChannelKeys = keyof IpcChannelType
 
 export class IpcChannelMainClass {
   IsUseSysTitle: IpcMainEventListener<void, boolean> = null
+  GetStaticPath: IpcMainEventListener<void, string> = null
   /**
    * 退出应用
    */
@@ -93,7 +94,6 @@ export class IpcChannelMainClass {
   OpenErrorbox: IpcMainEventListener<{ title: string; message: string }> = null
   StartServer: IpcMainEventListener<void, string> = null
   StopServer: IpcMainEventListener<void, string> = null
-  HotUpdate: IpcMainEventListener = null
   /**
    * 窗口准备就绪
    */
@@ -266,4 +266,11 @@ export class IpcChannelPrintClass {
    * 打开打印演示窗口
    */
   OpenPrintDemoWindow: IpcMainEventListener = null
+}
+
+export class IpcChannelHotUpdaterClass {
+  /**
+   * 执行热更新
+   */
+  HotUpdate: IpcMainEventListener = null
 }

@@ -1,6 +1,5 @@
 import { dialog, BrowserWindow, app } from 'electron'
 import { winURL, staticPaths } from '../config/static-path'
-import { updater } from '../services/hot-updater'
 import DownloadFile from '../services/download-file'
 import Update from '../services/check-update'
 import config from '@config/index'
@@ -33,13 +32,6 @@ export class IpcMainHandleClass implements IIpcMainHandle {
       dialog.showErrorBox('error', 'API is obsolete')
       return 'API is obsolete'
     }
-  HotUpdate: (event: Electron.IpcMainInvokeEvent) => void | Promise<void> = (
-    event,
-  ) => {
-    const windows = BrowserWindow.fromWebContents(event.sender)
-    if (!windows) return
-    updater(windows)
-  }
   GetStaticPath: (
     event: Electron.IpcMainInvokeEvent,
   ) => string | Promise<string> = async () => {
@@ -75,7 +67,7 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     })
     // 渲染进程显示时触发
     childWin.once('show', () => {
-      webContentSend.SendDataTest(childWin.webContents, arg.sendData)
+      webContentSend['send-data-test'](childWin.webContents, arg.sendData)
     })
   }
 

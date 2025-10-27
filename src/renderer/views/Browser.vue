@@ -76,39 +76,66 @@ onMounted(async () => {
 })
 
 async function createDefaultBrowserView() {
-  const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView)
-  if (bvWebContentsId !== -1) {
-    activeBvWebContentsId.value = bvWebContentsId
+  try {
+    console.log('createDefaultBrowserView called')
+    const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView)
+    if (bvWebContentsId !== -1) {
+      activeBvWebContentsId.value = bvWebContentsId
+      console.log('New BrowserView created with id:', bvWebContentsId)
+    } else {
+      console.warn('Failed to create BrowserView')
+    }
+  } catch (error) {
+    console.error('createDefaultBrowserView error:', error)
   }
 }
 
 // 点击切换tab
 async function bvSelectHandle(item: TabItemData) {
-  if (activeBvWebContentsId.value !== item.bvWebContentsId) {
-    const success = await invoke(
-      IpcChannel.SelectBrowserDemoTab,
-      item.bvWebContentsId,
-    )
-    if (success) {
-      activeBvWebContentsId.value = item.bvWebContentsId
-      searchKey.value = item.url
+  try {
+    console.log('bvSelectHandle called for tab:', item.bvWebContentsId)
+    if (activeBvWebContentsId.value !== item.bvWebContentsId) {
+      const success = await invoke(
+        IpcChannel.SelectBrowserDemoTab,
+        item.bvWebContentsId,
+      )
+      if (success) {
+        activeBvWebContentsId.value = item.bvWebContentsId
+        searchKey.value = item.url
+        console.log('Tab selected successfully:', item.bvWebContentsId)
+      } else {
+        console.warn('Failed to select tab:', item.bvWebContentsId)
+      }
     }
+  } catch (error) {
+    console.error('bvSelectHandle error:', error)
   }
 }
 
 // 关闭tab
 async function bvCloseHandle(item: TabItemData) {
-  await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId)
-  const findIndex = tabList.value.findIndex((v) => v === item)
-  if (findIndex !== -1) {
-    tabList.value.splice(findIndex, 1)
-  }
-  if (activeBvWebContentsId.value === item.bvWebContentsId) {
-    if (tabList.value.length > 1) {
-      bvSelectHandle(tabList.value[findIndex ? findIndex - 1 : 0])
-    } else if (tabList.value.length === 1) {
-      bvSelectHandle(tabList.value[0])
+  try {
+    console.log('bvCloseHandle called for tab:', item.bvWebContentsId)
+    await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId)
+    const findIndex = tabList.value.findIndex((v) => v === item)
+    if (findIndex !== -1) {
+      tabList.value.splice(findIndex, 1)
+      console.log('Tab removed from UI:', item.bvWebContentsId)
     }
+    if (activeBvWebContentsId.value === item.bvWebContentsId) {
+      if (tabList.value.length > 1) {
+        const newIndex = findIndex > 0 ? findIndex - 1 : 0
+        await bvSelectHandle(tabList.value[newIndex])
+      } else if (tabList.value.length === 1) {
+        await bvSelectHandle(tabList.value[0])
+      } else {
+        // 所有tab都关闭了，重置状态
+        activeBvWebContentsId.value = undefined
+        searchKey.value = ''
+      }
+    }
+  } catch (error) {
+    console.error('bvCloseHandle error:', error)
   }
 }
 
@@ -140,6 +167,13 @@ function blurHandle() {
 vueListen(
   IpcChannel.BrowserViewTabDataUpdate,
   (event, { bvWebContentsId, title, url, status }) => {
+    console.log(
+      'Received tab data update:',
+      bvWebContentsId,
+      title,
+      url,
+      status,
+    )
     const findIndex = tabList.value.findIndex(
       (tab) => tab.bvWebContentsId === bvWebContentsId,
     )
@@ -288,9 +322,6 @@ document.onmousemove = (e) => {
 // 拖拽逻辑 end
 </script>
 <style scoped>
-.browser {
-  padding-top: 30px;
-}
 .tabbar {
   position: relative;
   display: flex;

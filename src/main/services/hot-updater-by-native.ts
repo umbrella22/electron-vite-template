@@ -22,7 +22,8 @@ const request = axios.create()
  */
 export async function updater(windows?: BrowserWindow) {
   const statusCallback = (status: UpdateInfo) => {
-    if (windows) webContentSend.HotUpdateStatus(windows.webContents, status)
+    if (windows)
+      webContentSend['hot-update-status'](windows.webContents, status)
   }
   const downloadFn = async (url: string): Promise<Readable> => {
     const response = await request({

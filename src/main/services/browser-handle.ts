@@ -385,6 +385,8 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     bv: BrowserView,
     status: -1 | 1,
   ): void {
+    console.log('freshTabData', bv.webContents.id, status)
+    console.log('IpcChannel', IpcChannel.BrowserViewTabDataUpdate)
     win.webContents.send(IpcChannel.BrowserViewTabDataUpdate, {
       bvWebContentsId: bv.webContents.id,
       title: bv.webContents.getTitle(),

@@ -8,7 +8,6 @@ import './permission'
 import App from './App.vue'
 import router from './router'
 import { errorHandler } from './error'
-import './utils/hackIpcRenderer'
 
 import { i18n } from './i18n'
 

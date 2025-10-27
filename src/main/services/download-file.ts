@@ -45,10 +45,10 @@ class Main {
         (event: any, item: any, webContents: any) => {
           const filePath = join(app.getPath('downloads'), item.getFilename())
           item.setSavePath(filePath)
-          item.on('updated', (event: any, state: String) => {
+          item.on('updated', (event: any, state: string) => {
             switch (state) {
               case 'progressing':
-                webContentSend.DownloadProgress(
+                webContentSend['download-progress'](
                   this.mainWindow!.webContents,
                   Number(
                     (
@@ -59,24 +59,33 @@ class Main {
                 )
                 break
               default:
-                webContentSend.DownloadError(this.mainWindow!.webContents, true)
+                ;(webContentSend['download-error'] as any)(
+                  this.mainWindow!.webContents,
+                  true,
+                )
                 dialog.showErrorBox(
                   '下载出错',
-                  '由于网络或其他未知原因导致下载出错',
+                  '由于网络或其他原因导致下载出错',
                 )
                 break
             }
           })
-          item.once('done', (event: any, state: String) => {
+          item.once('done', (event: any, state: string) => {
             switch (state) {
               case 'completed':
                 const data = {
                   filePath,
                 }
-                webContentSend.DownloadDone(this.mainWindow!.webContents, data)
+                webContentSend['download-done'](
+                  this.mainWindow!.webContents,
+                  data,
+                )
                 break
               case 'interrupted':
-                webContentSend.DownloadError(this.mainWindow!.webContents, true)
+                ;(webContentSend['download-error'] as any)(
+                  this.mainWindow!.webContents,
+                  true,
+                )
                 dialog.showErrorBox(
                   '下载出错',
                   '由于网络或其他未知原因导致下载出错.',
