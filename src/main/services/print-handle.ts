@@ -14,20 +14,6 @@ export class PrintHandleClass implements IIpcPrintHandle {
     this.win = null
   }
 
-  // 实现接口中的 never 类型属性（从 IIpcMainHandle 继承而来）
-  IsUseSysTitle: never
-  AppClose: never
-  CheckUpdate: never
-  ConfirmUpdate: never
-  OpenMessagebox: never
-  StartDownload: never
-  OpenErrorbox: never
-  StartServer: never
-  StopServer: never
-  HotUpdate: never
-  WinReady: never
-  OpenWin: never
-
   /**
    * 获取打印机列表
    */

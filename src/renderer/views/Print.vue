@@ -4,45 +4,49 @@
       <span class="tips">{{ t('print.tips') }}</span>
     </div>
     <div class="row">
-      <select class="grip-right" v-model="selName">
-        <option
+      <el-select class="grip-right w-200" v-model="selName">
+        <el-option
           v-for="(item, index) in printers"
           :key="index"
           :value="item.name"
         >
           {{ item.displayName }}
-        </option>
-      </select>
-      <button type="button" @click="print">{{ t('print.print') }}</button>
+        </el-option>
+      </el-select>
+      <el-button type="button" @click="print">{{ t('print.print') }}</el-button>
     </div>
     <div class="row">
-      <button
+      <el-button
         class="grip-right"
         type="button"
         @click="() => (silent = !silent)"
       >
         {{ silent ? '' : t('print.notUse') }}{{ t('print.silentPrinting') }}
-      </button>
-      <button
+      </el-button>
+      <el-button
         class="grip-right"
         type="button"
         @click="() => (printBackground = !printBackground)"
       >
         {{ printBackground ? t('print.use') : t('print.unuse')
         }}{{ t('print.backgroundColor') }}
-      </button>
-      <button type="button" @click="() => (color = !color)">
+      </el-button>
+      <el-button type="button" @click="() => (color = !color)">
         {{ color ? t('print.colorful') : t('print.blackAndWhite') }}
-      </button>
+      </el-button>
     </div>
     <div class="line"></div>
     <div class="row">
       <span class="grip-right">{{ t('print.margin') }}:</span>
-      <select class="grip-right" v-model="margins.marginType">
-        <option v-for="(item, index) in marginTypes" :key="index" :value="item">
+      <el-select class="grip-right w-200" v-model="margins.marginType">
+        <el-option
+          v-for="(item, index) in marginTypes"
+          :key="index"
+          :value="item"
+        >
           {{ item }}
-        </option>
-      </select>
+        </el-option>
+      </el-select>
     </div>
     <div v-show="margins.marginType === 'custom'" class="row">
       <label class="grip-right">
@@ -70,15 +74,15 @@
     <div class="row">
       <span class="grip-right">尺寸:</span>
       <!-- <div class="fake-radio"  @click="() => selPageSizeType = 0">{{ selPageSizeType === 0 ? '√' : '' }}</div> -->
-      <select class="grip-right" v-model="pageSizeString">
-        <option
+      <el-select class="grip-right w-200" v-model="pageSizeString">
+        <el-option
           v-for="(item, index) in pageSizeOptions"
           :key="index"
           :value="item"
         >
           {{ item }}
-        </option>
-      </select>
+        </el-option>
+      </el-select>
     </div>
     <!-- 设置宽高变成A4 大概哪里不对 -->
     <!-- <div class="row">
@@ -172,36 +176,6 @@ async function print() {
   border: 1px solid blue;
 }
 
-select {
-  width: 200px;
-  height: 40px;
-  border: 1px solid #000;
-  border-radius: 4px;
-}
-
-button {
-  height: 40px;
-  padding: 0 20px;
-  background: unset;
-  border: 1px solid #000;
-  border-radius: 4px;
-}
-
-input {
-  height: 40px;
-  padding: 0 10px;
-  border: 1px solid #000;
-  border-radius: 4px;
-}
-
-input.small {
-  width: 50px;
-}
-
-input.normal {
-  width: 100px;
-}
-
 .row {
   display: flex;
   align-items: center;
@@ -215,6 +189,10 @@ input.normal {
 
 .grip-right {
   margin-right: 10px;
+}
+
+.w-200 {
+  width: 200px;
 }
 
 .fake-radio {

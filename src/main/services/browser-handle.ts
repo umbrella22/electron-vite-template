@@ -24,18 +24,6 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     this.viewList = []
     this.startScreenY = null
   }
-  IsUseSysTitle: never
-  AppClose: never
-  CheckUpdate: never
-  ConfirmUpdate: never
-  OpenMessagebox: never
-  StartDownload: never
-  OpenErrorbox: never
-  StartServer: never
-  StopServer: never
-  HotUpdate: never
-  WinReady: never
-  OpenWin: never
 
   OpenBrowserDemoWindow: (
     event: Electron.IpcMainInvokeEvent,
