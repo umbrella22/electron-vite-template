@@ -11,11 +11,11 @@ function onAppReady() {
   const { disableF12 } = useDisableButton()
   const { renderProcessGone } = useProcessException()
   const { defaultIpc } = useMainDefaultIpc()
-  const { creactMenu } = useMenu()
+  const { createMenu } = useMenu()
   disableF12()
   renderProcessGone()
   defaultIpc()
-  creactMenu()
+  createMenu()
   new InitWindow().initWindow()
   if (process.env.NODE_ENV === 'development') {
     const { VUEJS_DEVTOOLS } = require('electron-devtools-vendor')

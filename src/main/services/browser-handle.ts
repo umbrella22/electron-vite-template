@@ -1,27 +1,27 @@
-import { BrowserView, BrowserWindow, screen } from 'electron'
+import { BaseWindow, screen, WebContents, WebContentsView } from 'electron'
 import { IpcChannel } from '../../ipc'
 import { IIpcBrowserHandle } from '@ipcManager/index'
 import { IsUseSysTitle } from '../config/const'
 import { otherWindowConfig } from '../config/windows-config'
 import { browserDemoURL } from '@main/config/static-path'
-import { openDevTools } from './window-manager'
 
 export class BrowserHandleClass implements IIpcBrowserHandle {
   // 状态管理 - 原全局变量转换为私有属性
   private dragTabOffsetX: number = 0
-  private lastDragView: BrowserView | null = null
-  private emptyWin: BrowserWindow | null = null
-  private viewFromWin: BrowserWindow | null = null
-  private useNewWindow: BrowserWindow | null = null
-  private winList: BrowserWindow[] = []
-  private viewList: BrowserView[] = []
+  private lastDragView: WebContentsView | null = null
+  private emptyWin: BaseWindow | null = null
+  private viewFromWin: BaseWindow | null = null
+  private useNewWindow: BaseWindow | null = null
   private startScreenY: number | null = null
+  private winViewBindList: {
+    win: BaseWindow
+    tabbarView: WebContentsView
+    viewList: WebContentsView[]
+  }[] = []
 
   constructor() {
     // 初始化状态
     this.dragTabOffsetX = 0
-    this.winList = []
-    this.viewList = []
     this.startScreenY = null
   }
 
@@ -34,13 +34,13 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   GetLastBrowserDemoTabData: (event: Electron.IpcMainInvokeEvent) =>
     | {
         positionX: number
-        bvWebContentsId: number
+        browserContentViewWebContentsId: number
         title: string
         url: string
       }
     | Promise<{
         positionX: number
-        bvWebContentsId: number
+        browserContentViewWebContentsId: number
         title: string
         url: string
       }> = async (event) => {
@@ -48,14 +48,16 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     if (this.lastDragView) {
       let positionX = -1
       if (this.dragTabOffsetX) {
-        const currentWin = BrowserWindow.fromBrowserView(this.lastDragView)
-        const bound = currentWin.getBounds()
-        const { x, y } = screen.getCursorScreenPoint()
-        positionX = x - bound.x - this.dragTabOffsetX
+        const currentWin = this.getWinFromView(this.lastDragView)
+        if (currentWin) {
+          const bound = currentWin.getBounds()
+          const { x, y } = screen.getCursorScreenPoint()
+          positionX = x - bound.x - this.dragTabOffsetX
+        }
       }
       return {
         positionX,
-        bvWebContentsId: this.lastDragView.webContents.id,
+        browserContentViewWebContentsId: this.lastDragView.webContents.id,
         title: this.lastDragView.webContents.getTitle(),
         url: this.lastDragView.webContents.getURL(),
       }
@@ -63,7 +65,7 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     this.openBrowserDemoWindow()
     return {
       positionX: -1,
-      bvWebContentsId: -1,
+      browserContentViewWebContentsId: -1,
       title: '',
       url: '',
     }
@@ -71,53 +73,68 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
 
   AddDefaultBrowserView: (
     event: Electron.IpcMainInvokeEvent,
-  ) => { bvWebContentsId: number } | Promise<{ bvWebContentsId: number }> =
-    async (event) => {
-      // 添加tab的内容
-      const currentWin = BrowserWindow.fromWebContents(event.sender)
-      let bvWebContentsId = -1
-      if (currentWin) {
-        const bv = this.createDefaultBrowserView(currentWin)
-        bvWebContentsId = bv.webContents.id
-      }
-      return { bvWebContentsId }
+  ) =>
+    | { browserContentViewWebContentsId: number }
+    | Promise<{ browserContentViewWebContentsId: number }> = async (event) => {
+    // 添加tab的内容
+    const currentWin = this.getWinFromTabbarWebContents(event.sender)
+    let browserContentViewWebContentsId = -1
+    if (currentWin) {
+      const browserContentView = this.createDefaultBrowserView(currentWin)
+      browserContentViewWebContentsId = browserContentView.webContents.id
     }
+    return { browserContentViewWebContentsId }
+  }
 
   SelectBrowserDemoTab: (
     event: Electron.IpcMainInvokeEvent,
-    bvWebContentsId: number,
-  ) => boolean | Promise<boolean> = async (event, bvWebContentsId) => {
+    browserContentViewWebContentsId: number,
+  ) => boolean | Promise<boolean> = async (
+    event,
+    browserContentViewWebContentsId,
+  ) => {
     // 选择tab为当前tab
-    const currentWin = BrowserWindow.fromWebContents(event.sender)
+    const currentWin = this.getWinFromTabbarWebContents(event.sender)
+    let selected = false
     if (currentWin) {
-      const bvList = currentWin.getBrowserViews()
-      for (let i = 0; i < bvList.length; i++) {
-        const bv = bvList[i]
-        if (bv.webContents.id === bvWebContentsId) {
-          currentWin.setTopBrowserView(bv)
-          return true
+      const viewList = this.getViewListFromWin(currentWin)
+      for (let i = 0; i < viewList.length; i++) {
+        const browserContentView = viewList[i]
+        browserContentView.setVisible(
+          browserContentView.webContents.id === browserContentViewWebContentsId,
+        )
+        if (
+          browserContentView.webContents.id === browserContentViewWebContentsId
+        ) {
+          browserContentView.setVisible(true)
+          selected = true
         }
       }
     }
-    return false
+    return selected
   }
 
   DestroyBrowserDemoTab: (
     event: Electron.IpcMainInvokeEvent,
-    bvWebContentsId: number,
-  ) => void | Promise<void> = async (event, bvWebContentsId) => {
+    browserContentViewWebContentsId: number,
+  ) => void | Promise<void> = async (
+    event,
+    browserContentViewWebContentsId,
+  ) => {
     // 关闭tab
-    const currentWin = BrowserWindow.fromWebContents(event.sender)
+    const currentWin = this.getWinFromTabbarWebContents(event.sender)
     if (currentWin) {
-      const bvList = currentWin.getBrowserViews()
-      for (let i = 0; i < bvList.length; i++) {
-        const bv = bvList[i]
-        if (bv.webContents.id === bvWebContentsId) {
-          currentWin.removeBrowserView(bv)
-          if (bvList.length === 1) {
+      const viewList = this.getViewListFromWin(currentWin)
+      for (let i = 0; i < viewList.length; i++) {
+        const browserContentView = viewList[i]
+        if (
+          browserContentView.webContents.id === browserContentViewWebContentsId
+        ) {
+          currentWin.contentView.removeChildView(browserContentView)
+          if (viewList.length === 1) {
             currentWin.close()
           }
-          bv.webContents.close()
+          browserContentView.webContents.close()
           break
         }
       }
@@ -127,14 +144,15 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   BrowserDemoTabJumpToUrl: (
     event: Electron.IpcMainInvokeEvent,
     args: {
-      bvWebContentsId: number
+      browserContentViewWebContentsId: number
       url: string
     },
-  ) => void | Promise<void> = async (event, { bvWebContentsId, url }) => {
+  ) => void | Promise<void> = async (
+    event,
+    { browserContentViewWebContentsId, url },
+  ) => {
     // 跳转
-    const currentView = this.viewList.find(
-      (v) => v.webContents.id === bvWebContentsId,
-    )
+    const currentView = this.getBrowserContentViewFromWebContents(event.sender)
     if (currentView) {
       currentView.webContents.loadURL(url)
     }
@@ -156,7 +174,7 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
       screenY: number
       startX: number
       startY: number
-      bvWebContentsId: number
+      browserContentViewWebContentsId: number
     },
   ) => void | Promise<void> = async (
     event,
@@ -165,22 +183,23 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
       screenY, // 鼠标在显示器的y坐标
       startX, // 按下鼠标时在窗口的x坐标
       startY, // 按下鼠标时在窗口的y坐标
-      bvWebContentsId,
+      browserContentViewWebContentsId,
     },
   ) => {
     if (!this.startScreenY) {
       this.startScreenY = screenY
     }
     if (!this.viewFromWin) {
-      this.viewFromWin = BrowserWindow.fromWebContents(event.sender)
+      this.viewFromWin = this.getWinFromTabbarWebContents(event.sender)
     }
-    let movingWin: BrowserWindow | null = null
-    const currentView = this.viewList.find(
-      (v) => v.webContents.id === bvWebContentsId,
+    let movingWin: BaseWindow | null = null
+    const currentView = this.getBrowserContentViewFromWebContentsId(
+      browserContentViewWebContentsId,
     )
+
     this.lastDragView = currentView || null
     if (this.viewFromWin && currentView) {
-      if (this.viewFromWin.getBrowserViews().length <= 1) {
+      if (this.getViewListFromWin(this.viewFromWin).length <= 1) {
         movingWin = this.viewFromWin
       } else {
         if (this.useNewWindow) {
@@ -207,15 +226,21 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
 
           // 设置拖拽的 tab 位置
           const bound = movingWin.getBounds()
-          movingWin.webContents.send(IpcChannel.BrowserViewTabPositionXUpdate, {
-            dragTabOffsetX: this.dragTabOffsetX,
-            positionX: screenX - bound.x,
-            bvWebContentsId: currentView.webContents.id,
-          })
+          const tabbarView = this.getTabbarViewFromWin(movingWin)
+          if (tabbarView) {
+            tabbarView.webContents.send(
+              IpcChannel.BrowserViewTabPositionXUpdate,
+              {
+                dragTabOffsetX: this.dragTabOffsetX,
+                positionX: screenX - bound.x,
+                browserContentViewWebContentsId: currentView.webContents.id,
+              },
+            )
+          }
         } else {
           // 内部移动 movingWin = null
-          for (let i = 0; i < this.winList.length; i++) {
-            const existsWin = this.winList[i]
+          for (let i = 0; i < this.winViewBindList.length; i++) {
+            const existsWin = this.winViewBindList[i].win
             const bound = existsWin.getBounds()
             if (
               existsWin !== this.emptyWin &&
@@ -225,14 +250,17 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
               bound.y + 30 < screenY &&
               bound.y + 70 > screenY
             ) {
-              existsWin.webContents.send(
-                IpcChannel.BrowserViewTabPositionXUpdate,
-                {
-                  dragTabOffsetX: this.dragTabOffsetX,
-                  positionX: screenX - bound.x,
-                  bvWebContentsId: currentView.webContents.id,
-                },
-              )
+              const tabbarView = this.getTabbarViewFromWin(existsWin)
+              if (tabbarView) {
+                tabbarView.webContents.send(
+                  IpcChannel.BrowserViewTabPositionXUpdate,
+                  {
+                    dragTabOffsetX: this.dragTabOffsetX,
+                    positionX: screenX - bound.x,
+                    browserContentViewWebContentsId: currentView.webContents.id,
+                  },
+                )
+              }
               return
             }
           }
@@ -241,8 +269,8 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
       if (movingWin) {
         movingWin.setPosition(screenX - startX, screenY - startY)
         // 判断是否需要添加进新窗口
-        for (let i = 0; i < this.winList.length; i++) {
-          const existsWin = this.winList[i]
+        for (let i = 0; i < this.winViewBindList.length; i++) {
+          const existsWin = this.winViewBindList[i].win
           const bound = existsWin.getBounds()
           const tabbarCenterY = bound.y + 50 // titlebar 30 tabbar 40 / 2
           if (
@@ -253,7 +281,7 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
             Math.abs(tabbarCenterY - screenY) < 20
           ) {
             this.removeBrowserView(movingWin, currentView)
-            if (movingWin.getBrowserViews().length === 0) {
+            if (this.getViewListFromWin(movingWin).length === 0) {
               this.emptyWin = movingWin
               this.emptyWin.setHasShadow(false)
               this.emptyWin.setAlwaysOnTop(false)
@@ -275,12 +303,15 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   BrowserTabMouseup: (
     event: Electron.IpcMainInvokeEvent,
   ) => void | Promise<void> = async (event) => {
-    this.winList.map((win) => {
-      if (win?.getBrowserViews().length === 0) {
+    this.winViewBindList.map((item) => {
+      const win = item.win
+      if (this.getViewListFromWin(win).length === 0) {
         win?.close()
       } else {
         win?.setAlwaysOnTop(false)
-        win?.webContents?.send(IpcChannel.BrowserTabMouseup)
+        this.getTabbarViewFromWin(win)?.webContents.send(
+          IpcChannel.BrowserTabMouseup,
+        )
       }
     })
     this.useNewWindow = null
@@ -290,96 +321,266 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   }
 
   // 私有辅助方法 - 原函数转换为类方法
-  private openBrowserDemoWindow(): BrowserWindow {
-    const win = new BrowserWindow({
+  private openBrowserDemoWindow(): BaseWindow {
+    const win = new BaseWindow({
       titleBarStyle: IsUseSysTitle ? 'default' : 'hidden',
       ...Object.assign(otherWindowConfig, {}),
     })
-    // // 开发模式下自动开启devtools
-    if (process.env.NODE_ENV === 'development') {
-      openDevTools(win)
+
+    const view = new WebContentsView({
+      webPreferences: {
+        contextIsolation: false,
+        nodeIntegration: true,
+        webSecurity: false,
+        // 如果是开发模式可以使用devTools
+        devTools: process.env.NODE_ENV === 'development',
+        // 在macos中启用橡皮动画
+        scrollBounce: process.platform === 'darwin',
+      },
+    })
+    view.setBounds({
+      x: 0,
+      y: 0,
+      width: otherWindowConfig.width,
+      height: otherWindowConfig.height,
+    })
+    win.contentView.addChildView(view)
+
+    const winViewData = {
+      win,
+      tabbarView: view,
+      viewList: [],
     }
-    win.loadURL(browserDemoURL)
-    win.on('ready-to-show', () => {
+
+    // 开发模式下自动开启devtools
+    if (process.env.NODE_ENV === 'development') {
+      view.webContents.openDevTools()
+    }
+    view.webContents.loadURL(browserDemoURL)
+    view.webContents.on('dom-ready', () => {
       win.show()
     })
-    win.on('closed', () => {
-      const findIndex = this.winList.findIndex((v) => win === v)
-      if (findIndex !== -1) {
-        this.winList.splice(findIndex, 1)
+    win.on('resize', () => {
+      const bounds = win.getBounds()
+      winViewData.tabbarView.setBounds({
+        x: 0,
+        y: 0,
+        width: bounds.width,
+        height: bounds.height,
+      })
+      for (const view of winViewData.viewList) {
+        view.setBounds({
+          x: 0,
+          y: 110,
+          width: bounds.width,
+          height: bounds.height - 110,
+        })
       }
     })
-    this.winList.push(win)
+    win.on('closed', () => {
+      view.webContents.closeDevTools()
+      view.webContents.close()
+      const findIndex = this.winViewBindList.findIndex((v) => win === v.win)
+      if (findIndex !== -1) {
+        const item = this.winViewBindList.splice(findIndex, 1)[0]
+        item.tabbarView.webContents.close()
+        item.viewList.forEach((v) => {
+          v.webContents.close()
+        })
+      }
+    })
+    this.winViewBindList.push(winViewData)
     return win
   }
 
   private createDefaultBrowserView(
-    win: BrowserWindow,
+    win: BaseWindow,
     defaultUrl = 'https://www.bing.com',
-  ): BrowserView {
-    const [winWidth, winHeight] = win.getSize()
-    const bv = new BrowserView()
-    win.addBrowserView(bv)
+  ): WebContentsView {
+    const view = new WebContentsView()
+    this.addViewToWin(win, view)
     // title-bar 30px  tabbar 40px  searchbar 40px
-    bv.setBounds({ x: 0, y: 110, width: winWidth, height: winHeight - 110 })
-    bv.setAutoResize({
-      width: true,
-      height: true,
+    const bounds = win.getBounds()
+    view.setBounds({
+      x: 0,
+      y: 110,
+      width: bounds.width,
+      height: bounds.height - 110,
     })
-    bv.webContents.on('did-finish-load', () => {
-      console.log(bv.webContents.getURL())
+    view.webContents.on('did-finish-load', () => {
+      console.log(view.webContents.getURL())
     })
-    bv.webContents.loadURL(defaultUrl)
-    bv.webContents.on('page-title-updated', (event, title) => {
-      const parentBw = BrowserWindow.fromBrowserView(bv)
-      if (parentBw) {
-        this.freshTabData(parentBw, bv, 1)
-      }
+    view.webContents.loadURL(defaultUrl)
+    view.webContents.on('page-title-updated', (event, title) => {
+      this.freshTabData(null, view, 1)
     })
-    bv.webContents.on('destroyed', () => {
-      const findIndex = this.viewList.findIndex((v) => v === bv)
-      if (findIndex !== -1) {
-        this.viewList.splice(findIndex, 1)
-      }
+    view.webContents.on('destroyed', () => {
+      this.removeBrowserView(null, view)
     })
-    bv.webContents.setWindowOpenHandler((details) => {
-      const parentBw = BrowserWindow.fromBrowserView(bv)
+    view.webContents.setWindowOpenHandler((details) => {
+      const parentBw = this.getWinFromView(view)
       this.createDefaultBrowserView(parentBw, details.url)
       return { action: 'deny' }
     })
-    this.freshTabData(win, bv, 1)
-    this.viewList.push(bv)
-    return bv
+    this.freshTabData(win, view, 1)
+
+    return view
   }
 
-  private addBrowserView(win: BrowserWindow, view: BrowserView): void {
-    if (BrowserWindow.fromBrowserView(view) !== win) {
-      win.addBrowserView(view)
+  private addBrowserView(win: BaseWindow, view: WebContentsView): void {
+    if (this.getWinFromView(view) !== win) {
+      this.addViewToWin(win, view)
+      const bounds = win.getBounds()
+      view.setBounds({
+        x: 0,
+        y: 110,
+        width: bounds.width,
+        height: bounds.height - 110,
+      })
       win.show()
       win.setAlwaysOnTop(true)
     }
     this.freshTabData(win, view, 1)
   }
 
-  private removeBrowserView(win: BrowserWindow, view: BrowserView): void {
-    if (BrowserWindow.fromBrowserView(view) === win) {
-      win.removeBrowserView(view)
-    }
+  private removeBrowserView(
+    win: BaseWindow | null,
+    view: WebContentsView,
+  ): void {
+    this.removeViewFromWinByView(view)
     this.freshTabData(win, view, -1)
   }
 
   private freshTabData(
-    win: BrowserWindow,
-    bv: BrowserView,
+    win: BaseWindow | null,
+    view: WebContentsView,
     status: -1 | 1,
   ): void {
-    console.log('freshTabData', bv.webContents.id, status)
+    console.log('freshTabData', view.webContents.id, status)
     console.log('IpcChannel', IpcChannel.BrowserViewTabDataUpdate)
-    win.webContents.send(IpcChannel.BrowserViewTabDataUpdate, {
-      bvWebContentsId: bv.webContents.id,
-      title: bv.webContents.getTitle(),
-      url: bv.webContents.getURL(),
-      status: status,
-    })
+
+    const _win = win ?? this.getWinFromView(view)
+    if (_win) {
+      this.getTabbarViewFromWin(_win)?.webContents.send(
+        IpcChannel.BrowserViewTabDataUpdate,
+        {
+          browserContentViewWebContentsId: view.webContents.id,
+          title: view.webContents.getTitle(),
+          url: view.webContents.getURL(),
+          status: status,
+        },
+      )
+    }
+  }
+
+  private getWinFromView(view: WebContentsView): BaseWindow | null {
+    for (const item of this.winViewBindList) {
+      if (item.viewList.includes(view)) {
+        return item.win
+      }
+    }
+    return null
+  }
+
+  private getWinFromTabbarWebContents(
+    webContents: WebContents,
+  ): BaseWindow | null {
+    for (const item of this.winViewBindList) {
+      if (item.tabbarView.webContents === webContents) {
+        return item.win
+      }
+    }
+    return null
+  }
+
+  private getViewListFromWin(win: BaseWindow): WebContentsView[] {
+    let list = []
+    const item = this.winViewBindList.find((item) => item.win === win)
+    if (item) {
+      list = item.viewList
+    }
+    return list
+  }
+
+  private getTabbarViewFromWin(win: BaseWindow): WebContentsView {
+    let tabbarView = null
+    const item = this.winViewBindList.find((item) => item.win === win)
+    if (item) {
+      tabbarView = item.tabbarView
+    }
+    return tabbarView
+  }
+
+  private addViewToWin(win: BaseWindow, view: WebContentsView): void {
+    const item = this.winViewBindList.find((item) => item.win === win)
+    if (item) {
+      win.contentView.addChildView(view)
+      item.viewList.push(view)
+      for (const itemView of item.viewList) {
+        if (itemView !== view) {
+          itemView.setVisible(false)
+        }
+      }
+    }
+  }
+
+  private getBrowserContentViewFromWebContents(
+    webContents: WebContents,
+  ): WebContentsView | null {
+    for (const item of this.winViewBindList) {
+      const browserContentView = item.viewList.find(
+        (v) => v.webContents === webContents,
+      )
+      if (browserContentView) {
+        return browserContentView
+      }
+    }
+    return null
+  }
+
+  private getBrowserContentViewFromWebContentsId(
+    webContentsId: number,
+  ): WebContentsView | null {
+    for (const item of this.winViewBindList) {
+      const browserContentView = item.viewList.find(
+        (v) => v.webContents.id === webContentsId,
+      )
+      if (browserContentView) {
+        return browserContentView
+      }
+    }
+    return null
+  }
+
+  private getBrowserTabbarViewFromWebContents(
+    webContents: WebContents,
+  ): WebContentsView | null {
+    for (const item of this.winViewBindList) {
+      if (item.tabbarView.webContents === webContents) {
+        return item.tabbarView
+      }
+    }
+    return null
+  }
+
+  private removeViewFromWin(win: BaseWindow, view: WebContentsView): void {
+    const item = this.winViewBindList.find((item) => item.win === win)
+    if (item) {
+      const findIndex = item.viewList.findIndex((v) => v === view)
+      if (findIndex !== -1) {
+        item.viewList.splice(findIndex, 1)
+      }
+    }
+  }
+
+  private removeViewFromWinByView(view: WebContentsView) {
+    for (const item of this.winViewBindList) {
+      const findIndex = item.viewList.findIndex((v) => v === view)
+      if (findIndex !== -1) {
+        item.viewList.splice(findIndex, 1)
+        this.removeViewFromWin(item.win, view)
+        break
+      }
+    }
   }
 }

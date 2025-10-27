@@ -7,7 +7,9 @@
           class="tab-item"
           :style="{ left: item.positionX }"
           :class="{
-            active: activeBvWebContentsId === item.bvWebContentsId,
+            active:
+              activeBrowserContentViewWebContentsId ===
+              item.browserContentViewWebContentsId,
             dragging: item.positionX,
           }"
           @mousedown="mousedownHandle($event, item)"
@@ -44,7 +46,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 interface TabItemData {
-  bvWebContentsId: number
+  browserContentViewWebContentsId: number
   title: string
   url: string
   positionX?: string
@@ -53,7 +55,7 @@ interface TabItemData {
 const useTransition = ref(true)
 const moveToIndex = ref(-1)
 const tabList = ref<TabItemData[]>([])
-const activeBvWebContentsId = ref<number>()
+const activeBrowserContentViewWebContentsId = ref<number>()
 
 onMounted(async () => {
   const isNewTabContainer = localStorage.getItem('isNewTabContainer')
@@ -64,10 +66,12 @@ onMounted(async () => {
     if (data) {
       tabList.value.push({
         positionX: data.positionX === -1 ? '' : data.positionX + 'px',
-        bvWebContentsId: data.bvWebContentsId,
+        browserContentViewWebContentsId: data.browserContentViewWebContentsId,
         title: data.title,
         url: data.url,
       })
+      activeBrowserContentViewWebContentsId.value =
+        data.browserContentViewWebContentsId
     }
   } else {
     // 打开默认状态
@@ -78,10 +82,16 @@ onMounted(async () => {
 async function createDefaultBrowserView() {
   try {
     console.log('createDefaultBrowserView called')
-    const { bvWebContentsId } = await invoke(IpcChannel.AddDefaultBrowserView)
-    if (bvWebContentsId !== -1) {
-      activeBvWebContentsId.value = bvWebContentsId
-      console.log('New BrowserView created with id:', bvWebContentsId)
+    const { browserContentViewWebContentsId } = await invoke(
+      IpcChannel.AddDefaultBrowserView,
+    )
+    if (browserContentViewWebContentsId !== -1) {
+      activeBrowserContentViewWebContentsId.value =
+        browserContentViewWebContentsId
+      console.log(
+        'New BrowserView created with id:',
+        browserContentViewWebContentsId,
+      )
     } else {
       console.warn('Failed to create BrowserView')
     }
@@ -93,18 +103,31 @@ async function createDefaultBrowserView() {
 // 点击切换tab
 async function bvSelectHandle(item: TabItemData) {
   try {
-    console.log('bvSelectHandle called for tab:', item.bvWebContentsId)
-    if (activeBvWebContentsId.value !== item.bvWebContentsId) {
+    console.log(
+      'bvSelectHandle called for tab:',
+      item.browserContentViewWebContentsId,
+    )
+    if (
+      activeBrowserContentViewWebContentsId.value !==
+      item.browserContentViewWebContentsId
+    ) {
       const success = await invoke(
         IpcChannel.SelectBrowserDemoTab,
-        item.bvWebContentsId,
+        item.browserContentViewWebContentsId,
       )
       if (success) {
-        activeBvWebContentsId.value = item.bvWebContentsId
+        activeBrowserContentViewWebContentsId.value =
+          item.browserContentViewWebContentsId
         searchKey.value = item.url
-        console.log('Tab selected successfully:', item.bvWebContentsId)
+        console.log(
+          'Tab selected successfully:',
+          item.browserContentViewWebContentsId,
+        )
       } else {
-        console.warn('Failed to select tab:', item.bvWebContentsId)
+        console.warn(
+          'Failed to select tab:',
+          item.browserContentViewWebContentsId,
+        )
       }
     }
   } catch (error) {
@@ -115,14 +138,23 @@ async function bvSelectHandle(item: TabItemData) {
 // 关闭tab
 async function bvCloseHandle(item: TabItemData) {
   try {
-    console.log('bvCloseHandle called for tab:', item.bvWebContentsId)
-    await invoke(IpcChannel.DestroyBrowserDemoTab, item.bvWebContentsId)
+    console.log(
+      'bvCloseHandle called for tab:',
+      item.browserContentViewWebContentsId,
+    )
+    await invoke(
+      IpcChannel.DestroyBrowserDemoTab,
+      item.browserContentViewWebContentsId,
+    )
     const findIndex = tabList.value.findIndex((v) => v === item)
     if (findIndex !== -1) {
       tabList.value.splice(findIndex, 1)
-      console.log('Tab removed from UI:', item.bvWebContentsId)
+      console.log('Tab removed from UI:', item.browserContentViewWebContentsId)
     }
-    if (activeBvWebContentsId.value === item.bvWebContentsId) {
+    if (
+      activeBrowserContentViewWebContentsId.value ===
+      item.browserContentViewWebContentsId
+    ) {
       if (tabList.value.length > 1) {
         const newIndex = findIndex > 0 ? findIndex - 1 : 0
         await bvSelectHandle(tabList.value[newIndex])
@@ -130,7 +162,7 @@ async function bvCloseHandle(item: TabItemData) {
         await bvSelectHandle(tabList.value[0])
       } else {
         // 所有tab都关闭了，重置状态
-        activeBvWebContentsId.value = undefined
+        activeBrowserContentViewWebContentsId.value = undefined
         searchKey.value = ''
       }
     }
@@ -151,7 +183,8 @@ async function searchHandle() {
   }
   await invoke(IpcChannel.BrowserDemoTabJumpToUrl, {
     url: url.href,
-    bvWebContentsId: activeBvWebContentsId.value,
+    browserContentViewWebContentsId:
+      activeBrowserContentViewWebContentsId.value,
   })
 }
 
@@ -166,38 +199,51 @@ function blurHandle() {
 // 监听tab信息更新
 vueListen(
   IpcChannel.BrowserViewTabDataUpdate,
-  (event, { bvWebContentsId, title, url, status }) => {
+  (event, { browserContentViewWebContentsId, title, url, status }) => {
     console.log(
       'Received tab data update:',
-      bvWebContentsId,
+      browserContentViewWebContentsId,
       title,
       url,
       status,
     )
     const findIndex = tabList.value.findIndex(
-      (tab) => tab.bvWebContentsId === bvWebContentsId,
+      (tab) =>
+        tab.browserContentViewWebContentsId === browserContentViewWebContentsId,
     )
     if (status === 1) {
       if (findIndex !== -1) {
         tabList.value[findIndex].title = title
         tabList.value[findIndex].url = url
-        if (bvWebContentsId === activeBvWebContentsId.value && !isFocused) {
+        if (
+          browserContentViewWebContentsId ===
+            activeBrowserContentViewWebContentsId.value &&
+          !isFocused
+        ) {
           searchKey.value = url
         }
       } else {
         tabList.value.push({
-          bvWebContentsId,
+          browserContentViewWebContentsId,
           title,
           url,
         })
         if (!isFocused) {
           searchKey.value = url
         }
-        activeBvWebContentsId.value = bvWebContentsId
+        activeBrowserContentViewWebContentsId.value =
+          browserContentViewWebContentsId
       }
     } else {
       if (findIndex !== -1) {
         tabList.value.splice(findIndex, 1)
+        let nextIndex = findIndex
+        if (nextIndex >= tabList.value.length - 1) {
+          nextIndex = tabList.value.length - 1
+        }
+        if (nextIndex >= 0) {
+          bvSelectHandle(tabList.value[nextIndex])
+        }
       }
       resetPosition()
     }
@@ -205,13 +251,14 @@ vueListen(
 )
 
 // 监听拖拽tab位置更新
-let lastDragBvWebContentsId: number
+let lastDragBrowserContentViewWebContentsId: number
 vueListen(
   IpcChannel.BrowserViewTabPositionXUpdate,
-  (event, { positionX, bvWebContentsId, dragTabOffsetX }) => {
-    lastDragBvWebContentsId = bvWebContentsId
+  (event, { positionX, browserContentViewWebContentsId, dragTabOffsetX }) => {
+    lastDragBrowserContentViewWebContentsId = browserContentViewWebContentsId
     const findIndex = tabList.value.findIndex(
-      (v) => v.bvWebContentsId === bvWebContentsId,
+      (v) =>
+        v.browserContentViewWebContentsId === browserContentViewWebContentsId,
     )
     if (findIndex !== -1) {
       const totalWidth = document.body.clientWidth - 40 // 添加按钮的占位
@@ -257,9 +304,11 @@ function resetPosition() {
   tabList.value.map((v) => {
     v.positionX = ''
   })
-  if (lastDragBvWebContentsId && moveToIndex.value !== -1) {
+  if (lastDragBrowserContentViewWebContentsId && moveToIndex.value !== -1) {
     const findIndex = tabList.value.findIndex(
-      (v) => v.bvWebContentsId === lastDragBvWebContentsId,
+      (v) =>
+        v.browserContentViewWebContentsId ===
+        lastDragBrowserContentViewWebContentsId,
     )
     if (findIndex !== -1) {
       tabList.value.splice(
@@ -314,7 +363,8 @@ document.onmousemove = (e) => {
       screenY: e.screenY, // 鼠标在显示器的y坐标
       startX: startPosition.x, // 按下鼠标时在窗口的x坐标
       startY: startPosition.y, // 按下鼠标时在窗口的y坐标
-      bvWebContentsId: mousedownItem.bvWebContentsId,
+      browserContentViewWebContentsId:
+        mousedownItem.browserContentViewWebContentsId,
     })
   }
 }
