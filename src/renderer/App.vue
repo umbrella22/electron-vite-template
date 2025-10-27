@@ -9,6 +9,11 @@
 
 <script setup lang="ts">
 import TitleBar from '@renderer/components/title-bar/title-bar.vue'
+import { invoke, IpcChannel } from '@renderer/utils/ipcRenderer'
+import { onMounted } from 'vue'
+onMounted(() => {
+  invoke(IpcChannel.WinReady)
+})
 </script>
 
 <style scoped>

@@ -30,8 +30,7 @@ class MainInit {
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
     // dom-ready之后显示界面
-    this.mainWindow.once('ready-to-show', () => {
-      this.mainWindow.show()
+    this.mainWindow.once('show', () => {
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
     // 开发模式下自动开启devtools
