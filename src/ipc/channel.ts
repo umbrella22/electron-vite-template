@@ -118,7 +118,7 @@ export class IpcChannelRendererClass {
 
   SendDataTest: IpcRendererEventListener<unknown> = null
   BrowserViewTabDataUpdate: IpcRendererEventListener<{
-    bvWebContentsId: number
+    browserContentViewWebContentsId: number
     title: string
     url: string
     status: 1 | -1 // 1 添加/更新 -1 删除
@@ -126,7 +126,7 @@ export class IpcChannelRendererClass {
   BrowserViewTabPositionXUpdate: IpcRendererEventListener<{
     dragTabOffsetX: number
     positionX: number
-    bvWebContentsId: number
+    browserContentViewWebContentsId: number
   }> = null
   BrowserTabMouseup: IpcRendererEventListener = null
   HotUpdateStatus: IpcRendererEventListener<{
@@ -148,7 +148,7 @@ export class IpcChannelBrowserClass {
     void,
     {
       positionX: number
-      bvWebContentsId: number
+      browserContentViewWebContentsId: number
       title: string
       url: string
     }
@@ -159,7 +159,7 @@ export class IpcChannelBrowserClass {
    */
   AddDefaultBrowserView: IpcMainEventListener<
     void,
-    { bvWebContentsId: number }
+    { browserContentViewWebContentsId: number }
   > = null
 
   /**
@@ -176,7 +176,7 @@ export class IpcChannelBrowserClass {
    * 浏览器标签跳转到指定 URL
    */
   BrowserDemoTabJumpToUrl: IpcMainEventListener<{
-    bvWebContentsId: number
+    browserContentViewWebContentsId: number
     url: string
   }> = null
 
@@ -195,7 +195,7 @@ export class IpcChannelBrowserClass {
     screenY: number
     startX: number
     startY: number
-    bvWebContentsId: number
+    browserContentViewWebContentsId: number
   }> = null
 
   /**
