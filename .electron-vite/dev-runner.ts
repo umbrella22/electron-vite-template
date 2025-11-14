@@ -16,7 +16,7 @@ import { electronLog, getArgv, logStats, removeJunk } from './utils'
 const { target = 'client', controlledRestart = false } = getArgv()
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, 'main')
-const preloadOpt = rollupOptions(process.env.NODE_ENV, 'preload')
+// const preloadOpt = rollupOptions(process.env.NODE_ENV, 'preload')
 
 let electronProcess: ChildProcess | null = null
 let manualRestart = false

@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, session } from 'electron'
+import { app } from 'electron'
 import InitWindow from './services/window-manager'
 import { useDisableButton } from './hooks/disable-button-hook'
 import { useProcessException } from '@main/hooks/exception-hook'
@@ -18,10 +18,15 @@ function onAppReady() {
   createMenu()
   new InitWindow().initWindow()
   if (process.env.NODE_ENV === 'development') {
-    const { VUEJS_DEVTOOLS } = require('electron-devtools-vendor')
-    session.defaultSession.loadExtension(VUEJS_DEVTOOLS, {
-      allowFileAccess: true,
-    })
+    const {
+      installExtension,
+      VUEJS_DEVTOOLS,
+    } = require('electron-devtools-installer')
+    installExtension(VUEJS_DEVTOOLS)
+      .then((pluginInfo: Electron.Extension) =>
+        console.log(`已安装: `, pluginInfo.name),
+      )
+      .catch((err: Error) => console.log('无法安装vue-devtools: ', err))
     console.log('已安装: vue-devtools')
   }
 }
