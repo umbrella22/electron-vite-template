@@ -21,6 +21,9 @@ const menu: Array<MenuItemConstructorOptions | MenuItem> = [
     ],
   },
   {
+    role: 'editMenu',
+  },
+  {
     label: '帮助',
     submenu: [
       {

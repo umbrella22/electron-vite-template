@@ -151,9 +151,12 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     event,
     { browserContentViewWebContentsId, url },
   ) => {
-    // 跳转
-    const currentView = this.getBrowserContentViewFromWebContents(event.sender)
+    // event.sender 来自 tabView 是导航栏
+    const currentView = this.getBrowserContentViewFromWebContentsId(
+      browserContentViewWebContentsId,
+    )
     if (currentView) {
+      // 跳转
       currentView.webContents.loadURL(url)
     }
   }
