@@ -55,4 +55,15 @@ export const lang = {
     searchBarPlaceholder: 'Search in Bing or enter a website address',
   },
   el: enLocale,
+  store: {
+    input: {
+      labels: 'Store Input',
+      placeholder: 'Any Value you want to save'
+    },
+    saveButton: 'Save',
+    getButton: 'Get',
+    clearButton: 'Clear',
+    operate: 'Operate',
+    result: 'Result'
+  }
 }

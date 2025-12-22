@@ -7,6 +7,8 @@ import { IIpcMainHandle } from '@ipcManager/index'
 import { webContentSend } from './web-content-send'
 import { IsUseSysTitle } from '@main/config/const'
 import { otherWindowConfig } from '@main/config/windows-config'
+import Store from 'electron-store'
+const store = new Store()
 
 export class IpcMainHandleClass implements IIpcMainHandle {
   private allUpdater: Update
@@ -146,5 +148,15 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     show: boolean,
   ) => void | Promise<void> = (_event, show) => {
     console.log('SetShowOnMyComputer - Not implemented yet', show)
+  }
+
+  SetStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string; value: string}) => void | Promise<void> = (event, args) => {
+    store.set(args.key, args.value)
+  }
+  GetStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string}) => unknown | Promise<unknown> = (event, args) => {
+    return store.get(args.key)
+  }
+  DeleteStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string}) => void | Promise<void> = (event, args) => {
+    store.delete(args.key)
   }
 }
