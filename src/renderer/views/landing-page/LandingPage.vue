@@ -78,6 +78,30 @@
               )
             }}
           </el-button>
+          <el-card style="margin-top: 50px">
+
+            <el-form-item :label="t('store.input.labels')">
+              <el-input style="width: 200px" :placeholder="t('store.input.placeholder')" v-model="storeInputValue"/>
+            </el-form-item>
+
+            <el-form-item :label="t('store.operate')" label-position="top">
+              <el-button color="#626aef" plain @click="setStoreValue">
+                {{ t('store.saveButton') }}
+              </el-button>
+
+              <el-button color="#626aef" plain @click="getStoreValue">
+                {{ t('store.getButton') }}
+              </el-button>
+
+              <el-button color="#626aef" plain @click="deleteStoreValue">
+                {{ t('store.clearButton') }}
+              </el-button>
+            </el-form-item>
+
+            <el-form-item :label="t('store.result')">
+              <el-text type="primary">{{ storeShowValue }}</el-text>
+            </el-form-item>
+          </el-card>
         </div>
         <div class="doc">
           <el-pagination
@@ -379,6 +403,23 @@ vueListen(IpcChannel.HotUpdateStatus, (event, msg) => {
   console.log(msg)
   updateStatus.value = msg.status
 })
+
+const storeInputValue = ref('')
+const storeShowValue = ref('')
+
+const setStoreValue = () => {
+  invoke(IpcChannel.SetStoreValue, {key: 'token', value: storeInputValue.value});
+}
+
+const getStoreValue = () => {
+  invoke(IpcChannel.GetStoreValue, {key: 'token'}).then((res: string) => {
+    storeShowValue.value = res
+  });
+}
+
+const deleteStoreValue = () => {
+  invoke(IpcChannel.DeleteStoreValue, {key: 'token'});
+}
 </script>
 
 <style>

@@ -62,4 +62,15 @@ export const lang = {
     searchBarPlaceholder: '在Bing中搜索，或输入一个网址',
   },
   el: zhLocale,
+  store: {
+    input: {
+      labels: '缓存属性',
+      placeholder: '你想保存的属性值'
+    },
+    saveButton: '保存缓存',
+    getButton: '获取缓存',
+    clearButton: '清除缓存',
+    operate: '操作',
+    result: '结果'
+  }
 }
