@@ -23,6 +23,7 @@ export default defineConfig({
     alias: {
       '@renderer': root,
       '@store': join(root, '/store/modules'),
+      '@ipcManager': join(__dirname, '..', 'src', 'ipc'),
     },
   },
 

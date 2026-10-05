@@ -1,7 +1,9 @@
 import config from '@config/index'
-import { BrowserWindow, dialog } from 'electron'
-import { winURL, loadingURL, getPreloadFile } from '../config/static-path'
+import { BrowserWindow } from 'electron'
+import { winURL, loadingURL } from '../config/static-path'
 import { useProcessException } from '@main/hooks/exception-hook'
+import { IsUseSysTitle } from '@main/config/const'
+import { mainWindowConfig } from '@main/config/windows-config'
 
 class MainInit {
   public winURL: string = ''
@@ -21,32 +23,14 @@ class MainInit {
   // 主窗口函数
   createMainWindow() {
     this.mainWindow = new BrowserWindow({
-      titleBarOverlay: {
-        color: '#fff',
-      },
-      titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      height: 800,
-      useContentSize: true,
-      width: 1700,
-      minWidth: 1366,
-      show: false,
-      frame: config.IsUseSysTitle,
-      webPreferences: {
-        sandbox: false,
-        webSecurity: false,
-        // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin',
-        preload: getPreloadFile('preload'),
-      },
+      titleBarStyle: IsUseSysTitle ? 'default' : 'hidden',
+      ...Object.assign(mainWindowConfig, {}),
     })
 
     // 加载主窗口
     this.mainWindow.loadURL(this.winURL)
     // dom-ready之后显示界面
-    this.mainWindow.once('ready-to-show', () => {
-      this.mainWindow.show()
+    this.mainWindow.once('show', () => {
       if (config.UseStartupChart) this.loadWindow.destroy()
     })
     // 开发模式下自动开启devtools
@@ -80,7 +64,6 @@ class MainInit {
       resizable: false,
       webPreferences: {
         experimentalFeatures: true,
-        preload: getPreloadFile('preload'),
       },
     })
 
@@ -100,5 +83,23 @@ class MainInit {
       return this.createMainWindow()
     }
   }
+}
+
+export function openDevTools(win: BrowserWindow) {
+  let devtools = new BrowserWindow()
+  devtools.setMenu(null)
+  devtools.webContents.on('did-finish-load', () =>
+    devtools.setTitle(win.webContents.getTitle()),
+  )
+  win.webContents.setDevToolsWebContents(devtools.webContents)
+  win.webContents.openDevTools({
+    mode: 'detach',
+  })
+  win.on('closed', () => {
+    devtools?.close()
+  })
+  devtools.on('closed', () => {
+    devtools = null
+  })
 }
 export default MainInit

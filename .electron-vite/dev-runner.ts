@@ -16,7 +16,7 @@ import { electronLog, getArgv, logStats, removeJunk } from './utils'
 const { target = 'client', controlledRestart = false } = getArgv()
 
 const mainOpt = rollupOptions(process.env.NODE_ENV, 'main')
-const preloadOpt = rollupOptions(process.env.NODE_ENV, 'preload')
+// const preloadOpt = rollupOptions(process.env.NODE_ENV, 'preload')
 
 let electronProcess: ChildProcess | null = null
 let manualRestart = false
@@ -86,54 +86,6 @@ function startMain(): Promise<void> {
       )
     })
     MainWatcher.on('event', (event) => {
-      if (event.code === 'END') {
-        if (electronProcess && !controlledRestart) {
-          restartElectron()
-        }
-
-        resolve()
-      } else if (event.code === 'ERROR') {
-        reject(event.error)
-      }
-      if (controlledRestart) {
-        process.stdout.write('\x1B[2J\x1B[3J')
-        logStats(
-          'cli tips',
-          `${
-            config.dev.chineseLog
-              ? '受控重启已启用,请手动输入r + 回车重启'
-              : 'Controlled restart is enabled, please manually enter r + Enter to restart'
-          }`,
-        )
-      }
-    })
-  })
-}
-
-function startPreload(): Promise<void> {
-  console.log(
-    '\n\n' +
-      chalk.blue(
-        `${
-          config.dev.chineseLog
-            ? '  正在准备预加载脚本，请等待...'
-            : '  Preparing preLoad File, please wait...'
-        }`,
-      ) +
-      '\n\n',
-  )
-  return new Promise((resolve, reject) => {
-    const PreloadWatcher = watch(preloadOpt)
-    PreloadWatcher.on('change', (filename) => {
-      // 预加载脚本日志部分
-      logStats(
-        `${
-          config.dev.chineseLog ? '预加载脚本文件变更' : 'preLoad-FileChange'
-        }`,
-        filename,
-      )
-    })
-    PreloadWatcher.on('event', (event) => {
       if (event.code === 'END') {
         if (electronProcess && !controlledRestart) {
           restartElectron()
@@ -271,7 +223,7 @@ async function init() {
   }
   greeting()
   try {
-    await Promise.all([startRenderer(port), startMain(), startPreload()])
+    await Promise.all([startRenderer(port), startMain()])
     startElectron()
     initReadline()
   } catch (error) {

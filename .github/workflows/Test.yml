@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Test build
+        # env:
+        #   ELECTRON_RUN_AS_NODE: “1”
+        shell: bash
+        run: |
+          npm ci
+          npm install xvfb-maybe -D
+          ./node_modules/.bin/xvfb-maybe npm run build

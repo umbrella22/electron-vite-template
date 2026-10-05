@@ -1,6 +1,5 @@
-import { computed, ref } from 'vue'
+import { createI18n } from 'vue-i18n'
 
-export const globalLang = ref('zh-cn')
 export function loadLanguages() {
   const context: any = import.meta.glob('./languages/*.ts', { eager: true })
 
@@ -17,11 +16,17 @@ export function loadLanguages() {
   return languages
 }
 
-export const i18nt = computed(() => {
-  const lang = loadLanguages()
-  return lang[globalLang.value]
+export function i18nt(key: string) {
+  return i18n.global.d(key)
+}
+
+export const i18n = createI18n({
+  legacy: false,
+  locale: 'zh-cn',
+  fallbackLocale: 'zh-cn',
+  messages: loadLanguages(),
 })
 
 export function setLanguage(locale: string) {
-  globalLang.value = locale
+  i18n.global.locale.value = locale
 }

@@ -1,11 +1,14 @@
 import { dialog, BrowserWindow, app } from 'electron'
-import { getPreloadFile, winURL } from '../config/static-path'
-import { updater } from '../services/hot-updater'
+import { winURL, staticPaths } from '../config/static-path'
 import DownloadFile from '../services/download-file'
 import Update from '../services/check-update'
 import config from '@config/index'
 import { IIpcMainHandle } from '@ipcManager/index'
 import { webContentSend } from './web-content-send'
+import { IsUseSysTitle } from '@main/config/const'
+import { otherWindowConfig } from '@main/config/windows-config'
+import Store from 'electron-store'
+const store = new Store()
 
 export class IpcMainHandleClass implements IIpcMainHandle {
   private allUpdater: Update
@@ -31,35 +34,18 @@ export class IpcMainHandleClass implements IIpcMainHandle {
       dialog.showErrorBox('error', 'API is obsolete')
       return 'API is obsolete'
     }
-  HotUpdate: (event: Electron.IpcMainInvokeEvent) => void | Promise<void> = (
-    event,
-  ) => {
-    const windows = BrowserWindow.fromWebContents(event.sender)
-    if (!windows) return
-    updater(windows)
+  GetStaticPath: (
+    event: Electron.IpcMainInvokeEvent,
+  ) => string | Promise<string> = async () => {
+    return staticPaths
   }
   OpenWin: (
     event: Electron.IpcMainInvokeEvent,
     args: { url: string; IsPay?: boolean; PayUrl?: string; sendData?: unknown },
   ) => void | Promise<void> = (event, arg) => {
     const childWin = new BrowserWindow({
-      titleBarStyle: config.IsUseSysTitle ? 'default' : 'hidden',
-      height: 595,
-      useContentSize: true,
-      width: 1140,
-      autoHideMenuBar: true,
-      minWidth: 842,
-      frame: config.IsUseSysTitle,
-      show: false,
-      webPreferences: {
-        sandbox: false,
-        webSecurity: false,
-        // 如果是开发模式可以使用devTools
-        devTools: process.env.NODE_ENV === 'development',
-        // 在macos中启用橡皮动画
-        scrollBounce: process.platform === 'darwin',
-        preload: getPreloadFile('main-preload'),
-      },
+      titleBarStyle: IsUseSysTitle ? 'default' : 'hidden',
+      ...Object.assign(otherWindowConfig, {}),
     })
     // 开发模式下自动开启devtools
     if (process.env.NODE_ENV === 'development') {
@@ -83,7 +69,7 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     })
     // 渲染进程显示时触发
     childWin.once('show', () => {
-      webContentSend.SendDataTest(childWin.webContents, arg.sendData)
+      webContentSend['send-data-test'](childWin.webContents, arg.sendData)
     })
   }
 
@@ -140,5 +126,37 @@ export class IpcMainHandleClass implements IIpcMainHandle {
     const windows = BrowserWindow.fromWebContents(event.sender)
     if (!windows) return
     windows.show()
+  }
+
+  // TODO: 实现热更新测试功能
+  HotUpdateTest: (event: Electron.IpcMainInvokeEvent) => void | Promise<void> =
+    () => {
+      console.log('HotUpdateTest - Not implemented yet')
+    }
+
+  // TODO: 实现"我的电脑"显示检查功能
+  CheckShowOnMyComputer: (
+    event: Electron.IpcMainInvokeEvent,
+  ) => boolean | Promise<boolean> = async () => {
+    console.log('CheckShowOnMyComputer - Not implemented yet')
+    return false
+  }
+
+  // TODO: 实现"我的电脑"显示设置功能
+  SetShowOnMyComputer: (
+    event: Electron.IpcMainInvokeEvent,
+    show: boolean,
+  ) => void | Promise<void> = (_event, show) => {
+    console.log('SetShowOnMyComputer - Not implemented yet', show)
+  }
+
+  SetStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string; value: string}) => void | Promise<void> = (event, args) => {
+    store.set(args.key, args.value)
+  }
+  GetStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string}) => unknown | Promise<unknown> = (event, args) => {
+    return store.get(args.key)
+  }
+  DeleteStoreValue: (event: Electron.IpcMainInvokeEvent, args: {key: string}) => void | Promise<void> = (event, args) => {
+    store.delete(args.key)
   }
 }
