@@ -1,0 +1,40 @@
+---
+layout: home
+
+hero:
+  name: electron-vite-template
+  tagline: pnpm monorepo 架构的 Electron + Vue3 桌面应用模板 —— 域分组类型化 IPC、contextBridge 安全模型、可选字节码保护
+  image:
+    src: /logo.png
+    alt: electron-vite-template
+  actions:
+    - theme: brand
+      text: 快速上手
+      link: /guide/getting-started
+    - theme: alt
+      text: 项目介绍
+      link: /guide/
+    - theme: alt
+      text: GitHub
+      link: https://github.com/umbrella22/electron-vite-template
+
+features:
+  - icon: 📡
+    title: 域分组类型化 IPC
+    details: 所有通道在一份合同里按域声明（app:openWin、browser:selectTab），通道名、载荷、返回值全链路类型推导，漏实现直接编译报错
+  - icon: 🛡️
+    title: 安全模型开箱即用
+    details: 全窗口 contextIsolation + sandbox，渲染进程唯一通道是 preload 暴露的白名单桥，渲染层零 Node 访问能力
+  - icon: 📦
+    title: pnpm monorepo
+    details: apps/desktop 应用本体 + packages/ipc-contract 共享合同 + tools 构建工具链，边界清晰、依赖严格
+  - icon: ⚡️
+    title: vp run 缓存构建
+    details: vite-plus 流水线接管构建任务，按文件粒度缓存与失效，源码未变时构建直接命中缓存
+  - icon: 🔒
+    title: 可选字节码保护
+    details: 主进程可编译为 V8 字节码（QQ 同源方案），两文件实现、零额外工具链，默认构建完全不受影响
+  - icon: 🔄
+    title: 双更新方案
+    details: electron-updater 整包更新与增量热更新并存，热更新支持主进程与渲染进程内容替换，无需重新下载安装包
+---

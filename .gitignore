@@ -4,6 +4,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# 文档站（VitePress）
+doc/.vitepress/dist/
+doc/.vitepress/cache/
+
 # 构建产物（锚定路径，避免误伤 tools/build 源码目录）
 /dist/
 /apps/desktop/dist/
