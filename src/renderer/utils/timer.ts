@@ -47,7 +47,7 @@ class Timer {
         callback() !== false &&
         this.interval(interval, callback)
     })
-    return { then: (c) => (callback = c) }
+    return { then: (c: Function) => (callback = c) }
   }
 
   /**

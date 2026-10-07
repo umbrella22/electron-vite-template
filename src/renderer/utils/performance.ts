@@ -5,7 +5,7 @@
  * @date 2019-11-29
  */
 
-import { memoryInfo } from 'customTypes/global'
+import type { memoryInfo } from '../../../customTypes/global'
 import Timer from './timer'
 
 class Performance {

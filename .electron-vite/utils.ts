@@ -5,7 +5,7 @@ import cliConfig from '../config'
 import minimist from 'minimist'
 
 const argv = minimist(process.argv.slice(2))
-const rootResolve = (...pathSegments) => join(__dirname, '..', ...pathSegments)
+const rootResolve = (...pathSegments) => join(import.meta.dirname, '..', ...pathSegments)
 
 export const getEnv = () => argv['m']
 export const getArgv = () => argv

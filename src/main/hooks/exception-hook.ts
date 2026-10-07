@@ -49,7 +49,7 @@ export const useProcessException = (): UseProcessExceptionRetrun => {
       }
       const message = {
         title: '',
-        buttons: [],
+        buttons: [] as string[],
         message: '',
       }
       switch (details.reason) {
@@ -98,7 +98,7 @@ export const useProcessException = (): UseProcessExceptionRetrun => {
       }
       const message = {
         title: '',
-        buttons: [],
+        buttons: [] as string[],
         message: '',
       }
       switch (details.type) {

@@ -5,7 +5,7 @@ import { webContentSend } from './web-content-send'
  * -1 检查更新失败 0 正在检查更新 1 检测到新版本，准备下载 2 未检测到新版本 3 下载中 4 下载完成
  **/
 class Update {
-  public mainWindow: BrowserWindow
+  public mainWindow!: BrowserWindow
   constructor() {
     // 设置url
     autoUpdater.setFeedURL('http://127.0.0.1:25565/')

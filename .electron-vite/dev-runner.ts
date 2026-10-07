@@ -4,19 +4,19 @@ import readline from 'node:readline'
 import electron from 'electron'
 import chalk from 'chalk'
 import { join } from 'path'
-import { watch } from 'rollup'
+import { watch } from 'rolldown'
 import { detect } from 'detect-port'
 import config from '../config'
-import { say } from 'cfonts'
+import cfonts from 'cfonts'
 import { spawn } from 'child_process'
 import type { ChildProcess } from 'child_process'
-import rollupOptions from './rollup.config'
+import rolldownOptions from './rolldown.config'
 import { electronLog, getArgv, logStats, removeJunk } from './utils'
 
 const { target = 'client', controlledRestart = false } = getArgv()
 
-const mainOpt = rollupOptions(process.env.NODE_ENV, 'main')
-// const preloadOpt = rollupOptions(process.env.NODE_ENV, 'preload')
+const mainOpt = rolldownOptions(process.env.NODE_ENV, 'main')
+// const preloadOpt = rolldownOptions(process.env.NODE_ENV, 'preload')
 
 let electronProcess: ChildProcess | null = null
 let manualRestart = false
@@ -56,9 +56,9 @@ const shortcutList: Shortcut[] = [
 ]
 
 async function startRenderer(port: number): Promise<void> {
-  const { createServer } = await import('vite')
+  const { createServer } = await import('vite-plus')
   const server = await createServer({
-    configFile: join(__dirname, 'vite.config.mts'),
+    configFile: join(import.meta.dirname, 'vite.config.mts'),
   })
   process.env.PORT = String(port)
   await server.listen(port)
@@ -113,7 +113,7 @@ function startMain(): Promise<void> {
 function startElectron() {
   var args = [
     '--inspect=5858',
-    join(__dirname, '../dist/electron/main/main.js'),
+    join(import.meta.dirname, '../dist/electron/main/main.cjs'),
   ]
 
   // detect yarn or npm and process commandline args accordingly
@@ -202,7 +202,7 @@ function greeting() {
   else text = false
 
   if (text) {
-    say(text, {
+    cfonts.say(text, {
       colors: ['yellow'],
       font: 'simple3d',
       space: false,

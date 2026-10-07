@@ -1,17 +1,21 @@
 import config from '@config/index'
 import { BrowserWindow } from 'electron'
 import { winURL, loadingURL } from '../config/static-path'
-import { useProcessException } from '@main/hooks/exception-hook'
+import {
+  useProcessException,
+  type UseProcessExceptionRetrun,
+} from '@main/hooks/exception-hook'
 import { IsUseSysTitle } from '@main/config/const'
 import { mainWindowConfig } from '@main/config/windows-config'
 
 class MainInit {
   public winURL: string = ''
   public shartURL: string = ''
-  public loadWindow: BrowserWindow = null
-  public mainWindow: BrowserWindow = null
-  private childProcessGone = null
-  private mainWindowGone = null
+  public loadWindow: BrowserWindow = null!
+  public mainWindow: BrowserWindow = null!
+  private childProcessGone: UseProcessExceptionRetrun['childProcessGone'] =
+    null!
+  private mainWindowGone: UseProcessExceptionRetrun['mainWindowGone'] = null!
 
   constructor() {
     const { childProcessGone, mainWindowGone } = useProcessException()
@@ -50,7 +54,7 @@ class MainInit {
      */
     this.childProcessGone(this.mainWindow)
     this.mainWindow.on('closed', () => {
-      this.mainWindow = null
+      this.mainWindow = null!
     })
   }
   // 加载窗口函数
@@ -99,7 +103,7 @@ export function openDevTools(win: BrowserWindow) {
     devtools?.close()
   })
   devtools.on('closed', () => {
-    devtools = null
+    devtools = null!
   })
 }
 export default MainInit

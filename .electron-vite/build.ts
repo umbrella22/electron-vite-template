@@ -1,16 +1,15 @@
 process.env.NODE_ENV = 'production'
 
 import { join } from 'path'
-import { say } from 'cfonts'
-import { deleteAsync } from 'del'
+import cfonts from 'cfonts'
 import chalk from 'chalk'
-import { rollup, OutputOptions } from 'rollup'
+import { rolldown, type OutputOptions } from 'rolldown'
 import { Listr } from 'listr2'
-import rollupOptions from './rollup.config'
+import rolldownOptions from './rolldown.config'
 import { errorLog, doneLog } from './log'
 import { getArgv } from './utils'
 
-const mainOpt = rollupOptions(process.env.NODE_ENV, 'main')
+const mainOpt = rolldownOptions(process.env.NODE_ENV, 'main')
 const { clean = false, target = 'client' } = getArgv()
 const isCI = process.env.CI || false
 
@@ -18,6 +17,8 @@ if (target === 'web') web()
 else unionBuild()
 
 async function cleanBuild() {
+  // del@8 的传递依赖 unicorn-magic 为 ESM-only，tsx 的 CJS 模式下静态导入无法解析
+  const { deleteAsync } = await import('del')
   await deleteAsync([
     'dist/electron/main/*',
     'dist/electron/renderer/*',
@@ -42,7 +43,7 @@ async function unionBuild() {
         title: 'building main process',
         task: async () => {
           try {
-            const build = await rollup(mainOpt)
+            const build = await rolldown(mainOpt)
             await build.write(mainOpt.output as OutputOptions)
           } catch (error) {
             errorLog(`failed to build main process\n`)
@@ -54,8 +55,8 @@ async function unionBuild() {
         title: 'building renderer process',
         task: async (_, tasks) => {
           try {
-            const { build } = await import('vite')
-            await build({ configFile: join(__dirname, 'vite.config.mts') })
+            const { build } = await import('vite-plus')
+            await build({ configFile: join(import.meta.dirname, 'vite.config.mts') })
             tasks.output = `take it away ${chalk.yellow(
               '`electron-builder`',
             )}\n`
@@ -76,8 +77,8 @@ async function unionBuild() {
 
 async function web() {
   await deleteAsync(['dist/web/*', '!.gitkeep'])
-  const { build } = await import('vite')
-  build({ configFile: join(__dirname, 'vite.config.mts') }).then((res) => {
+  const { build } = await import('vite-plus')
+  build({ configFile: join(import.meta.dirname, 'vite.config.mts') }).then((res) => {
     doneLog(`web build success`)
     process.exit()
   })
@@ -92,7 +93,7 @@ function greeting() {
   else text = false
 
   if (text && !isCI) {
-    say(text, {
+    cfonts.say(text, {
       colors: ['yellow'],
       font: 'simple3d',
       space: false,

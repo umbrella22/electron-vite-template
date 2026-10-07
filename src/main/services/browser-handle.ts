@@ -344,12 +344,16 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     view.setBounds({
       x: 0,
       y: 0,
-      width: otherWindowConfig.width,
-      height: otherWindowConfig.height,
+      width: otherWindowConfig.width!,
+      height: otherWindowConfig.height!,
     })
     win.contentView.addChildView(view)
 
-    const winViewData = {
+    const winViewData: {
+      win: BaseWindow
+      tabbarView: WebContentsView
+      viewList: WebContentsView[]
+    } = {
       win,
       tabbarView: view,
       viewList: [],
@@ -381,14 +385,15 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
       }
     })
     win.on('closed', () => {
-      view.webContents.closeDevTools()
-      view.webContents.close()
+      // 窗口关闭时子视图的 webContents 可能已被销毁（返回 undefined）
+      view.webContents?.closeDevTools()
+      view.webContents?.close()
       const findIndex = this.winViewBindList.findIndex((v) => win === v.win)
       if (findIndex !== -1) {
         const item = this.winViewBindList.splice(findIndex, 1)[0]
-        item.tabbarView.webContents.close()
+        item.tabbarView.webContents?.close()
         item.viewList.forEach((v) => {
-          v.webContents.close()
+          v.webContents?.close()
         })
       }
     })
@@ -414,15 +419,18 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
       console.log(view.webContents.getURL())
     })
     view.webContents.loadURL(defaultUrl)
+    // Electron >= 44 中 webContents 销毁后 view.webContents 返回 undefined，
+    // 销毁事件里无法再读取，必须提前捕获 id
+    const viewContentsId = view.webContents.id
     view.webContents.on('page-title-updated', (event, title) => {
       this.freshTabData(null, view, 1)
     })
     view.webContents.on('destroyed', () => {
-      this.removeBrowserView(null, view)
+      this.removeBrowserView(null, view, viewContentsId)
     })
     view.webContents.setWindowOpenHandler((details) => {
       const parentBw = this.getWinFromView(view)
-      this.createDefaultBrowserView(parentBw, details.url)
+      this.createDefaultBrowserView(parentBw!, details.url)
       return { action: 'deny' }
     })
     this.freshTabData(win, view, 1)
@@ -449,27 +457,31 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   private removeBrowserView(
     win: BaseWindow | null,
     view: WebContentsView,
+    viewContentsId = view.webContents?.id,
   ): void {
     this.removeViewFromWinByView(view)
-    this.freshTabData(win, view, -1)
+    this.freshTabData(win, view, -1, viewContentsId)
   }
 
   private freshTabData(
     win: BaseWindow | null,
     view: WebContentsView,
     status: -1 | 1,
+    viewContentsId = view.webContents?.id,
   ): void {
-    console.log('freshTabData', view.webContents.id, status)
+    if (viewContentsId === undefined) return
+    console.log('freshTabData', viewContentsId, status)
     console.log('IpcChannel', IpcChannel.BrowserViewTabDataUpdate)
 
+    const contents = view.webContents
     const _win = win ?? this.getWinFromView(view)
     if (_win) {
       this.getTabbarViewFromWin(_win)?.webContents.send(
         IpcChannel.BrowserViewTabDataUpdate,
         {
-          browserContentViewWebContentsId: view.webContents.id,
-          title: view.webContents.getTitle(),
-          url: view.webContents.getURL(),
+          browserContentViewWebContentsId: viewContentsId,
+          title: contents ? contents.getTitle() : '',
+          url: contents ? contents.getURL() : '',
           status: status,
         },
       )
@@ -497,7 +509,7 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
   }
 
   private getViewListFromWin(win: BaseWindow): WebContentsView[] {
-    let list = []
+    let list: WebContentsView[] = []
     const item = this.winViewBindList.find((item) => item.win === win)
     if (item) {
       list = item.viewList
@@ -505,8 +517,8 @@ export class BrowserHandleClass implements IIpcBrowserHandle {
     return list
   }
 
-  private getTabbarViewFromWin(win: BaseWindow): WebContentsView {
-    let tabbarView = null
+  private getTabbarViewFromWin(win: BaseWindow): WebContentsView | null {
+    let tabbarView: WebContentsView | null = null
     const item = this.winViewBindList.find((item) => item.win === win)
     if (item) {
       tabbarView = item.tabbarView

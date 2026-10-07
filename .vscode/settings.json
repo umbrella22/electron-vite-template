@@ -1,6 +1,5 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.enable": true,
+  "editor.defaultFormatter": "oxc.vscode-oxc",
   "editor.formatOnSave": true,
   "npm.packageManager": "npm",
   "eslint.validate": [
@@ -24,7 +23,7 @@
   },
   "[vue]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "oxc.vscode-oxc"
   },
   "files.associations": {
     "*.env": "env",

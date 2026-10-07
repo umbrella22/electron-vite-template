@@ -177,7 +177,7 @@ let colors: Ref<ColorInfo[]> | Ref<string> = ref([
 ])
 
 let dialogVisible = ref(false)
-let progressStaus = ref(null)
+let progressStaus = ref<string | null>(null)
 let showForcedUpdate = ref(false)
 let filePath = ref('')
 let updateStatus = ref('')
@@ -317,14 +317,14 @@ vueListen(IpcChannel.DownloadProgress, (event, arg) => {
 
 vueListen(IpcChannel.DownloadError, (event, arg) => {
   if (arg) {
-    progressStaus = 'exception'
+    progressStaus.value = 'exception'
     percentage.value = 40
     colors.value = '#d81e06'
   }
 })
 vueListen(IpcChannel.DownloadPaused, (event, arg) => {
   if (arg) {
-    progressStaus = 'warning'
+    progressStaus.value = 'warning'
     ElMessageBox.alert('下载由于未知原因被中断！', '提示', {
       confirmButtonText: '重试',
       callback: (action) => {
@@ -335,7 +335,7 @@ vueListen(IpcChannel.DownloadPaused, (event, arg) => {
 })
 vueListen(IpcChannel.DownloadDone, (event, age) => {
   filePath.value = age.filePath
-  progressStaus = 'success'
+  progressStaus.value = 'success'
   ElMessageBox.alert('更新下载完成！', '提示', {
     confirmButtonText: '确定',
     callback: (action) => {
@@ -371,7 +371,7 @@ vueListen(IpcChannel.UpdateMsg, (event, args) => {
       percentage.value = Number((args.msg as ProgressInfo).percent.toFixed(1))
       break
     case 4:
-      progressStaus = 'success'
+      progressStaus.value = 'success'
       ElMessageBox.alert('更新下载完成！', '提示', {
         confirmButtonText: '确定',
         callback: (action) => {

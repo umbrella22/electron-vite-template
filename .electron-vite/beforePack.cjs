@@ -1,4 +1,4 @@
-const { byteCodeBeforePack } = require("./builderHook/byteCodeHook")
+const { byteCodeBeforePack } = require("./builderHook/byteCodeHook.cjs")
 exports.default = async context => {
   await byteCodeBeforePack(context)
 };

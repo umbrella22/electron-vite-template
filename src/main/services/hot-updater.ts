@@ -118,7 +118,7 @@ export class HotUpdaterClass implements IIpcHotUpdaterHandle {
       }
     } catch (error) {
       this.updateInfo.status = 'failed'
-      this.updateInfo.message = error
+      this.updateInfo.message = String(error)
 
       if (windows)
         webContentSend['hot-update-status'](

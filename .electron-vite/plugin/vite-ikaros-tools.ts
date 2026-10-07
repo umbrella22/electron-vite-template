@@ -1,4 +1,4 @@
-import { ResolvedConfig } from 'vite'
+import { ResolvedConfig } from 'vite-plus'
 
 export default () => {
   let command = ''

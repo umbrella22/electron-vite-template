@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { BrowserWindow, app } = require('electron');
 const { execSync } = require("child_process");
-const { compile } = require('./bytecode');
+const { compile } = require('./bytecode.cjs');
 const { encryptionLevel } = require("../../package.json");
 const isWindow = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 
@@ -99,13 +99,13 @@ async function main() {
   if (encryptionLevel === 1 || encryptionLevel === 2) {
     // 输入目录，用于存放待编译的 js bundle
     const inputPath = path.resolve(__dirname, '../../dist/electron/main');
-    const mainTempPath = path.resolve(__dirname, "./_temp/main.js");
+    const mainTempPath = path.resolve(__dirname, "./_temp/main.cjs");
     const mainBinPath = path.resolve(__dirname, '../../dist/electron/main/main.bin');
-    // 输出目录，用于存放编译产物，也就是字节码，文件名对应关系：main.js -> main.bin
+    // 输出目录，用于存放编译产物，也就是字节码，文件名对应关系：main.cjs -> main.bin
     // 清理并重新创建输出目录
 
     // 读取原始 js 并生成字节码
-    const mainJs = path.resolve(inputPath, 'main.js');
+    const mainJs = path.resolve(inputPath, 'main.cjs');
 
     const code = fs.readFileSync(mainJs);
 
@@ -114,10 +114,10 @@ async function main() {
       fs.rmSync(mainTempPath);
     }
     if (!fs.existsSync(path.dirname(mainTempPath))) {
-      fs.mkdirSync()
+      fs.mkdirSync(path.dirname(mainTempPath), { recursive: true });
     }
 
-    // 移除原有的main.js
+    // 移除原有的main.cjs
     fs.renameSync(mainJs, mainTempPath);
 
 
@@ -141,7 +141,7 @@ async function main() {
           env: c_env
         });
 
-        // check or napi cli 
+        // check or napi cli
         checkOrDownNapiCli(c_cwd);
         // 编译.node
         execSync("npm run build -- --target " + getRustTarget(), {
@@ -165,7 +165,9 @@ async function main() {
 
         const vmNodePath = path.resolve(__dirname, "../bytecode/vm_node.js");
 
-        fs.copyFileSync(vmNodePath, mainJs);
+        const loaderPath = path.resolve(inputPath, 'loader.cjs');
+
+        fs.copyFileSync(vmNodePath, loaderPath);
 
 
       } catch (error) {
@@ -174,8 +176,15 @@ async function main() {
     } else {
       const vmPath = path.resolve(__dirname, "../bytecode/vm.js");
 
-      fs.copyFileSync(vmPath, mainJs);
+      const loaderPath = path.resolve(inputPath, 'loader.cjs');
+
+      fs.copyFileSync(vmPath, loaderPath);
     }
+
+    // 复制 ESM 壳入口，package.json 的 main 字段指向该文件
+    const mainEntryPath = path.resolve(__dirname, "../bytecode/main-entry.mjs");
+
+    fs.copyFileSync(mainEntryPath, path.resolve(inputPath, 'main.mjs'));
   }
 
   app && app.quit();

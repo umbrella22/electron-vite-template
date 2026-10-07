@@ -102,7 +102,7 @@ export const browserDemoURL = getUrl(
 )
 export const preloadPath = isDev
   ? join(app.getAppPath(), '..', 'preload.js')
-  : join(app.getAppPath(), 'dist', 'electron', 'preload.js')
+  : join(app.getAppPath(), 'dist', 'electron', 'preload.cjs')
 export const trayURL = getUrl('/tray.html', `${staticPath.__static}/tray.html`)
 export const trayIconPath = isDev
   ? join(staticPath.__static, 'trayIcon', 'trayIcon.png')
@@ -131,5 +131,5 @@ export const staticPaths = getUrl('', staticPath.__static)
 
 // process.env 修改
 for (const key in staticPath) {
-  process.env[key] = staticPath[key]
+  process.env[key] = staticPath[key as keyof StaticPath]
 }
