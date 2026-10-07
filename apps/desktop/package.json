@@ -8,11 +8,11 @@
   "description": "electron-vite-template desktop app",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && npm run build:electron && npm run build:renderer",
+    "build": "pnpm clean && pnpm build:electron && pnpm build:renderer",
     "clean": "tsx ../../tools/build/clean.ts",
     "build:electron": "tsx ../../tools/build/build-electron.ts -m prod",
     "build:renderer": "tsx ../../tools/build/build-renderer.ts",
-    "build:bytecode": "npm run build && node ../../tools/bytecode/compile.mjs"
+    "build:bytecode": "pnpm build && node ../../tools/bytecode/compile.mjs"
   },
   "dependencies": {
     "adm-zip": "^0.6.1",
@@ -24,6 +24,7 @@
     "electron_updater_node_core": "^0.3.3",
     "element-plus": "^2.14.7",
     "fs-extra": "^11.3.0",
+    "ipc-contract": "workspace:*",
     "pinia": "^4.0.3",
     "regedit": "^5.1.4",
     "semver": "^7.7.2",

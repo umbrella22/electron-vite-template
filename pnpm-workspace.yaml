@@ -1,0 +1,24 @@
+packages:
+  - apps/*
+  - packages/*
+
+# pnpm 11 默认拦截依赖的 install 脚本，这里放行需要构建的包：
+# electron 下载运行时二进制，esbuild 安装平台二进制，
+# @parcel/watcher 为 vite-plus 的原生文件监听，electron-winstaller 为打包链依赖
+allowBuilds:
+  '@parcel/watcher': true
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+
+minimumReleaseAgeExclude:
+  - '@voidzero-dev/vite-plus-core@1.1.0'
+  - '@voidzero-dev/vite-plus-darwin-arm64@1.1.0'
+  - '@voidzero-dev/vite-plus-darwin-x64@1.1.0'
+  - '@voidzero-dev/vite-plus-linux-arm64-gnu@1.1.0'
+  - '@voidzero-dev/vite-plus-linux-arm64-musl@1.1.0'
+  - '@voidzero-dev/vite-plus-linux-x64-gnu@1.1.0'
+  - '@voidzero-dev/vite-plus-linux-x64-musl@1.1.0'
+  - '@voidzero-dev/vite-plus-win32-arm64-msvc@1.1.0'
+  - '@voidzero-dev/vite-plus-win32-x64-msvc@1.1.0'
+  - vite-plus@1.1.0

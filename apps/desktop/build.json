@@ -7,7 +7,7 @@
       "url": "http://127.0.0.1"
     }
   ],
-  "afterPack": "../../tools/build/afterPack.cjs",
+  "afterPack": "afterPack.cjs",
   "productName": "electron-vite-template",
   "appId": "org.sky.electron-vite-template",
   "directories": {

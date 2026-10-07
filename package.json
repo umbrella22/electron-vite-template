@@ -2,13 +2,10 @@
   "name": "electron-vite-template",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@11.27.1",
   "description": "electron-vite-template monorepo",
   "license": "MIT",
   "type": "module",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "dev": "tsx tools/build/dev-runner.ts",
     "build": "vp run --cache desktop#build && cd apps/desktop && electron-builder -c build.json",
@@ -25,7 +22,7 @@
   "devDependencies": {
     "@types/adm-zip": "^0.5.8",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.19.1",
+    "@types/node": "^26.6.4",
     "@types/semver": "^7.8.0",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vitejs/plugin-vue-jsx": "^5.1.6",
@@ -35,7 +32,8 @@
     "del": "^8.0.1",
     "detect-port": "^2.1.0",
     "dotenv": "^18.0.5",
-    "electron-builder": "^26.15.3",
+    "electron": "44.5.1",
+    "electron-builder": "^26.17.0",
     "fs-extra": "^11.3.0",
     "minimist": "^1.2.8",
     "rolldown": "^1.2.12",
@@ -43,7 +41,7 @@
     "tslib": "^2.8.1",
     "tsx": "^4.20.6",
     "typescript": "^7.0.2",
-    "vite-plus": "^1.0.0"
+    "vite-plus": "^1.1.0"
   },
   "keywords": [
     "vite",
