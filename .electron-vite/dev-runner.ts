@@ -16,7 +16,7 @@ import { electronLog, getArgv, logStats, removeJunk } from './utils'
 const { target = 'client', controlledRestart = false } = getArgv()
 
 const mainOpt = rolldownOptions(process.env.NODE_ENV, 'main')
-// const preloadOpt = rolldownOptions(process.env.NODE_ENV, 'preload')
+const preloadOpt = rolldownOptions(process.env.NODE_ENV, 'preload')
 
 let electronProcess: ChildProcess | null = null
 let manualRestart = false
@@ -77,7 +77,7 @@ async function startRenderer(port: number): Promise<void> {
 
 function startMain(): Promise<void> {
   return new Promise((resolve, reject) => {
-    const MainWatcher = watch(mainOpt)
+    const MainWatcher = watch([mainOpt, preloadOpt])
     MainWatcher.on('change', (filename) => {
       // 主进程日志部分
       logStats(

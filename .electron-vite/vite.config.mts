@@ -3,7 +3,6 @@ import { defineConfig } from "vite-plus";
 import vuePlugin from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { getConfig } from "./utils";
-import { rendererExternals } from "./externals";
 
 function resolve(dir: string) {
   return join(__dirname, "..", dir);
@@ -36,11 +35,8 @@ export default defineConfig({
     emptyOutDir: true,
     target: "esnext",
     cssCodeSplit: false,
-    rolldownOptions: {
-      // 渲染层通过 nodeIntegration 的 require 访问 electron 与 node 内置模块，
-      // external 使 rolldown 不打包桩代码、改为运行时解析；清单见 ./externals.ts
-      external: rendererExternals,
-    },
+    // 渲染层运行在 contextIsolation + sandbox 中，不允许访问 electron/node 模块；
+    // 刻意不配置 external，误引入会直接构建报错
   },
   server: {},
   plugins: [vueJsx(), vuePlugin()],

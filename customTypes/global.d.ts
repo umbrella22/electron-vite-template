@@ -1,44 +1,10 @@
-import { ipcRenderer, shell } from 'electron'
-import type { IIpcRendererInvoke, IIpcRendererOn } from '../src/ipc/index'
+import type { IpcBridge } from '../src/preload/index'
 
 /**
- * 渲染进程给主进程发送消息
+ * 渲染进程与主进程的全部通信都经由 preload 暴露的 window.ipcBridge
+ * （contextIsolation + sandbox，渲染进程无 Node 访问能力）。
+ * 类型化的 invoke/listen 封装见 @renderer/utils/ipcRenderer。
  */
-type IpcRendererInvoke = {
-  [key in keyof IIpcRendererInvoke]: {
-    /**
-     * 渲染进程给主进程发送消息
-     * @param args 参数
-     * @returns
-     */
-    invoke: IIpcRendererInvoke[key]
-  }
-}
-
-/**
- * 渲染进程监听事件
- */
-type IpcRendererOn = {
-  [key in keyof IIpcRendererOn]: {
-    /**
-     * 渲染进程监听事件
-     * @param listener 监听事件
-     * @returns
-     */
-    on: (listener: IIpcRendererOn[key]) => void
-    /**
-     * 渲染进程监听一次事件
-     * @param listener
-     * @returns
-     */
-    once: (listener: IIpcRendererOn[key]) => void
-    /**
-     * 渲染进程移除所有监听
-     * @returns
-     */
-    removeAllListeners: () => void
-  }
-}
 
 interface AnyObject {
   [key: string]: any
@@ -55,21 +21,7 @@ declare global {
     performance: {
       memory: memoryInfo
     }
-    /**
-     * 渲染进程的IPC通道
-     * 但是只能是给主进程发消息(invoke)和监听主进程的消息(on/once)
-     */
-    ipcRendererChannel: IpcRendererInvoke & IpcRendererOn
-    systemInfo: {
-      platform: string
-      release: string
-      arch: string
-      nodeVersion: string
-      electronVersion: string
-    }
-    shell: typeof shell
-    crash: {
-      start: () => void
-    }
+    /** preload 暴露的唯一桥梁，形状见 src/preload/index.ts */
+    ipcBridge: IpcBridge
   }
 }

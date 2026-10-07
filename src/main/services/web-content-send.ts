@@ -1,32 +1,26 @@
-import { IWebContentSend, IpcChannel } from '@ipcManager/index'
+import type { IpcEventGroups, IpcEventSender } from '@ipcManager/index'
 
-// 方法名到 IpcChannel 的映射
-const methodToChannelMap: Record<string, string> = {
-  DownloadProgress: IpcChannel.DownloadProgress,
-  DownloadError: IpcChannel.DownloadError,
-  DownloadPaused: IpcChannel.DownloadPaused,
-  DownloadDone: IpcChannel.DownloadDone,
-  UpdateMsg: IpcChannel.UpdateMsg,
-  UpdateProcessStatus: IpcChannel.UpdateProcessStatus,
-  SendDataTest: IpcChannel.SendDataTest,
-  BrowserViewTabDataUpdate: IpcChannel.BrowserViewTabDataUpdate,
-  BrowserViewTabPositionXUpdate: IpcChannel.BrowserViewTabPositionXUpdate,
-  BrowserTabMouseup: IpcChannel.BrowserTabMouseup,
-  HotUpdateStatus: IpcChannel.HotUpdateStatus,
-}
-
-export const webContentSend: IWebContentSend = new Proxy(
-  {},
+/**
+ * 主进程向渲染进程推送事件的类型化入口。
+ * 两级访问对应事件组与事件名（即线上通道名 `组:方法`），载荷类型自动推导：
+ *
+ *   webContentSend.download.progress(win.webContents, 66)
+ *   webContentSend.browser.dragEnd(win.webContents)
+ */
+export const webContentSend: IpcEventSender<IpcEventGroups> = new Proxy(
+  {} as IpcEventSender<IpcEventGroups>,
   {
-    get(target, prop: string) {
-      return (webContents: Electron.WebContents, args?: unknown) => {
-        const channelName = methodToChannelMap[prop] || prop
-        if (args !== undefined) {
-          webContents.send(channelName, args)
-        } else {
-          webContents.send(channelName)
-        }
-      }
+    get(_target, group: string) {
+      return new Proxy(
+        {},
+        {
+          get(_target2, method: string) {
+            return (webContents: Electron.WebContents, ...args: unknown[]) => {
+              webContents.send(`${group}:${method}`, ...args)
+            }
+          },
+        },
+      )
     },
   },
-) as IWebContentSend
+)

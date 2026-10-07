@@ -17,11 +17,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { invoke, IpcChannel } from '@renderer/utils/ipcRenderer'
+import { invoke } from '@renderer/utils/ipcRenderer'
 const IsUseSysTitle = ref(false)
-const isNotMac = ref(process.platform !== 'darwin')
-const IsWeb = ref(process.env.BUILD_TARGET)
-invoke(IpcChannel.IsUseSysTitle).then((res) => {
+const isNotMac = ref(window.ipcBridge.processInfo.platform !== 'darwin')
+const IsWeb = ref(window.ipcBridge.processInfo.buildTarget)
+invoke('app:isUseSysTitle').then((res) => {
   IsUseSysTitle.value = res
 })
 </script>

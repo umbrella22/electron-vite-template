@@ -100,9 +100,8 @@ export const browserDemoURL = getUrl(
   join(__dirname, '..', 'renderer', 'index.html'),
   '#/Browser',
 )
-export const preloadPath = isDev
-  ? join(app.getAppPath(), '..', 'preload.js')
-  : join(app.getAppPath(), 'dist', 'electron', 'preload.cjs')
+// preload 产物与 main 产物同目录输出（见 .electron-vite/rolldown.config.ts 的 output 配置）
+export const preloadPath = join(__dirname, 'preload.cjs')
 export const trayURL = getUrl('/tray.html', `${staticPath.__static}/tray.html`)
 export const trayIconPath = isDev
   ? join(staticPath.__static, 'trayIcon', 'trayIcon.png')

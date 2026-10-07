@@ -11,11 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, version as vueVersion } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-const { platform, release, arch } = require('os')
+const { systemInfo } = window.ipcBridge
 const { path, name } = useRoute()
 const { t } = useI18n()
 
@@ -28,20 +28,20 @@ let tips = ref(
       name: t('about.vueVersion'),
       value:
         process.env.NODE_ENV === 'development'
-          ? require('vue/package.json').version
+          ? vueVersion
           : '不可见',
     },
     {
       name: t('about.electronVersion'),
-      value: process.versions.electron || '浏览器环境',
+      value: systemInfo.electronVersion || '浏览器环境',
     },
     {
       name: t('about.nodeVersion'),
-      value: process.versions.node || '浏览器环境',
+      value: systemInfo.nodeVersion || '浏览器环境',
     },
-    { name: t('about.systemPlatform'), value: platform() },
-    { name: t('about.systemVersion'), value: release() },
-    { name: t('about.systemArch'), value: arch() + '位' },
+    { name: t('about.systemPlatform'), value: systemInfo.platform },
+    { name: t('about.systemVersion'), value: systemInfo.systemVersion },
+    { name: t('about.systemArch'), value: systemInfo.arch + '位' },
   ]),
 )
 </script>

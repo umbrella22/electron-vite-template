@@ -1,86 +1,55 @@
-import { IIpcRendererInvoke, IIpcRendererOn } from '@ipcManager/index'
+import type {
+  IpcContractChannel,
+  IpcEventChannel,
+  ResolveContractMethod,
+  ResolveEventMethod,
+} from '@ipcManager/index'
 import { onUnmounted } from 'vue'
-const { ipcRenderer } = require('electron')
-
-type VoidParametersIpcRendererInvokeKey = {
-  [K in keyof IIpcRendererInvoke]: Parameters<
-    IIpcRendererInvoke[K]
-  >[0] extends void
-    ? K
-    : never
-}[keyof IIpcRendererInvoke]
-
-type NotVoidParametersIpcRendererInvokeKey = Exclude<
-  keyof IIpcRendererInvoke,
-  VoidParametersIpcRendererInvokeKey
->
 
 /**
- * IPC 调用（无参数版本）
- * @param channel - kebab-case 格式的通道名，如 'get-printers', 'open-win' 等
+ * IPC 调用（渲染进程 -> 主进程）。
+ * 通道名 = `域:方法`，域名、方法名与载荷都由合同类型推导：
+ * 无参通道禁止传参，有参通道强校验载荷形状。
+ * 底层经 preload 暴露的 window.ipcBridge（contextIsolation 安全模型）。
+ *
+ * @example
+ * invoke('print:getPrinters')
+ * invoke('app:openWin', { url: '/form/index' })
  */
-export function invoke<T extends VoidParametersIpcRendererInvokeKey>(
-  channel: T,
-): ReturnType<IIpcRendererInvoke[T]>
-
-/**
- * IPC 调用（带参数版本）
- * @param channel - kebab-case 格式的通道名，如 'get-printers', 'open-win' 等
- * @param args - 传递给 IPC 处理器的参数
- */
-export function invoke<T extends NotVoidParametersIpcRendererInvokeKey>(
-  channel: T,
-  args: Parameters<IIpcRendererInvoke[T]>[0],
-): ReturnType<IIpcRendererInvoke[T]>
-
-/**
- * IPC 调用实现
- */
-export function invoke<T extends keyof IIpcRendererInvoke>(
-  channel: T,
-  args?: Parameters<IIpcRendererInvoke[T]>[0],
-) {
-  return ipcRenderer.invoke(channel, args) as ReturnType<IIpcRendererInvoke[T]>
+export function invoke<C extends IpcContractChannel>(
+  channel: C,
+  ...args: Parameters<ResolveContractMethod<C>>
+): Promise<ReturnType<ResolveContractMethod<C>>> {
+  // 跨越 contextBridge 后类型被抹平为 unknown，由合同解析类型在边界处恢复
+  return window.ipcBridge.invoke(channel, ...args) as Promise<
+    ReturnType<ResolveContractMethod<C>>
+  >
 }
 
 /**
- * ipcRenderer.on 在 Vue setup 中使用
- * 会在组件卸载时自动清理监听器
+ * 监听主进程推送的事件（通道名 = `组:方法`），回调直接收到载荷（不含 IpcRendererEvent）。
+ * 返回清理函数，需要手动调用以移除监听器。
  *
- * @export
- * @template T
- * @param {T} channel - kebab-case 格式的通道名，如 'download-progress', 'hot-update-status' 等
- * @param {IIpcRendererOn[T]} callback - 回调函数
+ * @example
+ * const dispose = listen('download:progress', (percent) => {...})
  */
-export function vueListen<T extends keyof IIpcRendererOn>(
-  channel: T,
-  callback: IIpcRendererOn[T],
-) {
-  ipcRenderer.on(channel, callback)
-  onUnmounted(() => {
-    ipcRenderer.removeListener(channel, callback)
-  })
-}
-
-/**
- * ipcRenderer.on 通用版本
- * 返回清理函数，需要手动调用以移除监听器
- *
- * @export
- * @template T
- * @param {T} channel - kebab-case 格式的通道名，如 'download-progress', 'hot-update-status' 等
- * @param {IIpcRendererOn[T]} callback - 回调函数
- * @return {() => void} 副作用清理函数
- */
-export function listen<T extends keyof IIpcRendererOn>(
-  channel: T,
-  callback: IIpcRendererOn[T],
+export function listen<C extends IpcEventChannel>(
+  channel: C,
+  callback: ResolveEventMethod<C>,
 ): () => void {
-  ipcRenderer.on(channel, callback)
-  return () => {
-    ipcRenderer.removeListener(channel, callback)
-  }
+  return window.ipcBridge.on(channel, callback as (...args: unknown[]) => void)
 }
 
-// 重新导出 IpcChannel 以便在 Vue 组件中使用
-export { IpcChannel } from '@ipcManager/index'
+/**
+ * listen 的 Vue setup 版本，组件卸载时自动清理监听器。
+ *
+ * @example
+ * vueListen('download:done', ({ filePath }) => {...})
+ */
+export function vueListen<C extends IpcEventChannel>(
+  channel: C,
+  callback: ResolveEventMethod<C>,
+): void {
+  const dispose = listen(channel, callback)
+  onUnmounted(dispose)
+}

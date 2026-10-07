@@ -10,6 +10,7 @@ import { errorLog, doneLog } from './log'
 import { getArgv } from './utils'
 
 const mainOpt = rolldownOptions(process.env.NODE_ENV, 'main')
+const preloadOpt = rolldownOptions(process.env.NODE_ENV, 'preload')
 const { clean = false, target = 'client' } = getArgv()
 const isCI = process.env.CI || false
 
@@ -47,6 +48,18 @@ async function unionBuild() {
             await build.write(mainOpt.output as OutputOptions)
           } catch (error) {
             errorLog(`failed to build main process\n`)
+            return Promise.reject(error)
+          }
+        },
+      },
+      {
+        title: 'building preload process',
+        task: async () => {
+          try {
+            const build = await rolldown(preloadOpt)
+            await build.write(preloadOpt.output as OutputOptions)
+          } catch (error) {
+            errorLog(`failed to build preload process\n`)
             return Promise.reject(error)
           }
         },

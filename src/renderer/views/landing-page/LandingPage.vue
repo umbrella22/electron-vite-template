@@ -146,7 +146,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Ref, ref } from 'vue'
 import { i18n, setLanguage } from '@renderer/i18n'
 import { useI18n } from 'vue-i18n'
-import { invoke, vueListen, IpcChannel } from '../../utils/ipcRenderer'
+import { invoke, vueListen } from '../../utils/ipcRenderer'
 
 import { useStoreTemplate } from '@renderer/store/modules/template'
 import { ProgressInfo } from 'electron-updater'
@@ -165,7 +165,7 @@ setTimeout(() => {
   console.log(`storeTemplate`, storeTemplate.getTest1)
 }, 1000)
 
-const { shell } = require('electron')
+const { shell } = window.ipcBridge
 
 let percentage = ref(0)
 let colors: Ref<ColorInfo[]> | Ref<string> = ref([
@@ -185,7 +185,7 @@ let updateStatus = ref('')
 let elPageSize = ref(100)
 let elCPage = ref(1)
 
-invoke(IpcChannel.GetStaticPath).then((res) => {
+invoke('app:getStaticPath').then((res) => {
   console.log('staticPath', res)
 })
 
@@ -194,11 +194,11 @@ function changeLanguage() {
 }
 
 function printDemo() {
-  invoke(IpcChannel.OpenPrintDemoWindow)
+  invoke('print:openDemoWindow')
 }
 
 function browserDemo() {
-  invoke(IpcChannel.OpenBrowserDemoWindow)
+  invoke('browser:openDemoWindow')
 }
 
 function handleSizeChange(val: number) {
@@ -210,14 +210,14 @@ function handleCurrentChange(val: number) {
 }
 
 function crash() {
-  process.crash()
+  window.ipcBridge.simulateCrash()
 }
 
 function openNewWin() {
   let data = {
     url: '/form/index',
   }
-  invoke(IpcChannel.OpenWin, data)
+  invoke('app:openWin', data)
 }
 function getMessage() {
   message().then((res) => {
@@ -227,7 +227,7 @@ function getMessage() {
   })
 }
 function StopServer() {
-  invoke(IpcChannel.StopServer).then((res) => {
+  invoke('app:stopServer').then((res) => {
     if (res) {
       ElMessage({
         type: 'success',
@@ -237,7 +237,7 @@ function StopServer() {
   })
 }
 function StartServer() {
-  invoke(IpcChannel.StartServer).then((res) => {
+  invoke('app:startServer').then((res) => {
     if (res) {
       ElMessage({
         type: 'success',
@@ -251,7 +251,7 @@ function open() {}
 function CheckUpdate(data) {
   switch (data) {
     case 'one':
-      invoke(IpcChannel.CheckUpdate)
+      invoke('app:checkUpdate')
       break
     case 'two':
       // TODO 测试链接
@@ -266,11 +266,11 @@ function CheckUpdate(data) {
       //   });
       break
     case 'three':
-      invoke(IpcChannel.HotUpdate)
+      invoke('updater:start')
       break
     case 'threetest':
       alert('更新后再次点击没有提示')
-      invoke(IpcChannel.HotUpdateTest)
+      invoke('updater:test')
       break
     case 'four':
       showForcedUpdate.value = true
@@ -295,13 +295,13 @@ function handleClose() {
 }
 
 const showInMyComputer = ref(0) // 0-不显示 1-开启 -1-关闭
-if (process.platform === 'win32') {
-  invoke(IpcChannel.CheckShowOnMyComputer).then((bool) => {
+if (window.ipcBridge.processInfo.platform === 'win32') {
+  invoke('app:checkShowOnMyComputer').then((bool) => {
     showInMyComputer.value = bool ? 1 : -1
   })
 }
 function setShowOnMyComputer() {
-  invoke(IpcChannel.SetShowOnMyComputer, showInMyComputer.value === -1).then(
+  invoke('app:setShowOnMyComputer', showInMyComputer.value === -1).then(
     (success) => {
       if (success) {
         showInMyComputer.value = showInMyComputer.value === -1 ? 1 : -1
@@ -310,31 +310,31 @@ function setShowOnMyComputer() {
   )
 }
 
-vueListen(IpcChannel.DownloadProgress, (event, arg) => {
-  console.log(arg)
-  percentage.value = arg
+vueListen('download:progress', (percent) => {
+  console.log(percent)
+  percentage.value = percent
 })
 
-vueListen(IpcChannel.DownloadError, (event, arg) => {
-  if (arg) {
+vueListen('download:error', (isError) => {
+  if (isError) {
     progressStaus.value = 'exception'
     percentage.value = 40
     colors.value = '#d81e06'
   }
 })
-vueListen(IpcChannel.DownloadPaused, (event, arg) => {
-  if (arg) {
+vueListen('download:paused', (isPaused) => {
+  if (isPaused) {
     progressStaus.value = 'warning'
     ElMessageBox.alert('下载由于未知原因被中断！', '提示', {
       confirmButtonText: '重试',
       callback: (action) => {
-        invoke(IpcChannel.StartDownload, '')
+        invoke('app:startDownload', '')
       },
     })
   }
 })
-vueListen(IpcChannel.DownloadDone, (event, age) => {
-  filePath.value = age.filePath
+vueListen('download:done', (payload) => {
+  filePath.value = payload.filePath
   progressStaus.value = 'success'
   ElMessageBox.alert('更新下载完成！', '提示', {
     confirmButtonText: '确定',
@@ -344,7 +344,7 @@ vueListen(IpcChannel.DownloadDone, (event, age) => {
   })
 })
 // electron-updater的更新监听
-vueListen(IpcChannel.UpdateMsg, (event, args) => {
+vueListen('update:msg', (args) => {
   switch (args.state) {
     case -1:
       const msgdata = {
@@ -352,7 +352,7 @@ vueListen(IpcChannel.UpdateMsg, (event, args) => {
         message: args.msg as string,
       }
       dialogVisible.value = false
-      invoke(IpcChannel.OpenErrorbox, msgdata)
+      invoke('app:openErrorbox', msgdata)
       break
     case 0:
       ElMessage('正在检查更新')
@@ -375,7 +375,7 @@ vueListen(IpcChannel.UpdateMsg, (event, args) => {
       ElMessageBox.alert('更新下载完成！', '提示', {
         confirmButtonText: '确定',
         callback: (action) => {
-          invoke(IpcChannel.ConfirmUpdate)
+          invoke('app:confirmUpdate')
         },
       })
       break
@@ -383,7 +383,7 @@ vueListen(IpcChannel.UpdateMsg, (event, args) => {
       break
   }
 })
-vueListen(IpcChannel.HotUpdateStatus, (event, msg) => {
+vueListen('update:hotStatus', (msg) => {
   switch (msg.status) {
     case 'downloading':
       ElMessage('正在下载')
@@ -408,17 +408,17 @@ const storeInputValue = ref('')
 const storeShowValue = ref('')
 
 const setStoreValue = () => {
-  invoke(IpcChannel.SetStoreValue, {key: 'token', value: storeInputValue.value});
+  invoke('app:setStoreValue', { key: 'token', value: storeInputValue.value })
 }
 
 const getStoreValue = () => {
-  invoke(IpcChannel.GetStoreValue, {key: 'token'}).then((res: string) => {
+  invoke('app:getStoreValue', { key: 'token' }).then((res: string) => {
     storeShowValue.value = res
-  });
+  })
 }
 
 const deleteStoreValue = () => {
-  invoke(IpcChannel.DeleteStoreValue, {key: 'token'});
+  invoke('app:deleteStoreValue', { key: 'token' })
 }
 </script>
 
