@@ -7,6 +7,13 @@
   "author": "sky <https://github.com/umbrella22>",
   "description": "electron-vite-template desktop app",
   "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && npm run build:electron && npm run build:renderer",
+    "clean": "tsx ../../tools/build/clean.ts",
+    "build:electron": "tsx ../../tools/build/build-electron.ts -m prod",
+    "build:renderer": "tsx ../../tools/build/build-renderer.ts",
+    "build:bytecode": "npm run build && node ../../tools/bytecode/compile.mjs"
+  },
   "dependencies": {
     "adm-zip": "^0.6.1",
     "axios": "^1.13.2",
