@@ -1,60 +1,66 @@
 # electron-vite-template
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/umbrella22/electron-vite-template)
-[![vue](https://img.shields.io/badge/vue-3.5.22-brightgreen.svg)](https://github.com/vuejs/vue-next)
-[![vite](https://img.shields.io/badge/vite-7.1.11-brightgreen.svg)](https://github.com/vitejs/vite)
-[![electron](https://img.shields.io/badge/electron-38.3.0-brightgreen.svg)](https://github.com/electron/electron)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/master/LICENSE)
+![electron](https://img.shields.io/badge/electron-44.5.1-brightgreen.svg)
+![vue](https://img.shields.io/badge/vue-3.5-brightgreen.svg)
+![node](https://img.shields.io/badge/node-%3E%3D24-brightgreen.svg)
+![pnpm](https://img.shields.io/badge/pnpm-workspace-orange.svg)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/umbrella22/electron-vite-template/blob/main/LICENSE)
+[![Build TEST](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build.yml)
 
-# Installation
+A pnpm monorepo Electron + Vue 3 desktop application template — domain-grouped typed IPC, contextBridge security model, and optional V8 bytecode protection, all out of the box.
 
-You can choose to clone the project or fork repository, or download the zip file directly. It is recommended to clone the repository so that you can receive the latest patches.
+## Documentation
 
-To run a project, you need to have **node version 22** or higher and **use npm as your dependency management tool**
+📘 **[https://umbrella22.github.io/electron-vite-template/](https://umbrella22.github.io/electron-vite-template/)** (Chinese only)
 
-[Document (Chinese only)](https://umbrella22.github.io/electron-vue-template-doc/)
+The docs cover everything: getting started, the IPC contract system, the security model, build & packaging, hot update, bytecode protection, and CI workflows.
 
-[For Chinese Developers](/README_ZH.md)
+## Requirements
 
-[![Build Updater Status](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build%20Update.yml/badge.svg)](https://github.com/umbrella22/electron-vite-template/actions/workflows/Build%20Update.yml)
+- **Node.js ≥ 24** — build scripts run on Node's native TypeScript support
+- **pnpm** — the only package manager used (`corepack enable` aligns the version via the `packageManager` field)
 
-# Build Setup
+## Build Setup
 
 ```bash
 # Clone this repository
 $ git clone https://github.com/umbrella22/electron-vite-template.git
 # Go into the repository
 $ cd electron-vite-template
-# install dependencies
-$ npm install
+# Install dependencies
+$ pnpm install
 
-# serve with hot reload at localhost:9080
-$ npm run dev
+# Start development (hot reload at localhost:9080)
+$ pnpm dev
 
-# build electron application for production
-$ npm run build
+# Build and package for the current platform
+$ pnpm run build
 
-
+# Build without generating an installer (fast packaging check)
+$ pnpm run build:dir
 ```
 
----
+## Feature list
 
-# Function list
+- [x] Typed domain-grouped IPC (`app:openWin`, `browser:selectTab`, ...) with compile-time safety
+- [x] contextIsolation + sandbox security model with a whitelisted preload bridge
+- [x] Auto update (electron-updater)
+- [x] Incremental hot update (renderer + main process content)
+- [x] Optional main-process bytecode protection (opt-in, zero toolchain)
+- [x] vp run cached build pipeline & 3-platform CI workflows
+- [x] i18n
 
-[x] Auto update
-[x] Incremental update
-[x] Loading animation before startup
-[x] i18n
+## Built-in
 
-# Built-in
-
-- [vue-router](https://next.router.vuejs.org/index.html)
-- [pinia](https://pinia.esm.dev/)
-- [electron](http://www.electronjs.org/docs)
+- [vue-router](https://router.vuejs.org/)
+- [pinia](https://pinia.vuejs.org/)
+- [element-plus](https://element-plus.org/)
+- [electron-store](https://github.com/sindresorhus/electron-store)
 - electron-updater
-- typescript
+- TypeScript 7
 
 # Note
 
-- [gitee](https://gitee.com/Zh-Sky/electron-vite-template) is only for domestic users to pull code，from github to synchronize，please visit github for PR
+- [gitee](https://gitee.com/Zh-Sky/electron-vite-template) is only for domestic users to pull code; it is synced from GitHub — please visit GitHub for PRs
 - **Welcome to Issues and PR**
