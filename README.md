@@ -12,7 +12,7 @@ A pnpm monorepo Electron + Vue 3 desktop application template — domain-grouped
 
 ## Documentation
 
-📘 **[https://umbrella22.github.io/electron-vite-template/](https://umbrella22.github.io/electron-vite-template/)** (Chinese only)
+📘 **[Documentation](https://umbrella22.github.io/electron-vite-template/)** (Chinese only)
 
 The docs cover everything: getting started, the IPC contract system, the security model, build & packaging, hot update, bytecode protection, and CI workflows.
 
