@@ -8,15 +8,16 @@ import { join } from 'path'
 import fsExtra from 'fs-extra'
 const { ensureDir, emptyDir, copy, outputJSON, remove, stat, readFile } =
   fsExtra
-import { BinaryLike, createHmac } from 'crypto'
+import { createHmac } from 'crypto'
 import AdmZip from 'adm-zip'
-import packageFile from '../../apps/desktop/package.json'
-import buildConfig from '../../apps/desktop/build.json'
-import config from '../../apps/desktop/config'
-import { okayLog, errorLog, doneLog } from './log'
+import packageFile from '../../../apps/desktop/package.json' with { type: 'json' }
+import buildConfig from '../../../apps/desktop/build.json' with { type: 'json' }
+import config from '../../../apps/desktop/config/index.ts'
+import { okayLog, errorLog, doneLog } from '../shared/log.ts'
 
 const buildPath = join('apps', 'desktop', 'dist', 'electron')
 
+type BinaryLike = Parameters<typeof createHmac>[1]
 const hash = (data: BinaryLike, type = 'sha256') => {
   const hmac = createHmac(type, 'Sky')
   hmac.update(data)

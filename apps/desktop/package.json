@@ -9,9 +9,9 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm clean && pnpm build:electron && pnpm build:renderer",
-    "clean": "tsx ../../tools/build/clean.ts",
-    "build:electron": "tsx ../../tools/build/build-electron.ts -m prod",
-    "build:renderer": "tsx ../../tools/build/build-renderer.ts",
+    "clean": "node ../../tools/build/tasks/clean.ts",
+    "build:electron": "node ../../tools/build/tasks/build-electron.ts -m prod",
+    "build:renderer": "node ../../tools/build/tasks/build-renderer.ts",
     "build:bytecode": "pnpm build && node ../../tools/bytecode/compile.mjs"
   },
   "dependencies": {

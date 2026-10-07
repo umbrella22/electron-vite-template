@@ -3,8 +3,8 @@
  * 由 apps/desktop 的 build:electron 脚本调用（vp run 流水线的一环）
  */
 import { rolldown, type OutputOptions } from 'rolldown'
-import rolldownOptions from './rolldown.config'
-import { doneLog, errorLog } from './log'
+import rolldownOptions from '../configs/rolldown.config.ts'
+import { doneLog, errorLog } from '../shared/log.ts'
 
 process.env.NODE_ENV = 'production'
 

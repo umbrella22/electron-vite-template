@@ -1,27 +1,23 @@
-import { config } from 'dotenv'
-import { join } from 'path'
 import chalk from 'chalk'
-import cliConfig from '../../apps/desktop/config'
-import minimist from 'minimist'
+import cliConfig from '../../../apps/desktop/config/index.ts'
 
-const argv = minimist(process.argv.slice(2))
-// 应用包根目录（tools/build 的上两级）
-const appRoot = join(import.meta.dirname, '..', '..', 'apps', 'desktop')
-
-export const getEnv = () => argv['m']
-export const getArgv = () => argv
-
-const getEnvPath = () => {
-  if (
-    String(typeof getEnv()) === 'boolean' ||
-    String(typeof getEnv()) === 'undefined'
-  ) {
-    return join(appRoot, 'env/.env')
-  }
-  return join(appRoot, `env/.${getEnv()}.env`)
+export const doneLog = (text: string) => {
+  console.log('\n' + chalk.bgGreen.white(' DONE ') + ' ' + text)
+}
+export const errorLog = (text: string) => {
+  console.log('\n ' + chalk.bgRed.white(' ERROR ') + ' ' + text)
+}
+export const okayLog = (text: string) => {
+  console.log('\n ' + chalk.bgBlue.white(' OKAY ') + ' ' + text)
+}
+export const warningLog = (text: string) => {
+  console.log('\n ' + chalk.bgYellow.white(' WARNING ') + ' ' + text)
+}
+export const infoLog = (text: string) => {
+  console.log('\n ' + chalk.bgCyan.white(' INFO ') + ' ' + text)
 }
 
-export const getConfig = () => config({ path: getEnvPath() }).parsed
+// 以下为 dev-runner 的进程输出格式化
 
 export const logStats = (proc: string, data: any) => {
   let log = ''

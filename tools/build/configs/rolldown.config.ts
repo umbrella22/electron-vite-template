@@ -1,11 +1,11 @@
 import path from 'path'
 import { defineConfig } from 'rolldown'
-import { getConfig } from './utils'
-import { mainExternals } from './externals'
+import { getConfig } from '../shared/env.ts'
+import { mainExternals } from './externals.ts'
 const config = getConfig()
 
 // 应用包根目录（tools/build 的上两级）
-const appRoot = path.join(import.meta.dirname, '..', '..', 'apps', 'desktop')
+const appRoot = path.join(import.meta.dirname, '..', '..', '..', 'apps', 'desktop')
 
 export default (env = 'production', type = 'main') => {
   return defineConfig({

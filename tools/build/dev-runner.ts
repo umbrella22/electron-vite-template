@@ -6,12 +6,13 @@ import chalk from 'chalk'
 import { join } from 'path'
 import { watch } from 'rolldown'
 import { detect } from 'detect-port'
-import config from '../../apps/desktop/config'
+import config from '../../apps/desktop/config/index.ts'
 import cfonts from 'cfonts'
 import { spawn } from 'child_process'
 import type { ChildProcess } from 'child_process'
-import rolldownOptions from './rolldown.config'
-import { electronLog, getArgv, logStats, removeJunk } from './utils'
+import rolldownOptions from './configs/rolldown.config.ts'
+import { getArgv } from './shared/env.ts'
+import { electronLog, logStats, removeJunk } from './shared/log.ts'
 
 const { target = 'client', controlledRestart = false } = getArgv()
 
@@ -58,7 +59,7 @@ const shortcutList: Shortcut[] = [
 async function startRenderer(port: number): Promise<void> {
   const { createServer } = await import('vite-plus')
   const server = await createServer({
-    configFile: join(import.meta.dirname, 'vite.config.mts'),
+    configFile: join(import.meta.dirname, 'configs/vite.config.mts'),
   })
   process.env.PORT = String(port)
   await server.listen(port)
