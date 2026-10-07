@@ -32,9 +32,9 @@ npx electron-builder -c build.json --dir
 V8 的 cachedData 与编译它的 V8 版本及 flags 锁定，因此编译必须在**与打包运行时一致的 Electron** 内进行：
 
 - `tools/bytecode/compile.mjs`：以普通 Node 运行时会用 `ELECTRON_RUN_AS_NODE=1` 把自己重新拉起在 Electron 内执行——devDependencies 锁定的 electron 版本就是 electron-builder 打包的版本，V8 天然一致；
-- `tools/bytecode/loader.cjs`：随包分发的加载壳（bytenode/QQ 同源方案）。要点：设置 `--no-lazy`（函数全量编译进缓存）与 `--no-flush-bytecode`（防 GC 冲刷）；缓存头 8-12 字节是源码长度（**小端**），据此构造等长占位源码；12-16 字节用当前 flags 生成的空脚本缓存头归一化；最后 `vm.Script.runInThisContext` 以 CJS 包装器执行字节码。
+- `tools/bytecode/loader.cjs`：随包分发的加载壳。要点：设置 `--no-lazy`（函数全量编译进缓存）与 `--no-flush-bytecode`（防 GC 冲刷）；缓存头 8-12 字节是源码长度（**小端**），据此构造等长占位源码；12-16 字节用当前 flags 生成的空脚本缓存头归一化；最后 `vm.Script.runInThisContext` 以 CJS 包装器执行字节码。
 
-对比旧版：原方案在 electron-builder 打包阶段篡改 `default_app.asar`、在临时目录里完成编译，并依赖 Rust 加密模块。现方案把编译挪到构建期，**删掉了全部打包钩子与 Rust 工具链**。
+编译在构建期一条命令完成，无打包钩子、无额外工具链（Electron 本身就是编译器）。
 
 ## 约束
 
@@ -42,14 +42,3 @@ V8 的 cachedData 与编译它的 V8 版本及 flags 锁定，因此编译必须
 2. **V8 版本锁死**——`main.bin` 只能被同一 V8 加载。升级 Electron 后必须重新执行 `build:bytecode`；
 3. **热更新**——热更包若含 `main.bin`，热更 CI 的 Electron 版本必须与用户已装的壳一致（架构上热更从不携带 Electron 本体，天然满足）；
 4. **调试**——字节码模式下主进程报错栈指向 loader 壳。排查问题时先用未启用字节码的构建复现。
-
-## 与旧版（Rust 加密层）的差异
-
-| | 旧版 | 现方案 |
-| --- | --- | --- |
-| 加密 | Rust NAPI 模块（需 Rust 工具链，三平台交叉编译） | 可选 XOR（key 在 loader 内，明示"只防 strings"） |
-| 编译时机 | electron-builder 打包期（篡改 default_app.asar） | 构建期（一条命令） |
-| 额外依赖 | Rust + napi cli | 无（Electron 本身就是编译器） |
-| 保护强度 | 与现方案同级——key 必须随包分发，逆向者拿到的只是"多一点麻烦" | 同左 |
-
-Rust 加密层已在重构中移除：它增加的保护增量趋近于零，维护成本却是实打实的三平台构建矩阵。

@@ -27,20 +27,6 @@ Electron 模板市面不少，但大多数只提供"能跑"的起点。本模板
 - 系统对话框、electron-store 持久化、托盘、多窗口（含浏览器/打印演示页）
 - vp run 缓存构建流水线、三平台 CI 工作流
 
-## 与旧版（electron-vue-template）的关系
-
-本项目由 [electron-vue-template](https://github.com/umbrella22/electron-vue-template) 演化而来，是一次不兼容的重构：
-
-| 维度 | 旧版 | 本版 |
-| --- | --- | --- |
-| 仓库形态 | 单包 | pnpm monorepo（apps/packages/tools） |
-| 包管理器 | yarn / npm | pnpm（`packageManager` 锁定版本） |
-| IPC | 字符串通道 + 手工类型 | 合同系统，`域:方法` 命名 |
-| 渲染进程 | nodeIntegration 直用 Node | contextIsolation + preload 白名单桥 |
-| 构建编排 | 单脚本 + listr2 | vp run 任务流水线（缓存） |
-| 脚本运行 | tsx | Node 24 原生 TypeScript |
-| 字节码 | bytenode + Rust 加密层 | 两文件极简实现（Rust 层已移除） |
-
 ## 分支说明
 
 - `main`：稳定集成分支，所有变更经 `mini-main` 合入
