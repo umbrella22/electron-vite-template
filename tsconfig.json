@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "resolveJsonModule": true,
-    "outDir": "./dist/electron/main",
+    "outDir": "./apps/desktop/dist/electron/main",
     "sourceMap": true,
     "declaration": false,
     "module": "preserve",
@@ -13,15 +13,18 @@
     "skipLibCheck": true,
     "target": "es2017",
     "paths": {
-      "@config/*": ["./config/*"],
-      "@renderer/*": ["./src/renderer/*"],
-      "@main/*": ["./src/main/*"],
-      "@store/*": ["./src/renderer/store/modules/*"],
-      "@ipcManager/*": ["./src/ipc/*"]
+      "@config/*": ["./apps/desktop/config/*"],
+      "@renderer/*": ["./apps/desktop/src/renderer/*"],
+      "@main/*": ["./apps/desktop/src/main/*"],
+      "@store/*": ["./apps/desktop/src/renderer/store/modules/*"]
     },
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"]
   },
-  "include": ["src/**/*", "customTypes/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "apps/desktop/src/**/*",
+    "apps/desktop/customTypes/*",
+    "packages/*/src/**/*"
+  ],
+  "exclude": ["node_modules", "dist", "apps/desktop/dist"]
 }

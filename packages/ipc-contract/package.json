@@ -1,0 +1,8 @@
+{
+  "name": "ipc-contract",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IPC 通道合同（纯类型包，主进程/渲染进程/preload 共享，无构建产物）",
+  "license": "MIT",
+  "types": "./src/index.ts"
+}

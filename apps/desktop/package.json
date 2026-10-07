@@ -1,0 +1,31 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/electron/main/main.cjs",
+  "author": "sky <https://github.com/umbrella22>",
+  "description": "electron-vite-template desktop app",
+  "license": "MIT",
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "axios": "^1.13.2",
+    "electron-devtools-installer": "^4.0.0",
+    "electron-log": "^5.4.3",
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.6.2",
+    "electron_updater_node_core": "^0.3.3",
+    "element-plus": "^2.14.7",
+    "fs-extra": "^11.3.0",
+    "pinia": "^4.0.3",
+    "regedit": "^5.1.4",
+    "semver": "^7.7.2",
+    "uuid": "^14.0.2",
+    "vue": "^3.5.24",
+    "vue-i18n": "^11.1.12",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "electron": "44.5.1"
+  }
+}
