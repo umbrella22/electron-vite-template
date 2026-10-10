@@ -108,7 +108,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, toRaw, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { invoke } from '../utils/ipcRenderer'
+import { ipc } from '../utils/ipcRenderer'
 import type { WebContentsPrintOptions } from 'electron'
 
 const selName = ref('')
@@ -130,7 +130,7 @@ const pageSizeObject = ref({ width: 210000, height: 297000 })
 const selPageSizeType = ref(0) // 0 string  1 Size
 onMounted(async () => {
   // 获取打印机列表
-  printers.value = await invoke('print:getPrinters')
+  printers.value = await ipc.print.getPrinters()
   if (printers.value.length) {
     const defaultItem = printers.value.find((v) => v.isDefault)
     if (defaultItem) {
@@ -145,7 +145,7 @@ const { t } = useI18n()
 
 async function print() {
   if (selName.value) {
-    const printRes = await invoke('print:exec', {
+    const printRes = await ipc.print.exec({
       silent: silent.value,
       deviceName: selName.value,
       printBackground: printBackground.value,

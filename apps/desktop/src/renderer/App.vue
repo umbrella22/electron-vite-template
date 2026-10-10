@@ -9,10 +9,10 @@
 
 <script setup lang="ts">
 import TitleBar from '@renderer/components/title-bar/title-bar.vue'
-import { invoke } from '@renderer/utils/ipcRenderer'
+import { ipc } from '@renderer/utils/ipcRenderer'
 import { onMounted } from 'vue'
 onMounted(() => {
-  invoke('app:winReady')
+  ipc.app.winReady()
 })
 </script>
 

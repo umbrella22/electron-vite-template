@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { vueListen, invoke } from '../utils/ipcRenderer'
+import { ipc, ipcEvents, vueOn } from '../utils/ipcRenderer'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -62,7 +62,7 @@ onMounted(async () => {
   if (isNewTabContainer) {
     localStorage.removeItem('isNewTabContainer')
     // 作为拖出tab的容器
-    const data = await invoke('browser:getLastDraggedTabData')
+    const data = await ipc.browser.getLastDraggedTabData()
     if (data) {
       tabList.value.push({
         positionX: data.positionX === -1 ? '' : data.positionX + 'px',
@@ -82,9 +82,8 @@ onMounted(async () => {
 async function createDefaultBrowserView() {
   try {
     console.log('createDefaultBrowserView called')
-    const { browserContentViewWebContentsId } = await invoke(
-      'browser:addDefaultView',
-    )
+    const { browserContentViewWebContentsId } =
+      await ipc.browser.addDefaultView()
     if (browserContentViewWebContentsId !== -1) {
       activeBrowserContentViewWebContentsId.value =
         browserContentViewWebContentsId
@@ -111,8 +110,7 @@ async function bvSelectHandle(item: TabItemData) {
       activeBrowserContentViewWebContentsId.value !==
       item.browserContentViewWebContentsId
     ) {
-      const success = await invoke(
-        'browser:selectTab',
+      const success = await ipc.browser.selectTab(
         item.browserContentViewWebContentsId,
       )
       if (success) {
@@ -142,10 +140,7 @@ async function bvCloseHandle(item: TabItemData) {
       'bvCloseHandle called for tab:',
       item.browserContentViewWebContentsId,
     )
-    await invoke(
-      'browser:destroyTab',
-      item.browserContentViewWebContentsId,
-    )
+    await ipc.browser.destroyTab(item.browserContentViewWebContentsId)
     const findIndex = tabList.value.findIndex((v) => v === item)
     if (findIndex !== -1) {
       tabList.value.splice(findIndex, 1)
@@ -181,7 +176,7 @@ async function searchHandle() {
     const query = encodeURIComponent(searchKey.value)
     url = new URL(`https://www.bing.com/search?q=${query}`)
   }
-  await invoke('browser:jumpToUrl', {
+  await ipc.browser.jumpToUrl({
     url: url.href,
     browserContentViewWebContentsId:
       activeBrowserContentViewWebContentsId.value,
@@ -197,8 +192,8 @@ function blurHandle() {
 }
 
 // 监听tab信息更新
-vueListen(
-  'browser:tabDataUpdate',
+vueOn(
+  ipcEvents.browser.tabDataUpdate,
   ({ browserContentViewWebContentsId, title, url, status }) => {
     console.log(
       'Received tab data update:',
@@ -252,8 +247,8 @@ vueListen(
 
 // 监听拖拽tab位置更新
 let lastDragBrowserContentViewWebContentsId: number
-vueListen(
-  'browser:tabPositionXUpdate',
+vueOn(
+  ipcEvents.browser.tabPositionXUpdate,
   ({ positionX, browserContentViewWebContentsId, dragTabOffsetX }) => {
     lastDragBrowserContentViewWebContentsId = browserContentViewWebContentsId
     const findIndex = tabList.value.findIndex(
@@ -291,7 +286,7 @@ vueListen(
 )
 
 // 鼠标松开
-vueListen('browser:dragEnd', () => {
+vueOn(ipcEvents.browser.dragEnd, () => {
   resetPosition()
 })
 
@@ -333,7 +328,7 @@ function mousedownHandle(e: MouseEvent, item: TabItemData) {
   mousedownTime = Date.now()
   dragging = true
   startPosition = { x: e.x, y: e.y }
-  invoke('browser:mousedown', {
+  ipc.browser.mousedown({
     offsetX: e.offsetX,
   })
 }
@@ -349,7 +344,7 @@ function mouseupHandle(e: MouseEvent) {
       // 按下松开200ms间隔内判断为点击时间
       bvSelectHandle(mousedownItem)
     } else if (dragging) {
-      invoke('browser:mouseup')
+      ipc.browser.mouseup()
     }
   }
 
@@ -358,7 +353,7 @@ function mouseupHandle(e: MouseEvent) {
 
 document.onmousemove = (e) => {
   if (dragging) {
-    invoke('browser:mousemove', {
+    ipc.browser.mousemove({
       screenX: e.screenX, // 鼠标在显示器的x坐标
       screenY: e.screenY, // 鼠标在显示器的y坐标
       startX: startPosition.x, // 按下鼠标时在窗口的x坐标
