@@ -20,7 +20,7 @@ import { onUnmounted } from 'vue'
  * 日常使用类型化域桥（方法名即文档，来自 ipc-contract 的合同接口）：
  * - `ipc.域.方法(args)` —— 渲染进程 -> 主进程，如 `ipc.browser.selectTab(id)`
  * - `ipcEvents.组.事件(cb)` —— 主进程 -> 渲染进程，如 `ipcEvents.download.progress(cb)`
- * - `vueOn(ipcEvents.组.事件, cb)` —— 上一行的 Vue setup 版本，组件卸载自动清理
+ * - `onIpcEvent(ipcEvents.组.事件, cb)` —— 上一行的 Vue setup 版本，组件卸载自动清理
  *
  * `invoke` / `listen` / `vueListen` 是底层通道形式（`'域:方法'` 字符串寻址），
  * 保留给动态拼接通道等特殊情况，业务代码请优先用域桥。
@@ -104,12 +104,14 @@ export const ipcEvents = {
 }
 
 /**
- * ipcEvents 的 Vue setup 版本，组件卸载时自动清理监听器。
+ * ipcEvents 的 Vue setup 版本：注册一个随组件卸载自动清理的事件监听。
+ * 事件在前、回调在后，与 addEventListener/on(event, handler) 同构；
+ * 必须在 setup 上下文中调用（内部依赖 onUnmounted）。
  *
  * @example
- * vueOn(ipcEvents.download.progress, (percent) => {...})
+ * onIpcEvent(ipcEvents.download.progress, (percent) => {...})
  */
-export function vueOn<F extends (...args: never[]) => unknown>(
+export function onIpcEvent<F extends (...args: never[]) => unknown>(
   register: (callback: F) => () => void,
   callback: F,
 ): void {

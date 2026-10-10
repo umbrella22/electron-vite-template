@@ -22,11 +22,11 @@
 import img_404 from '@renderer/assets/404_images/404.png'
 import img_404_cloud from '@renderer/assets/404_images/404_cloud.png'
 import { useStoreTemplate } from '@store/template'
-import { ipcEvents, vueOn } from '@renderer/utils/ipcRenderer'
+import { ipcEvents, onIpcEvent } from '@renderer/utils/ipcRenderer'
 const storeTemplate = useStoreTemplate()
 console.log(storeTemplate.$state.testData)
 
-vueOn(ipcEvents.window.sendData, (data) => {
+onIpcEvent(ipcEvents.window.sendData, (data) => {
   console.log(data)
 })
 </script>

@@ -146,7 +146,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Ref, ref } from 'vue'
 import { i18n, setLanguage } from '@renderer/i18n'
 import { useI18n } from 'vue-i18n'
-import { ipc, ipcEvents, vueOn } from '../../utils/ipcRenderer'
+import { ipc, ipcEvents, onIpcEvent } from '../../utils/ipcRenderer'
 
 import { useStoreTemplate } from '@renderer/store/modules/template'
 import { ProgressInfo } from 'electron-updater'
@@ -310,19 +310,19 @@ function setShowOnMyComputer() {
   )
 }
 
-vueOn(ipcEvents.download.progress, (percent) => {
+onIpcEvent(ipcEvents.download.progress, (percent) => {
   console.log(percent)
   percentage.value = percent
 })
 
-vueOn(ipcEvents.download.error, (isError) => {
+onIpcEvent(ipcEvents.download.error, (isError) => {
   if (isError) {
     progressStaus.value = 'exception'
     percentage.value = 40
     colors.value = '#d81e06'
   }
 })
-vueOn(ipcEvents.download.paused, (isPaused) => {
+onIpcEvent(ipcEvents.download.paused, (isPaused) => {
   if (isPaused) {
     progressStaus.value = 'warning'
     ElMessageBox.alert('下载由于未知原因被中断！', '提示', {
@@ -333,7 +333,7 @@ vueOn(ipcEvents.download.paused, (isPaused) => {
     })
   }
 })
-vueOn(ipcEvents.download.done, (payload) => {
+onIpcEvent(ipcEvents.download.done, (payload) => {
   filePath.value = payload.filePath
   progressStaus.value = 'success'
   ElMessageBox.alert('更新下载完成！', '提示', {
@@ -344,7 +344,7 @@ vueOn(ipcEvents.download.done, (payload) => {
   })
 })
 // electron-updater的更新监听
-vueOn(ipcEvents.update.msg, (args) => {
+onIpcEvent(ipcEvents.update.msg, (args) => {
   switch (args.state) {
     case -1:
       const msgdata = {
@@ -383,7 +383,7 @@ vueOn(ipcEvents.update.msg, (args) => {
       break
   }
 })
-vueOn(ipcEvents.update.hotStatus, (msg) => {
+onIpcEvent(ipcEvents.update.hotStatus, (msg) => {
   switch (msg.status) {
     case 'downloading':
       ElMessage('正在下载')

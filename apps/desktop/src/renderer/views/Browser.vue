@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ipc, ipcEvents, vueOn } from '../utils/ipcRenderer'
+import { ipc, ipcEvents, onIpcEvent } from '../utils/ipcRenderer'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -192,7 +192,7 @@ function blurHandle() {
 }
 
 // 监听tab信息更新
-vueOn(
+onIpcEvent(
   ipcEvents.browser.tabDataUpdate,
   ({ browserContentViewWebContentsId, title, url, status }) => {
     console.log(
@@ -247,7 +247,7 @@ vueOn(
 
 // 监听拖拽tab位置更新
 let lastDragBrowserContentViewWebContentsId: number
-vueOn(
+onIpcEvent(
   ipcEvents.browser.tabPositionXUpdate,
   ({ positionX, browserContentViewWebContentsId, dragTabOffsetX }) => {
     lastDragBrowserContentViewWebContentsId = browserContentViewWebContentsId
@@ -286,7 +286,7 @@ vueOn(
 )
 
 // 鼠标松开
-vueOn(ipcEvents.browser.dragEnd, () => {
+onIpcEvent(ipcEvents.browser.dragEnd, () => {
   resetPosition()
 })
 

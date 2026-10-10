@@ -1,18 +1,39 @@
 /**
- * IPC 类型系统
+ * IPC 类型系统（单一事实来源）
  *
- * 通道按域分组，线上通道名 = `域:方法`（如 `browser:selectTab`、`download:progress`），
- * 命名与分组来自合同（./contract.ts），两端共用同一份定义：
- * - 主进程实现侧：对象字面量标注为 `IpcImpl<域合同>`，参数与返回值全部由类型推导
- * - 渲染进程调用侧：`invoke` / `listen` / `vueListen`（@renderer/utils/ipcRenderer）
+ * 通道按域分组，线上通道名 = `域:方法`（如 `browser:selectTab`、`download:progress`）。
+ * 命名与分组来自各域模块（./app、./browser、…，域名 = 文件名），两端共用同一份定义：
+ * - 主进程实现侧：对象字面量标注为 `IpcImpl<域合同>`（如 @main/services/ipc-main-handle）
+ * - 渲染进程调用侧：`ipc.域.方法` / `ipcEvents.组.事件`（@renderer/utils/ipcRenderer）
  * - 主进程推送侧：`webContentSend`（@main/services/web-content-send）
+ *
+ * 各域模块只声明类型（合同接口 + 载荷命名类型），不允许引入任何运行时代码，
+ * 渲染进程会以 import type 的方式引用。
+ *
+ * 域与 handler 文件一一对应，新增通道时：
+ * 1. 在对应域模块的合同接口里加方法签名（载荷抽成命名接口）
+ * 2. 在对应 handler 对象字面量里加实现（漏加会编译报错）
+ * 3. 渲染端 `ipc.域.方法()` 调用
  *
  * @module ipc
  */
 
-export * from './contract'
+export * from './app'
+export * from './browser'
+export * from './download'
+export * from './print'
+export * from './updater'
+export * from './window'
 
-import type { IpcContracts, IpcEventGroups } from './contract'
+import type { AppContract } from './app'
+import type {
+  BrowserContract,
+  BrowserEvents,
+} from './browser'
+import type { DownloadEvents } from './download'
+import type { PrintContract } from './print'
+import type { UpdateEvents, UpdaterContract } from './updater'
+import type { WindowEvents } from './window'
 
 /** 单个通道的处理器视图：补上 IpcMainInvokeEvent 首参，返回值允许包 Promise */
 type IpcHandlerOf<F> = F extends (...args: infer A) => infer R
@@ -67,3 +88,19 @@ export type ResolveEventMethod<C> = C extends `${infer G}:${infer M}`
       : never
     : never
   : never
+
+/** 渲染进程 -> 主进程，按域分组 */
+export interface IpcContracts {
+  app: AppContract
+  browser: BrowserContract
+  print: PrintContract
+  updater: UpdaterContract
+}
+
+/** 主进程 -> 渲染进程的事件推送，按域分组 */
+export interface IpcEventGroups {
+  download: DownloadEvents
+  update: UpdateEvents
+  browser: BrowserEvents
+  window: WindowEvents
+}
